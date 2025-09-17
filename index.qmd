@@ -1,9 +1,5 @@
 # Preface {.unnumbered}
 
-This is a Quarto book.
+## What is Epistem-X?
 
-To learn more about Quarto books visit <https://quarto.org/docs/books>.
-
-```{r}
-1 + 1
-```
+EPISTEM-X provides a modular, microservice-based backend for automated, reproducible LULC mapping. The pipeline supports multiple sensors (Sentinel-2, Landsat, ALOS, user-uploaded), non-imagery covariates (DEM, proximity rasters), and supervised machine learning (RF, XGBoost, SVM). The design goals are: automation, flexibility, scalability, and provenance. Proposed solutions, strategies, and next steps.
