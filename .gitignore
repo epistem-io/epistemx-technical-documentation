@@ -4,3 +4,9 @@
 .Ruserdata
 
 /.quarto/
+
+_book/
+*.html
+*.pdf
+*.docx
+.DS_Store
