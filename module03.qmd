@@ -1,4 +1,4 @@
-# Module 1: Create composite images {#sec-build}
+# Module 3 {#sec-build}
 
 This is the first module
 

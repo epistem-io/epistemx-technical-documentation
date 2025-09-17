@@ -22,11 +22,11 @@
   {
     "objectID": "summary.html",
     "href": "summary.html",
-    "title": "2  Summary",
+    "title": "10  Summary",
     "section": "",
     "text": "In summary, this book has no content whatsoever.\n\n1 + 1\n\n[1] 2",
     "crumbs": [
-      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Summary</span>"
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>Summary</span>"
     ]
   },
   {
@@ -42,11 +42,81 @@
   {
     "objectID": "module01.html",
     "href": "module01.html",
-    "title": "3  Module 01: Create composite images",
+    "title": "2  Module 1: Create composite images",
+    "section": "",
+    "text": "2.1 What happens in this module?\nThis is the first module",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Module 1: Create composite images</span>"
+    ]
+  },
+  {
+    "objectID": "module02.html",
+    "href": "module02.html",
+    "title": "3  Module 2",
     "section": "",
     "text": "3.1 What happens in this module?\nThis is the first module",
     "crumbs": [
-      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Module 01: Create composite images</span>"
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Module 2</span>"
+    ]
+  },
+  {
+    "objectID": "module03.html",
+    "href": "module03.html",
+    "title": "4  Module 3",
+    "section": "",
+    "text": "4.1 What happens in this module?\nThis is the first module",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Module 3</span>"
+    ]
+  },
+  {
+    "objectID": "module04.html",
+    "href": "module04.html",
+    "title": "5  Module 4",
+    "section": "",
+    "text": "5.1 What happens in this module?\nThis is the first module",
+    "crumbs": [
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Module 4</span>"
+    ]
+  },
+  {
+    "objectID": "module05.html",
+    "href": "module05.html",
+    "title": "6  Module 5",
+    "section": "",
+    "text": "6.1 What happens in this module?\nThis is the first module",
+    "crumbs": [
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Module 5</span>"
+    ]
+  },
+  {
+    "objectID": "module06.html",
+    "href": "module06.html",
+    "title": "7  Module 6",
+    "section": "",
+    "text": "7.1 What happens in this module?\nThis is the first module",
+    "crumbs": [
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Module 6</span>"
+    ]
+  },
+  {
+    "objectID": "module07.html",
+    "href": "module07.html",
+    "title": "8  Module 7",
+    "section": "",
+    "text": "8.1 What happens in this module?\nThis is the first module",
+    "crumbs": [
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Module 7</span>"
+    ]
+  },
+  {
+    "objectID": "module08.html",
+    "href": "module08.html",
+    "title": "9  Module 8",
+    "section": "",
+    "text": "9.1 What happens in this module?\nThis is the first module",
+    "crumbs": [
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Module 8</span>"
     ]
   }
 ]

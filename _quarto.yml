@@ -8,9 +8,16 @@ book:
   chapters:
     - index.qmd
     - intro.qmd
+    - module01.qmd
+    - module02.qmd
+    - module03.qmd
+    - module04.qmd
+    - module05.qmd
+    - module06.qmd
+    - module07.qmd
+    - module08.qmd
     - summary.qmd
     - references.qmd
-    - module01.qmd
 
 bibliography: references.bib
 
