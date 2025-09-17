@@ -1,0 +1,5 @@
+# Module 01: Create composite images {#sec-build}
+
+This is the first module
+
+## What happens in this module?
