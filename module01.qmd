@@ -1,4 +1,4 @@
-# Module 1: Create composite images {#sec-build}
+# Module 1: Create composite images {#module-1 .unnumbered}
 
 This is the first module
 

@@ -4,7 +4,7 @@ project:
 book:
   title: "Epistem-X Technical Documentation"
   author: "IIASA"
-  date: "17/09/2025"
+  date: "18/09/2025"
   chapters:
     - index.qmd
     - intro.qmd
@@ -18,7 +18,13 @@ book:
     - module08.qmd
     - summary.qmd
     - references.qmd
-
+  sidebar:
+    logo: images/epistem_logo_color.png
+    search: true
+    tools:
+      - icon: globe
+        href: https://epistem.io/
+  
 bibliography: references.bib
 
 format:

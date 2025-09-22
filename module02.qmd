@@ -1,5 +1,5 @@
-# Module 2 {#sec-build}
+# Module 2 {#module-2 .unnumbered}
 
-This is the first module
+This is the second module
 
 ## What happens in this module?

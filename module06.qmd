@@ -1,4 +1,4 @@
-# Module 6 {#sec-build}
+# Module 6 {#module-6 .unnumbered}
 
 This is the first module
 

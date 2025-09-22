@@ -1,3 +1,75 @@
-# Introduction
+# Introduction {.unnumbered}
 
-This document is a technical specification for the EPISTEM-X Land Use / Land Cover (LULC) workflow. It is intended for backend engineers, remote sensing scientists, data engineers, and DevOps to implement a production-ready mapping pipeline. Context, objectives, and scope of the document. Lihat link berikut.
+This document is a technical specification for the Epistem-X workflow. It is intended for back-end engineers, remote sensing scientists, data engineers, and DevOps to implement a production-ready mapping pipeline.
+
+## System Overview
+
+The envisioned landscape monitoring system is designed to comprise three core components, as illustrated in @fig-overall-system-architecture. These components work in an integrated manner to provide a robust, scalable, and flexible solution for generating high-quality Land Use and Land Cover (LULC) maps. By combining advanced algorithms, structured reference data, and user-friendly interfaces, the system will support diverse stakeholders in monitoring, managing, and making informed decisions about landscapes.
+
+![System architecture and core components of the LULC monitoring system](images/overall_system_architecture.png){#fig-overall-system-architecture}
+
+### LULC Classification Algorithm {.unnumbered}
+
+\[insert brief summary of all the modules\]
+
+### Reference Data Repository {.unnumbered}
+
+\[insert brief summary of Epistem-Y\]
+
+### User Interface {.unnumbered}
+
+\[insert UI description\]
+
+## Epistem-X Development Phases
+
+Epistem-X will progress through a structured development lifecycle consisting of three phases. Phase 1 is targeted for completion by December 2025, followed by Phase 2, which is planned for delivery by June 2026.
+
+### Phase 1: Express Map {.unnumbered}
+
+::: {.callout-note icon="false"}
+## Phase 1 User's Focus
+
+Users seeking to create their first land cover map quickly, easily, and with high-quality results.
+:::
+
+Phase 1 serves as the primary entry point for all Epistem users. The platform provides a guided workflow designed to produce standardized, high-quality maps with minimal complexity. Users follow a core set of steps to achieve results without navigating complex options.
+
+\[in this development phase, what can the user do with this tool? what are the inputs/outputs?\]
+
+### Phase 2: Map Studio {.unnumbered}
+
+::: {.callout-note icon="false"}
+## Phase 2 User's Focus
+
+Users with foundational knowledge seeking more complex mapping, experimenting with additional datasets, and refining map details according to specific needs.
+:::
+
+### Phase 3: Map Lab {.unnumbered}
+
+::: {.callout-note icon="false"}
+## Phase 3 User's Focus
+
+Users requiring in-depth analysis, collaborative workflows, and the ability to learn from other Epistem users.
+:::
+
+## Modules Overview
+
+The workflow for generating LULC maps consists of eight sequential modules:
+
+[Module 1: Generating cloud-free satellite images](module01.qmd)
+
+[Module 2: Determining the LULC classification schema and classes](module02.qmd)
+
+[Module 3: Obtaining representative training data](module03.qmd)
+
+[Module 4: Performing separability analysis and selecting covariates](module04.qmd)
+
+[Module 5: Incorporating non-image covariates to improve model accuracy](module05.qmd)
+
+[Module 6: Generating the preliminary LULC map](module06.qmd)
+
+[Module 7: Assessing thematic accuracy using independent validation data](module07.qmd)
+
+[Module 8: Performing post-classification analysis and data housekeeping](module08.qmd)
+
+Each module builds on the previous one, ensuring a systematic and reproducible workflow from raw imagery to a validated, fully documented LULC map.

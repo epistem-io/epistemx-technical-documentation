@@ -1,5 +1,5 @@
-# Preface {.unnumbered}
+# About the project {.unnumbered}
 
-## What is Epistem-X?
+The Epistem initiative aims to develop an open source landscape monitoring technology to empower actors involved in efforts to avoid deforestation, forest/landscape restoration, and other nature-based solutions (NbS). These actors cover a wide range of institutions whose needs and usage for landscape monitoring data represent diverse needs to address landscape degradation and restoration. They typically suffer from the lack of accessible data such as land cover map, change map, as well as ground-truthing/reference datasets that are fundamental for planning, mobilizing funds, monitoring and evaluating accountability of NbS implementation. Furthermore, even when monitoring tools exist, making sure they integrate into real-world NbS implementations and address the specific operational hurdles faced by users on the ground remains a substantial challenge. In response to these pressing NbS data needs, we are developing Epistem-X, a landscape monitoring technology designed with the following key characteristics.
 
-EPISTEM-X provides a modular, microservice-based backend for automated, reproducible LULC mapping. The pipeline supports multiple sensors (Sentinel-2, Landsat, ALOS, user-uploaded), non-imagery covariates (DEM, proximity rasters), and supervised machine learning (RF, XGBoost, SVM). The design goals are: automation, flexibility, scalability, and provenance. Proposed solutions, strategies, and next steps.
+# Epistem-X
