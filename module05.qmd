@@ -1,5 +1,16 @@
-# Module 5 {#module-5 .unnumbered}
+# Module 5: Improving Model Quality Using Non-Image Covariates {#module-5 .unnumbered}
 
-This is the first module
+# General Description
 
-## What happens in this module?
+This module serves as an optional module for user to improve the model’s quality based on the feedback on [Module 4](module04.qmd). This covariates might include non-spectral data, such as texture features, terrain indices, or soil properties.
+
+![Module 5 workflow. View full-size image in new tab.](images/module5-workflow.png)
+
+# Feature Notes
+
+-   System’s default covariance
+-   The system provides a list of covariates that can be chose by the users. In the current version, the list of covariates are:
+    -   Radar-based covariates. This includes raw radar backscatter (Sentinel-1, PALSAR), temporal/seasonal composites, and derived features (ratios, texture, vegetation indices)
+    -   Non-spectral covariates. This includes terrain metrics (elevation, slope, aspect) and distance metrics (to roads, coastlines, and settlements)
+    -   Spectral indices. This includes vegetation, water, burn, and soil indices, including NDVI, NDMI, NBR, GNDVI, MNDWI, RVMI, MSAVI, OSAVI, CVI, ARVI, GBNDVI, AWEI, Tasseled Cap
+-   System’s trade-off analysis of using additional covariates

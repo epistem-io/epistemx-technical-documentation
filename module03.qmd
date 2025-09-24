@@ -1,3 +1,46 @@
 # Module 3: Obtaining Training Data {#module-3 .unnumbered}
 
-## What happens in this module?
+## General Description
+
+In supervised classification, the quality of training data directly determines the accuracy of the resulting model. This module provides two options for preparing training samples: (1) importing user-defined training data, or (2) interactively generating training data through system-guided tools. By the end of this module, the user will have a structured training dataset for each land use/land cover class, along with statistical diagnostics to assess the quality of the samples for classification.
+
+![Module 3 workflow. View full-size image in new tab](images/module3-workflow.png)
+
+|  |  |
+|------------------------------------|------------------------------------|
+| **User’s Input** | If the user has their own training data:<br> - User’s training data (.shp or .csv) <br><br> If the user does not have their own training data:<br>- On-screen sampling (expert judgement)<br>- Choose external training data source: RESTORE+ or Epistem-Y |
+| **Process** | \- |
+| **Output** | Statistical quality of the training data saved in the system based on these indicators: <br>- Band-wise scatter plots<br>- Band-wise histograms<br>- Average spectral response curve<br>- Class sample counts<br>- Class separability matrix |
+
+# Feature Notes
+
+-   User’s training data
+
+    The system performs an automated verification process to ensure compatibility. The checks include:
+
+    1.  **Data format**:
+        -   Accepted formats are shapefiles (`.shp` with supporting files: `.shx`, `.prj`, `.dbf`) or tabular data (`.csv` or `.xlsx`).
+        -   Shapefiles must contain point geometries only — line or polygon geometries are not supported.
+        -   Tabular data must include three mandatory columns: *X-coordinate, Y-coordinate,* and *land use class*.
+    2.  **Land use class consistency**:
+        -   All land use classes in the training data must match the class definitions established in [Module 2](module02.qmd).
+        -   If mismatches are detected, the system will flag the inconsistent classes. The user can then either:
+            1.  Re-upload corrected training data, or
+            2.  Add the missing or inconsistent samples through the system’s on-screen sampling interface.
+
+-   System’s training data
+
+    -   On-screen sampling
+
+    The system provides an interactive tool for creating training data directly within the platform. Users can select specific map coordinates and assign the corresponding land use/land cover class to each point.
+
+    -   RESTORE+ training data [@hadi_national-scale_2022]
+    -   Public training data
+
+-   Statistical quality assessment of training data The selected training data are then evaluated for quality based on their spectral band values. The quality indicators include:
+
+    -   Descriptive statistics of band values for each class
+
+    -   Separability index of band values using the Jeffries–Matusita distance between classes
+
+These statistical results are then compiled and presented to the user in a summary report.
