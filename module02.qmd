@@ -1,5 +1,46 @@
-# Module 2 {#module-2 .unnumbered}
+# Module 2: Determining LULC Classification Schema and Classes {#module-2 .unnumbered}
 
-This is the second module
+The Epistem landscape monitoring technology addresses data gaps for stakeholders in Nature-based Solutions (NbS) interventions. To support planning, monitoring, and evaluation (PME), it integrates a LULC classification framework with sufficient thematic detail to capture diverse NbS activities, including conservation, land management, and ecosystem restoration, with an emphasis on carbon sequestration and biodiversity. A key feature is its adaptability: users can generate maps with customizable classification schemes—from broad outputs like deforestation maps to detailed products reflecting specific management practices or prioritized classes for greater accuracy. This flexibility aligns with the FAO [LCCS](https://www.fao.org/4/x0596e/x0596e00.htm), supporting class combinations and hierarchical structures.
 
-## What happens in this module?
+The output of this module is a well-defined list of LULC classes, structured according to either a hierarchical or non-hierarchical classification schema.
+
+-   In a hierarchical classification system, LULC classes are organized in multiple levels of thematic detail. Broader classes, such as Natural Forest or Agroforestry are subdivided into more specific subclasses. This structure forms a tree-like taxonomy, enabling analysis at different scales and levels of detail. For example, a national-level analysis might only use Level 1 categories while a local restoration project could use Level 3 or Level 4 categories. This approach aligns with frameworks such as the FAO LCCS. The classification schema shown in Fig. XXX illustrates the hierarchical system applied in the RESTORE+ project
+
+-   In a non-hierarchical classification system, all classes are treated independently, without parent-child relationships. This structure is simpler to implement and suitable for applications where only one level of classification is required, such as generating a deforestation map or identifying priority conservation areas.
+
+    ![LULC Hierarchy Classification System used in RESTORE+ project](images/lulc-hierarchical-classification.png){alt="LULC Hierarchy Classification System used in RESTORE+ project"}
+
+## Development Phases of Module 2
+
+-   Phase 1: Non-hierarchical classification schema
+-   Phase 2: Hierarchical classification schema
+-   Phase 3: User-generated classification schema developed within the Epistem ecosystem
+
+## User's Input
+
+-   Near cloud-free satellite imagery provided in Module 1
+-   Option to select a classification schema, either hierarchical or non-hierarchical
+-   User-defined list of land cover or land use classes, entered in a tabular format to specify the categories to be mapped.
+
+### Workflow description
+
+This workflow ensures that the user selected the type of classification scheme
+
+1.  **User Selection of Classification Schema Options**
+
+    -   The system displays a button or selection interface allowing the user to choose between a hierarchical or non-hierarchical classification schema.
+        1.  If non-hierarchical is selected, the system provides a form/table with two columns: ID, Class Name, and Colour
+        2.  If hierarchical is selected, the system provides a table with three columns: ID, Level, Class Name, and Colour. This process is supported by a hierarchical UI form to simplify the creation of multi-level class structures.
+
+2.  **Validation of Input Data**
+
+    -   The system checks the entered data for completeness and correctness
+    -   Feedback is provided to the user
+        -   If the data is valid, the user is allowed to proceed to the next step.
+        -   If there are errors or missing inputs, the system notifies the user with specific guidance on what needs to be corrected
+
+3.  **Saving the Classification Table**
+
+    Once validated, the classification table is stored as a variable within the system for use in subsequent modules.
+
+![Module 2 workflow](images/module-1-workflow.png){alt="Module 2 workflow"}
