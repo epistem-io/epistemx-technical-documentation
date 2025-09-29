@@ -1,1 +1,109 @@
-# Module 1: Create composite images {#module-1 .unnumbered}
+# Module 1 Acquisition of Near Cloud-Free Satellite Imagery {#sec-module-1}
+
+## Module Overview {.unnumbered}
+
+The output of this module is high-quality, near cloud-free satellite imagery, which is essential for producing accurate and reliable land use and land cover (LULC) datasets. This module focuses on acquiring satellite imagery that has been pre-processed and corrected, including procedures such as cloud masking and shadow removal.
+
+## Input {.unnumbered}
+
+**User's Input**
+
+-   Area of interest (AOI)
+-   Selection of single or multiple time-series imagery
+-   Target map year (YYYY)
+-   Desired spatial resolution (meters)
+-   Maximum allowable cloud cover (%)
+
+**Input from External Sources**
+
+-   Raw satellite imagery
+-   Administration boundaries (FAO GAUL)
+
+## Output {.unnumbered}
+
+-   Selected AOI
+-   Near cloud-free satellite imagery
+
+## Process {.unnumbered}
+
+## Selection of AOI {#sec-selection-of-aoi}
+
+::: callout-note
+@sec-aoi-from-administrative-boundaries, @sec-aoi-from-a-shapefile, @sec-aoi-from-on-screen-digitizing are options
+:::
+
+### AOI from administrative boundaries {#sec-aoi-from-administrative-boundaries}
+
+#### Back-end
+
+The system queries the FAO GAUL (Global Administrative Unit Layers 2015) dataset, which provide standardized information on country and subnational boundaries, and saves the AOI as a variable
+
+#### Front-end
+
+User selects an administration boundary
+
+### AOI from a shapefile {#sec-aoi-from-a-shapefile}
+
+#### Back-end
+
+??
+
+#### Front-end
+
+User can upload their `.shp` file
+
+### AOI from on-screen digitizing {#sec-aoi-from-on-screen-digitizing}
+
+#### Back-end
+
+??
+
+#### Front-end
+
+User is presented with an interactive on-screen digitization process
+
+## Selecting and Preparing Satellite Imagery
+
+### Input spatial image parameters {#sec-input-spatial-image-parameters}
+
+#### Front-end
+
+User is prompted to fill in these parameters:
+
+-   Spatial Resolution (meter): specify the desired spatial resolution
+-   Input Year: choose either single-date or multi-year imagery
+-   Maximum cloud cover: set a preferred cloud cover threshold or use the default value of 30%
+
+#### Back-end
+
+-   The system uses multi-temporal Landsat 8 and Landsat 9 surface reflectance imagery as a default data source
+-   The system retrieves images that match user’ selected criteria including spatial resolution, year and cloud cover. For single-year imagery, the system selects Landsat images from December 31st of year T or the lowest cloud cover scene available that year. For multi-year imagery, the system retrieves the lowest cloud cover image for each year in the specified range
+-   The system crops and mosaics the selected satellite imagery to match the user’s AOI
+-   The system performs cloud masking in three steps: cloud detection, mask refinement, and image compositing. The QA_PIXEL band encodes pixel conditions using specific bit flags. `Bitwise AND` operations are applied to isolate these conditions, focusing on clouds (bit 4, value 16) and cloud shadows (bit 3, value 8). Pixels matching these flags are excluded to produce a cleaner, near cloud-free image.
+-   The system evaluates whether the retrieved imagery meets the required spatial resolution, input year, and cloud cover thresholds.
+-   If there are no satellite imagery available for the user's input parameter, proceed to @sec-satellite-imagery-cannot-be-found
+
+### Satellite imagery cannot be found based on user’s parameter {#sec-satellite-imagery-cannot-be-found}
+
+#### Back-end
+
+-   Before prompting the user to insert new parameters, the system searches imagery from year T to T-2 to replace cloudy areas via image compositing
+-   If requirements remain unmet, @sec-input-spatial-image-parameters will re-run based on new user parameters
+
+#### Front-end
+
+-   User is prompted to adjust parameters, such as increasing the cloud cover limit, selecting a different time period, or choosing a different spatial resolution
+
+## Satellite imagery post-processing {#sec-satellite-imagery-post-processing}
+
+### Visualization and saving data
+
+#### Back-end
+
+-   The system produces a near cloud-free Landsat imagery for the defined AOI, saves it as variable, and visualize the processed dataset
+-   A summary report of metadata is generated, including acquisition details, cloud cover statistics, and a summary of processing steps applied
+
+#### Front-end
+
+-   User can visualize the near cloud-free imagery within the web portal and download it as a `.tif` file
+-   A summary report containing the metadata is provided as a text file
