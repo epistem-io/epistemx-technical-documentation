@@ -1,10 +1,10 @@
 # Module 1 Acquisition of Near Cloud-Free Satellite Imagery {#sec-module-1}
 
-## Module Overview {.unnumbered}
+# Module Overview {.unnumbered}
 
 The output of this module is high-quality, near cloud-free satellite imagery, which is essential for producing accurate and reliable land use and land cover (LULC) datasets. This module focuses on acquiring satellite imagery that has been pre-processed and corrected, including procedures such as cloud masking and shadow removal.
 
-## Input {.unnumbered}
+# Input {.unnumbered}
 
 **User's Input**
 
@@ -19,12 +19,40 @@ The output of this module is high-quality, near cloud-free satellite imagery, wh
 -   Raw satellite imagery
 -   Administration boundaries (FAO GAUL)
 
-## Output {.unnumbered}
+# Output {.unnumbered}
 
 -   Selected AOI
 -   Near cloud-free satellite imagery
 
-## Process {.unnumbered}
+# Process {.unnumbered}
+
+```{mermaid}
+
+flowchart TD
+
+A([<a href="#sec-selection-of-aoi">Selection of AOI</a>])
+B([<a href="#sec-aoi-from-administrative-boundaries">AOI from Administrative Boundaries</a>])
+C([<a href="#sec-aoi-from-a-shapefile">AOI from a Shapefile</a>])
+D([<a href="#sec-aoi-from-on-screen-digitizing">AOI from On-Screen Digitizing</a>])
+E([<a href="#sec-input-spatial-image-parameters">Input Spatial Image Parameters</a>])
+F([<a href="#sec-satellite-imagery-cannot-be-found">Satellite Imagery Cannot Be Found</a>])
+G([<a href="#sec-satellite-imagery-post-processing">Satellite Imagery Post-Processing: Visualization & Saving Data</a>])
+
+%% Flow connections
+A --> B
+A --> C
+A --> D
+
+B --> E
+C --> E
+D --> E
+
+E -->|Imagery available| G
+E -->|Imagery not available| F
+
+F --> E
+
+```
 
 ## Selection of AOI {#sec-selection-of-aoi}
 

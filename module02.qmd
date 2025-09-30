@@ -1,6 +1,6 @@
 # Module 2: Determining LULC Classification Schema and Classes {#sec-module-2}
 
-# Module overview {.unnumbered}
+# Module Overview {.unnumbered}
 
 A key feature of this module is its adaptability: users can generate maps with customizable classification schemes, from broad outputs like deforestation maps to detailed products reflecting specific management practices or prioritized classes for greater accuracy. This flexibility aligns with the FAO [LCCS](https://www.fao.org/4/x0596e/x0596e00.htm), supporting class combinations and hierarchical structures. The output of this module is a well-defined list of LULC classes, structured either hierarchically, with multiple levels of thematic detail where broader classes like Natural Forest or Agroforestry are subdivided into finer subclasses for analysis at different scales, or non-hierarchically, where all classes are treated independently, suitable for single-level applications such as deforestation mapping or identifying priority conservation areas.
 
@@ -28,21 +28,42 @@ A key feature of this module is its adaptability: users can generate maps with c
 
 # Process {.unnumbered}
 
+```{mermaid}
+flowchart TD
+
+A([<a href="#classification-schema-selection">Classification Schema Selection</a>])
+B([<a href="#sec-hierarchical-classification-schema">Hierarchical Classification Schema</a>])
+C([<a href="#sec-non-hierarchical-classification-schema">Non-Hierarchical Classification Schema</a>])
+D([<a href="#ai-generated-lulc-classification-recommendation">AI-Generated LULC Classification Recommendation</a>])
+E([<a href="#validation-of-input-data">Validation of Input Data</a>])
+F([<a href="#sec-saving-the-lulc-classification-table">Saving the LULC Classification Table</a>])
+
+%% Flow connections
+A -->|Hierarchical| B
+A -->|Non-Hierarchical| C
+
+B --> D
+C --> D
+
+D --> E
+E -->|Valid| F
+E -->|Invalid| A
+
+```
+
 ## Selection of Classification Scheme and LULC Input Method
 
 ### Classification schema selection
 
 #### Front-end
 
-The user selects either a hierarchical or non-hierarchical classification schema (either @sec-hierarchical-classification-schema or @sec-non-hierarchical-classification-schema)
+The user selects either a hierarchical or non-hierarchical classification schema
 
 #### Back-end
 
-The system will continue to proceed accordingly to the user’s classification choice schema
+If the user choose hierarchical schema, the system proceeds to @sec-hierarchical-classification-schema
 
-::: callout-note
-@sec-hierarchical-classification-schema and @sec-non-hierarchical-classification-schema are options
-:::
+If the user choose non-hierarchical schema, the system proceeds to @sec-non-hierarchical-classification-schema
 
 ### Hierarchical classification schema {#sec-hierarchical-classification-schema}
 
