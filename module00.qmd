@@ -1,0 +1,41 @@
+# Module 0 Name of the Module {#sec-module-0}
+
+# Module Overview {.unnumbered}
+
+A quick summary of the module is put here
+
+# Input {.unnumbered}
+
+**User's Input**
+
+-   A list of inputs for the module's system from the user
+
+**Input from External Sources**
+
+-   A list of inputs for the module's system not from the user
+
+**Input from Other Modules**
+
+-   A list of inputs that are generated from other modules, referred to by the section's ID
+
+# Output {.unnumbered}
+
+-   A list of output generated from the module
+
+# Process {.unnumbered}
+
+```{mermaid}
+flowchart TD
+
+B([<a href="#sec-sub-step-example">Linked to the section</a>])
+
+A --> |Section Link| B
+```
+
+## Step X
+
+### Sub-Step {#sec-sub-step-example}
+
+#### Back-end
+
+#### Front-end
