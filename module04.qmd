@@ -2,29 +2,29 @@
 
 # Module Overview {.unnumbered}
 
-This module enables users to generate accurate LULC maps by selecting or training classification models, optimizing them through hyperparameter tuning, and validating their compatibility with user data. Users can either use existing models from other users or apply system-recommended parameters to train a new model. In the back-end, these parameters are used to train and evaluate a Random Forest (RF) classifier, resulting in a land use and land cover model with measurable quality and a georeferenced LULC map ready for download or further analysis.
+This module enables users to generate accurate LULC maps by selecting or training classification models, optimizing them through hyperparameter tuning, and validating their compatibility with user data. Users can either use existing models from other users or apply system-recommended parameters to train a new model. On the back-end, these parameters are used to train and evaluate a Random Forest (RF) classifier, resulting in a land use and land cover model with measurable quality and a georeferenced LULC map ready for download or further analysis.
 
 # Input {.unnumbered}
 
 **User's Input**
 
--   Hyperparameter tuning constraints
--   Training/test data split ratio
+1.  Hyperparameter tuning constraints.
+2.  Training/test data split ratio.
 
-**Input from External Sources**
+**Automatic System Input**
 
--   Covariate default system
+1.  Covariate default system.
 
 **Input from Other Modules**
 
--   Near cloud-free satellite imagery within the AOI (@sec-satellite-imagery-post-processing)
--   LULC classification table( @sec-saving-the-lulc-classification-table)
--   Georeferenced training dataset (@sec-training-data-validation-and-statistical-analysis)
+1.  Near-cloud-free satellite imagery within the AOI (@sec-satellite-imagery-post-processing).
+2.  LULC classification table( @sec-saving-the-lulc-classification-table).
+3.  Georeferenced training dataset (@sec-training-data-validation-and-statistical-analysis).
 
 # Output {.unnumbered}
 
--   Trained classification model object
--   LULC raster map
+1.  Trained LULC classification model.
+2.  LULC raster map.
 
 # Process {.unnumbered}
 
@@ -59,41 +59,44 @@ E --> F
 F --> G
 ```
 
-
 ## Selection of LULC Classification Model
 
 ### Selection of LULC Classification Model {#sec-selection-of-lulc-classification-model}
-
-#### Back-end
-
--   If the user chooses to use the pre-trained model, the system proceeds to @sec-using-existing-model
--   If the user chooses to train a new model, the system proceeds to @sec-create-new-model
 
 #### Front-end
 
 The user can choose two options for LULC classification models:
 
-1.  Use a pre-trained model (from the system or another user)
-2.  Train a new model
+1.  Use a Pre-Trained Model (from the system or another user).
+2.  Train a New Model.
 
-## Using Existing Model {#sec-using-existing-model}
+#### Back-end
 
-### Model validation and compability {#sec-model-validation-and-compability}
+1.  If the user chooses to use the pre-trained model, the system proceeds to @sec-using-existing-model.
+2.  If the user chooses to train a new model, the system proceeds to @sec-create-new-model.
 
-#### Back-end:
+## Using Pre-Trained Model
 
--   The system checks whether the model’s classification scheme matches the user’s scheme.
--   If incompatible, the system recommends training a new model.
--   Users can manually verify compatibility if desired.
+### Model Validation and Compability {#sec-model-validation-and-compability}
 
 #### Front-end
 
--   If compatible, the user can proceed to Module 5.
--   If not compatible, the user is prompted to create a new model (@sec-create-new-model).
+1.  If compatible, the user can proceed to [Module 5](@sec-module-5).
+2.  If not compatible, the user is prompted to create a new model (@sec-create-new-model).
 
-## Create New Model {#sec-create-new-model}
+#### Back-end:
+
+1.  The system checks whether the model’s classification scheme matches the user’s scheme.
+2.  If incompatible, the system recommends the user to click the Train a New Model.
+3.  The user can manually verify compatibility if desired.
+
+## Train a New Model {#sec-create-new-model}
 
 ### Selecting Classification Algorithm to Train a New Model {#sec-selecting-classification-algorithm-to-train-a-new-model}
+
+#### Front-end
+
+The user is given the option to choose which classification algorithm to train the Random Forest classifier model.
 
 #### Back-end
 
@@ -110,57 +113,55 @@ The user can choose two options for LULC classification models:
         -   Produces probability values for each land cover class, with the final map generated using rules or by selecting the highest probability per pixel.
     -   Hierarchical Classification (Advanced)
         -   Supports classification with nested or multi-level/hierarchy schemes.
-3.  For each classification mode, the system provides a description along with its trade-offs
-
-#### Front-end
-
-User is given the option to choose which classification algorithm to train the Random Forest classifier model
+3.  For each classification mode, the system provides a description along with its trade-offs.
 
 ## Hyperparameter Tuning
 
 ### Splitting the Training Data {#sec-splitting-the-training-data}
 
+#### Front-end
+
+The user selects an option and enters percentages if using a Custom Partition.
+
 #### Back-end
 
-1.  Users can split training data into training and validation/test sets.
+1.  The user can split training data into training and validation/test sets.
 2.  Options:
-    1.  Custom partition: User specifies the ratio (e.g., 70% training / 30% testing).
-    2.  Default partition: System uses a predefined ratio automatically.
+    -   Custom Partition: The user specifies the ratio (e.g., 70% training / 30% testing).
+    -   Default Partition: The system uses a predefined ratio automatically.
+
+### Setting the Hyperparameters
 
 #### Front-end
 
-The user selects an option and enters percentages if using a custom partition.
-
-### Setting the hyperparameters {#sec-setting-the-hyperparameters}
+The user selects parameters and assigns values if using the custom option.
 
 #### Back-end
 
 Options for the Random Forest’s model hyperparameter selection:
 
-1.  Custom parameters: User can manually set values for parameters (e.g., number of trees, max depth, minimum leaf size).
-2.  Default parameters: System applies recommended default values.
-
-#### Front-end
-
-User selects parameters and assigns values if using the custom option.
+1.  Custom Parameters: The user can manually set values for parameters (e.g., number of trees, max depth, minimum leaf size).
+2.  Default Parameters: The system applies recommended default values.
 
 ### Training and Validating the Model {#sec-training-and-validating-the-model}
 
-#### Back-end
-
-1.  The system trains the model using the selected hyperparameters and training data.
-2.  Performance is evaluated on validation/test data.
-
 #### Front-end
 
-The user is notified of model performance, including accuracy or other relevant metrics.
+The user is notified of model performance, including accuracy and other relevant metrics.
+
+#### Back-end
+
+1.  The system trains the model using the selected hyperparameters and the training data.
+2.  Performance is evaluated on validation data.
 
 ### Selecting Best Hyperparameter Combination {#sec-selecting-best-hyperparameter-combination}
 
-#### Back-end
-
-System provides an options for model optimization
-
 #### Front-end
 
-Users can further optimize the model to improve classification performance.
+The user can further optimize the model to improve classification performance.
+
+#### Back-end
+
+The system provides an options for model optimization.
+
+#### 

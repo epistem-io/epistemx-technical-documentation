@@ -8,23 +8,23 @@ A key feature of this module is its adaptability: users can generate maps with c
 
 **User’s Input**
 
--   Selection of a classification schema
--   User-defined list of LULC classes
--   User-provided prompt for Artificial Intelligent (AI)
+1.  Selection of a classification schema.
+2.  User-defined list of LULC classes.
+3.  User-provided prompt for Artificial Intelligent (AI).
 
-**Input from External Sources**
+**Automatic System Input**
 
--   FAO LULC classes
--   RESTORE+ LULC classes
+1.  FAO LULC classes.
+2.  RESTORE+ LULC classes.
 
 **Input from Other Module**
 
--   User-selected AOI (@sec-selection-of-aoi)
--   Near cloud-free satellite imagery (@sec-satellite-imagery-post-processing)
+1.  User-selected AOI (@sec-selection-of-aoi).
+2.  Near-cloud-free satellite imagery (@sec-satellite-imagery-post-processing).
 
 # Output {.unnumbered}
 
--   LULC classification table
+LULC classification table
 
 # Process {.unnumbered}
 
@@ -53,59 +53,56 @@ E -->|Invalid| A
 
 ## Selection of Classification Scheme and LULC Input Method
 
-### Classification schema selection
+### Classification Schema Selection
 
 #### Front-end
 
-The user selects either a hierarchical or non-hierarchical classification schema
+The user selects either a hierarchical or non-hierarchical classification schema.
 
 #### Back-end
 
-If the user choose hierarchical schema, the system proceeds to @sec-hierarchical-classification-schema
+1.  If the user choose hierarchical schema, the system proceeds to @sec-hierarchical-classification-schema
+2.  If the user choose non-hierarchical schema, the system proceeds to @sec-non-hierarchical-classification-schema
 
-If the user choose non-hierarchical schema, the system proceeds to @sec-non-hierarchical-classification-schema
-
-### Hierarchical classification schema {#sec-hierarchical-classification-schema}
+### Hierarchical Classification Schema {#sec-hierarchical-classification-schema}
 
 **Front-end**
 
-User fills in four columns: ID, Level, Class Name, and Colour, with a hierarchical User Interface (UI) form to simplify creating of multi-level class structures
+The user fills in four columns: ID, Level, Class Name, and Colour, with a hierarchical User Interface (UI) form to simplify creating multi-level class structures.
 
 **Back-end**
 
-The system receives user’s input and save it as a variable
+The system receives user’s input and saves it as a variable.
 
-### Non-hierarchical classification schema {#sec-non-hierarchical-classification-schema}
-
-#### Front-end
-
-User fills in four columns: ID, Level, Class Name, and Colour
-
-#### Back-end
-
-The system receives user’s input and save it as a variable
-
-### AI-generated LULC classification recommendation
+### Non-Hierarchical Classification Schema {#sec-non-hierarchical-classification-schema}
 
 #### Front-end
 
-User can choose to create an AI prompt to generate potential LULC classes
+The user fills in four columns: ID, Level, Class Name, and Colour.
 
 #### Back-end
 
-??
+The system receives user’s input and saves it as a variable.
+
+### AI-Generated LULC Classification Recommendations
+
+#### Front-end
+
+The user can choose to create an AI prompt to generate potential LULC classes.
+
+#### Back-end
 
 ## Validation of Input Data
 
-### Validation of input data
+### Validation of Input Data
 
 #### Front-end
 
-User will be alerted with clear instructions if any errors are detected
+The user will be alerted with clear instructions if any errors are detected.
 
 #### Back-end
 
-The system validates the user’s input for completeness and correctness. If errors or missing inputs are detected, the system generates specific notifications user’s guidance. If the data is valid, the process proceeds to @sec-saving-the-lulc-classification-table.
+The system validates the user’s input for completeness and correctness. If errors or missing inputs are detected, the system generates specific notifications for the user’s guidance. If the data is valid, the process proceeds to @sec-saving-the-lulc-classification-table.
 
 ## Saving the LULC Classification Table {#sec-saving-the-lulc-classification-table}
 
@@ -113,8 +110,8 @@ The system validates the user’s input for completeness and correctness. If err
 
 #### Front-end
 
--   User will receive a confirmation and can proceed to the next step.
+The user receives a confirmation and can proceed to the next step.
 
 #### Back-end
 
--   Once validated, the system saves the classification table as a variable for use in subsequent modules.
+Once validated, the system saves the classification table as a variable to use in subsequent modules.

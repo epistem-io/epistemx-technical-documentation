@@ -1,4 +1,4 @@
-# Module 1 Acquisition of Near-Cloud-Free Satellite Imagery {#sec-module-1}
+# Module 1: Acquisition of Near-Cloud-Free Satellite Imagery {#sec-module-1}
 
 # Module Overview {.unnumbered}
 
@@ -8,21 +8,21 @@ The output of this module is high-quality, near-cloud-free satellite imagery, wh
 
 **User's Input**
 
--   Area of interest (AOI).
--   Selection of single or multiple time-series imagery.
--   Target map year (YYYY).
--   Desired spatial resolution (meters).
--   Maximum allowable cloud cover (%).
+1.  Area of interest (AOI).
+2.  Selection of single or multiple time-series imagery.
+3.  Target map year (YYYY).
+4.  Desired spatial resolution (meters).
+5.  Maximum allowable cloud cover (%).
 
-**Input from External Sources**
+**Automatic System Input**
 
--   Raw satellite imagery.
--   Administration boundaries.
+1.  Raw satellite imagery.
+2.  Administrative boundaries.
 
 # Output {.unnumbered}
 
--   Selected AOI.
--   Near cloud-free satellite imagery.
+1.  Selected AOI.
+2.  Near-cloud-free satellite imagery.
 
 # Process {.unnumbered}
 
@@ -35,7 +35,7 @@ B([<a href="#sec-aoi-from-administrative-boundaries">AOI from Administrative Bou
 C([<a href="#sec-aoi-from-a-shapefile">AOI from a Shapefile</a>])
 D([<a href="#sec-aoi-from-on-screen-digitizing">AOI from On-Screen Digitizing</a>])
 E([<a href="#sec-input-spatial-image-parameters">Input Spatial Image Parameters</a>])
-F([<a href="#sec-satellite-imagery-cannot-be-found">Satellite Imagery Cannot Be Found</a>])
+F([<a href="#sec-satellite-imagery-cannot-be-found">Satellite Imagery Not Found</a>])
 G([<a href="#sec-satellite-imagery-post-processing">Satellite Imagery Post-Processing: Visualization & Saving Data</a>])
 
 %% Flow connections
@@ -57,7 +57,7 @@ F --> E
 ## Selection of AOI {#sec-selection-of-aoi}
 
 ::: callout-note
-@sec-aoi-from-administrative-boundaries, @sec-aoi-from-a-shapefile, @sec-aoi-from-on-screen-digitizing are options.
+@sec-aoi-from-administrative-boundaries, @sec-aoi-from-shapefile, @sec-aoi-from-on-screen-digitizing are options.
 :::
 
 ### AOI from Administrative Boundaries {#sec-aoi-from-administrative-boundaries}
@@ -70,11 +70,11 @@ The user selects an administration boundary.
 
 The system queries the FAO Global Administrative Unit Layers (GAUL) 2015 datasets, which provide standardized information on country and sub-national boundaries, and saves the AOI as a variable.
 
-### AOI from Shapefile
+### AOI from Shapefile {#sec-aoi-from-shapefile}
 
 #### Front-end
 
-The user can upload their `.shp` file.
+The user can upload their `.SHP` file.
 
 #### Back-end
 
@@ -135,5 +135,3 @@ The user is prompted to adjust parameters, such as increasing the cloud cover li
 
 1.  The system produces near-cloud-free Landsat imagery for the defined AOI, saves it as a variable, and visualizes the processed datasets.
 2.  A summary report of metadata is generated, including acquisition details, cloud cover statistics, and a summary of processing steps applied.
-
-#### 

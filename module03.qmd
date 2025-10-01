@@ -2,31 +2,31 @@
 
 # Module Overview
 
-In supervised classification, the quality of training data directly determines the accuracy of the resulting model. The output of Module 3 is to produce georeferenced point vector datasets for each LULC class defined by the user in the preceding step [Module 2](@sec-module-2), accompanied by quantitative and visual summaries that facilitate rigorous evaluation, quality control, and optimization for subsequent classification. The module supports two workflows for data preparation: (1) importing user-defined datasets, or (2) interactively generating samples using system-guided tools. Upon completion, the user obtains a structured dataset for each LULC class, together with statistical diagnostics to assess the quality and representativeness of the data prior to classification
+In supervised classification, the quality of training data directly determines the accuracy of the resulting model. The output of Module 3 is to produce georeferenced point vector datasets for each LULC class defined by the user in the preceding step, [Module 2](@sec-module-2), accompanied by quantitative and visual summaries that facilitate rigorous evaluation, quality control, and optimization for subsequent classification. The module supports two workflows for data preparation: (1) importing user-defined datasets, or (2) interactively generating samples using system-guided tools. Upon completion, the user obtains a structured datasets for each LULC class, together with statistical diagnostics to assess the quality and representativeness of the data prior to classification.
 
 # Input {.unnumbered}
 
 **User’s Input**
 
--   User-specified options for generating training datasets
--   User selection of the sampling method and
--   User selection of approach for collecting training points
+1.  User-specified options for generating training datasets.
+2.  User selection of the sampling method.
+3.  User selection of the approach for collecting training points.
 
-**Input from External Sources**
+**Automatic System Input**
 
--   Training dataset from RESTORE+ project
--   Public sample data from the Epistem-X repository system.
+1.  Training datasets from the RESTORE+ project.
+2.  Publicly available datasets from the Epistem-X repository system.
 
 **Input from Other Modules**
 
--   User-selected AOI (@sec-selection-of-aoi)
--   Near cloud-free satellite imagery (@sec-satellite-imagery-post-processing)
--   LULC classification table (@sec-saving-the-lulc-classification-table)
+1.  User-selected AOI (@sec-selection-of-aoi).
+2.  Near-cloud-free satellite imagery (@sec-satellite-imagery-post-processing).
+3.  LULC classification table (@sec-saving-the-lulc-classification-table).
 
 # Output {.unnumbered}
 
--   Georeferenced training dataset
--   Statistical analyses of the dataset
+-   Georeferenced training datasets.
+-   Statistical analyses of the datasets.
 
 # Process
 
@@ -63,110 +63,112 @@ G -->|User is not satisfied| D
 
 ```
 
-## Uploading the training data {#sec-uploading-the-training-data}
+## Uploading the Training Data {#sec-uploading-the-training-data}
 
-### Initial option for training data source {#sec-initial-option-for-training-data-source}
-
-#### Back-end
-
--   If the user chooses to upload their own training data, the system will continue to @sec-uploading-the-training-data
--   If the user does not have their own training data, the system will continue to @sec-options-when-user-doesnt-have-training-data
+### Initial Option for Training Data Source {#sec-initial-option-for-training-data-source}
 
 #### Front-end
 
 The system initiates the workflow by providing the user with two primary options:
 
--   “I have training data”
--   “I don’t have training data”
-
-### User upload their own training data {#sec-user-upload-their-own-training-data}
+1.  “I have training data”.
+2.  “I don’t have training data”.
 
 #### Back-end
 
--   The system provides an upload interface that accepts only `.shp` (containing point features with LULC class attributes) or `.csv` format (containing point coordinates and associated LULC class labels established in [Module 2](@sec-module-2)). The system will then check if the uploaded data fulfills the requirement. If discrepancies are detected, the system will flag the inconsistent classes. The user can then either:
-    1.  Re-upload corrected training data, or
-    2.  Add the missing or inconsistent samples through the system’s on-screen sampling interface (@sec-on-screen-sampling)
--   If the user chooses to add training data with on-screen sampling, the system will proceed to Sub-step 3, with additional uploaded samples appearing on the interface
--   If the user does not want to add training data with on-screen sampling, the system will analyze the training data and proceed to @sec-data-validation-and-statistical-analysis
+1.  If the user chooses to upload their own training data, the system will continue to @sec-uploading-the-training-data
+2.  If the user does not have their own training data, the system will continue to @sec-options-when-user-doesnt-have-training-data
+
+### User Uploads Their Own Training Data {#sec-user-upload-their-own-training-data}
 
 #### Front-end
 
--   User uploads one of the supported file types
--   User chooses yes or no whether they want to add new training data through on-screen sampling
-
-### Options when user doesn't have training data {#sec-options-when-user-doesnt-have-training-data}
+1.  The user uploads one of the supported file types.
+2.  The user chooses Yes or No whether they want to add new training data through on-screen sampling.
 
 #### Back-end
 
--   If the user uses on-screen sampling, the system will proceed to @sec-on-screen-sampling
--   If the user uses RESTORE+ default data, the system will proceed to @sec-using-default-restore-dataset
--   If the user uses Epistem-X public repository, the system will proceed to @sec-using-epistem-x-repository
+1.  The system provides an upload interface that accepts only `.SHP` (containing point features with LULC class attributes) or `.CSV` format (containing point coordinates and associated LULC class labels established in [Module 2](@sec-module-2)). The system will then check if the uploaded data fulfills the requirement. If discrepancies are detected, the system will flag the inconsistent classes. The user can then either:
+    -   Re-upload corrected training data or
+    -   Add the missing or inconsistent samples through the system’s on-screen sampling interface (@sec-on-screen-sampling).
+2.  If the user chooses to add training data with on-screen sampling, the system will proceed to @sec-on-screen-sampling, with additional uploaded samples appearing on the interface.
+3.  If the user does not want to add training data with on-screen sampling, the system will analyze the training data and proceed to @sec-data-validation-and-statistical-analysis.
+
+### Options When the User Does Not Have Training Data
 
 #### Front-end
 
-User is given the following options to proceed:
+The user is given the following options to proceed:
 
--   Use on-screen sampling
--   Use RESTORE+ default data
--   Use Epistem-X public repository
-
-### On-screen sampling {#sec-on-screen-sampling}
+1.  Use on-screen sampling.
+2.  Use RESTORE+ default data.
+3.  Use Epistem-X public repository.
 
 #### Back-end
 
--   The system will display a panel containing a table with the following columns:
-    1.  Land cover class name
-    2.  Number of identified samples
-    3.  Button to add points on the basemap
--   The user selects the land cover class in the table to which sample data will be added:
-    1.  The user performs on-screen sampling (adding, removing, or relocating points).
-    2.  The system updates the “number of identified samples” column in real time while the user performs on-screen sampling.
--   The system provides a button to save the results of the on-screen sampling, which the user can click once sufficient data has been added.
+1.  If the user uses on-screen sampling, the system will proceed to @sec-on-screen-sampling.
+2.  If the user uses RESTORE+ default data, the system will proceed to @sec-using-default-restore-dataset.
+3.  If the user uses Epistem-X public repository, the system will proceed to @sec-using-epistem-x-repository.
+
+### On-Screen Sampling
 
 #### Front-end
 
--   The user interface provides an interactive environment for visual sampling on a basemap
--   A two-way binding mechanism ensures that every sampling action on the basemap is immediately reflected in the panel, and vice versa
-
-### Using default RESTORE+ dataset {#sec-using-default-restore-dataset}
+1.  The User Interface (UI) provides an interactive environment for visual sampling on a basemap.
+2.  A two-way binding mechanism ensures that every sampling action on the basemap is immediately reflected in the panel, and vice versa.
 
 #### Back-end
 
-The system recalls RESTORE+ dataset and display the dataset in a panel containing these information: LULC class and number of identified samples inside the AOI
+1.  The system will display a panel containing a table with the following columns:
+    -   Land cover class name.
+    -   Number of identified samples.
+    -   Button to add points on the basemap.
+2.  The user selects the land cover class in the table to which sample data will be added:
+    -   The user performs on-screen sampling (adding, removing, or relocating points).
+    -   The system updates the “number of identified samples” column in real time while the user performs on-screen sampling.
+3.  The system provides a button to save the results of the on-screen sampling, which the user can click once sufficient data has been added.
+
+### Using Default RESTORE+ Datasets {#sec-using-default-restore-dataset}
 
 #### Front-end
 
-The system provides a “Use Data” button to define the RESTORE+ dataset as the sample data variable.
-
-### Using Epistem-X Repository {#sec-using-epistem-x-repository}
+The system provides a “Use Data” button to define the RESTORE+ datasets as the sample data variable.
 
 #### Back-end
 
-System displays the Epistem-X public sample data repository in a panel. Each dataset is presented in a table with at least three columns: data location (shown as a map inset), land cover class name, and the number of identified samples.
+The system recalls RESTORE+ datasets and displays the datasets in a panel containing this information: LULC class and number of identified samples inside the AOI.
+
+### Using Epistem-X Repository
 
 #### Front-end
 
 The user selects a dataset from the repository and closes the panel. The user accesses public training datasets from the Epistem-X repository and can:
 
--   Browse and select point-based training data.
--   Choose specific coordinates for relevant regions.
--   Select predefined models or spectral signature libraries.
--   Apply these publicly available models/signatures to support the classification process.
+1.  Browse and select point-based training data.
+2.  Choose specific coordinates for relevant regions.
+3.  Select predefined models or spectral signature libraries.
+4.  Apply these publicly available models/signatures to support the classification process.
 
-A “Use Data” button is provided to define the selected public dataset as the sample data variable.
-
-## Training data validation and statistical analysis {#sec-training-data-validation-and-statistical-analysis}
-
-### Training data validation and statistical analysis
+A “Use Data” button is provided to define the selected public datasets as the sample data variable.
 
 #### Back-end
 
--   The system calculates the statistical information of the training dataset, including scattergrams for exploring relationships between spectral bands or indices, histograms for examining per-class spectral distributions, a tabular data view for reviewing attribute tables, and separability analysis (Jeffries–Matusita distance between classes) to assess the spectral differentiation between classes
--   The system performs validation and quality checks on the training dataset by ensuring compliance with the expected format and schema, counting the number of samples in each LULC class to detect class imbalance, and verifying that all training points fall within the defined Area of Interest (AOI)
+The system displays the Epistem-X public sample data repository in a panel. Each dataset is presented in a table with at least three columns: data location (shown as a map inset), land cover class name, and the number of identified samples.
+
+## Training Data Validation and Statistical Analysis
+
+### Training Data Validation and Statistical Analysis
 
 #### Front-end
 
-The user is given the statistical information of the training dataset and prompted to indicate whether they are satisfied with the training dataset statistical result.
+The user is given the statistical information of the training dataset and prompted to indicate whether they are satisfied with the training dataset statistical results.
 
--   If Yes: The dataset is finalized and ready for classification and proceed to Module 4.
--   If No: The interface will return to @sec-aoi-from-on-screen-digitizing to interactively edit the existing training dataset
+1.  If Yes: The dataset is finalized and ready for classification and proceeds to [Module 4](@seq-module-4).
+2.  If No: The interface will return to @sec-aoi-from-on-screen-digitizing to interactively edit the existing training dataset.
+
+#### Back-end
+
+1.  The system calculates the statistical information of the training dataset, including scattergrams for exploring relationships between spectral bands or indices, histograms for examining per-class spectral distributions, a tabular data view for reviewing attribute tables, and separability analysis (Jeffries–Matusita distance between classes) to assess the spectral differentiation between classes.
+2.  The system performs validation and quality checks on the training dataset by ensuring compliance with the expected format and schema, counting the number of samples in each LULC class to detect class imbalance, and verifying that all training points fall within the defined AOI.
+
+#### 
