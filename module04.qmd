@@ -63,105 +63,103 @@ F --> G
 
 ### Selection of LULC Classification Model {#sec-selection-of-lulc-classification-model}
 
-#### Front-end
+**Front-end**
 
 The user can choose two options for LULC classification models:
 
-1.  Use a Pre-Trained Model (from the system or another user).
-2.  Train a New Model.
+1.  Use a Pre-Trained Model (from the system or another user).  
+2.  Train a New Model.  
 
-#### Back-end
+**Back-end**
 
-1.  If the user chooses to use the pre-trained model, the system proceeds to @sec-using-existing-model.
-2.  If the user chooses to train a new model, the system proceeds to @sec-create-new-model.
+1.  If the user chooses to use the pre-trained model, the system proceeds to @sec-using-existing-model.  
+2.  If the user chooses to train a new model, the system proceeds to @sec-create-new-model.  
 
 ## Using Pre-Trained Model
 
 ### Model Validation and Compability {#sec-model-validation-and-compability}
 
-#### Front-end
+**Front-end**
 
-1.  If compatible, the user can proceed to [Module 5](@sec-module-5).
-2.  If not compatible, the user is prompted to create a new model (@sec-create-new-model).
+1.  If compatible, the user can proceed to [Module 5](@sec-module-5).  
+2.  If not compatible, the user is prompted to create a new model (@sec-create-new-model).  
 
-#### Back-end:
+**Back-end**
 
-1.  The system checks whether the model’s classification scheme matches the user’s scheme.
-2.  If incompatible, the system recommends the user to click the Train a New Model.
-3.  The user can manually verify compatibility if desired.
+1.  The system checks whether the model’s classification scheme matches the user’s scheme.  
+2.  If incompatible, the system recommends the user to click the Train a New Model.  
+3.  The user can manually verify compatibility if desired.  
 
 ## Train a New Model {#sec-create-new-model}
 
 ### Selecting Classification Algorithm to Train a New Model {#sec-selecting-classification-algorithm-to-train-a-new-model}
 
-#### Front-end
+**Front-end**
 
-The user is given the option to choose which classification algorithm to train the Random Forest classifier model.
+The user is given the option to choose which classification algorithm to train the Random Forest classifier model.  
 
-#### Back-end
+**Back-end**
 
-1.  The system can automatically generate optimal hyperparameters for Random Forest, including: number of trees, variables per split, and minimum leaf size.
-2.  Classification can be performed in three modes:
-    -   Hard Classification (Fast and Simple)
-        -   Assigns each pixel to exactly one class using a single-split mechanism.
-        -   Model performance is evaluated using accuracy against the test dataset.
-        -   Best suited for quick classifications with simple, non-hierarchical LULC classification such as Forest, Wetland Agriculture, Water Body, and Settlement.
-    -   Soft Classification (Moderate Complexity)
-        -   Uses a one-vs-rest binary approach.
-        -   Estimates the probability of each pixel belonging to each class instead of assigning it directly.
-        -   Model performance is reported using log loss (cross-entropy); lower values indicate better parameters.
-        -   Produces probability values for each land cover class, with the final map generated using rules or by selecting the highest probability per pixel.
-    -   Hierarchical Classification (Advanced)
-        -   Supports classification with nested or multi-level/hierarchy schemes.
-3.  For each classification mode, the system provides a description along with its trade-offs.
+1.  The system can automatically generate optimal hyperparameters for Random Forest, including: number of trees, variables per split, and minimum leaf size.  
+2.  Classification can be performed in three modes:  
+    -   Hard Classification (Fast and Simple)  
+        -   Assigns each pixel to exactly one class using a single-split mechanism.  
+        -   Model performance is evaluated using accuracy against the test dataset.  
+        -   Best suited for quick classifications with simple, non-hierarchical LULC classification such as Forest, Wetland Agriculture, Water Body, and Settlement.  
+    -   Soft Classification (Moderate Complexity)  
+        -   Uses a one-vs-rest binary approach.  
+        -   Estimates the probability of each pixel belonging to each class instead of assigning it directly.  
+        -   Model performance is reported using log loss (cross-entropy); lower values indicate better parameters.  
+        -   Produces probability values for each land cover class, with the final map generated using rules or by selecting the highest probability per pixel.  
+    -   Hierarchical Classification (Advanced)  
+        -   Supports classification with nested or multi-level/hierarchy schemes.  
+3.  For each classification mode, the system provides a description along with its trade-offs.  
 
 ## Hyperparameter Tuning
 
 ### Splitting the Training Data {#sec-splitting-the-training-data}
 
-#### Front-end
+**Front-end**
 
-The user selects an option and enters percentages if using a Custom Partition.
+The user selects an option and enters percentages if using a Custom Partition.  
 
-#### Back-end
+**Back-end**
 
-1.  The user can split training data into training and validation/test sets.
-2.  Options:
-    -   Custom Partition: The user specifies the ratio (e.g., 70% training / 30% testing).
-    -   Default Partition: The system uses a predefined ratio automatically.
+1.  The user can split training data into training and validation/test sets.  
+2.  Options:  
+    -   Custom Partition: The user specifies the ratio (e.g., 70% training / 30% testing).  
+    -   Default Partition: The system uses a predefined ratio automatically.  
 
 ### Setting the Hyperparameters
 
-#### Front-end
+**Front-end**
 
-The user selects parameters and assigns values if using the custom option.
+The user selects parameters and assigns values if using the custom option.  
 
-#### Back-end
+**Back-end**
 
 Options for the Random Forest’s model hyperparameter selection:
 
-1.  Custom Parameters: The user can manually set values for parameters (e.g., number of trees, max depth, minimum leaf size).
-2.  Default Parameters: The system applies recommended default values.
+1.  Custom Parameters: The user can manually set values for parameters (e.g., number of trees, max depth, minimum leaf size).  
+2.  Default Parameters: The system applies recommended default values.  
 
 ### Training and Validating the Model {#sec-training-and-validating-the-model}
 
-#### Front-end
+**Front-end**
 
-The user is notified of model performance, including accuracy and other relevant metrics.
+The user is notified of model performance, including accuracy and other relevant metrics.  
 
-#### Back-end
+**Back-end**
 
-1.  The system trains the model using the selected hyperparameters and the training data.
-2.  Performance is evaluated on validation data.
+1.  The system trains the model using the selected hyperparameters and the training data.  
+2.  Performance is evaluated on validation data.  
 
 ### Selecting Best Hyperparameter Combination {#sec-selecting-best-hyperparameter-combination}
 
-#### Front-end
+**Front-end**
 
-The user can further optimize the model to improve classification performance.
+The user can further optimize the model to improve classification performance.  
 
-#### Back-end
+**Back-end**
 
 The system provides an options for model optimization.
-
-#### 

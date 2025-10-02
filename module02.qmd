@@ -55,14 +55,14 @@ E -->|Invalid| A
 
 ### Classification Schema Selection
 
-#### Front-end
+**Front-end**
 
 The user selects either a hierarchical or non-hierarchical classification schema.
 
-#### Back-end
+**Back-end**
 
-1.  If the user choose hierarchical schema, the system proceeds to @sec-hierarchical-classification-schema
-2.  If the user choose non-hierarchical schema, the system proceeds to @sec-non-hierarchical-classification-schema
+1.  If the user choose hierarchical schema, the system proceeds to @sec-hierarchical-classification-schema  
+2.  If the user choose non-hierarchical schema, the system proceeds to @sec-non-hierarchical-classification-schema  
 
 ### Hierarchical Classification Schema {#sec-hierarchical-classification-schema}
 
@@ -76,31 +76,31 @@ The system receives user’s input and saves it as a variable.
 
 ### Non-Hierarchical Classification Schema {#sec-non-hierarchical-classification-schema}
 
-#### Front-end
+**Front-end**
 
 The user fills in four columns: ID, Level, Class Name, and Colour.
 
-#### Back-end
+**Back-end**
 
 The system receives user’s input and saves it as a variable.
 
 ### AI-Generated LULC Classification Recommendations
 
-#### Front-end
+**Front-end**
 
 The user can choose to create an AI prompt to generate potential LULC classes.
 
-#### Back-end
+**Back-end**
 
 ## Validation of Input Data
 
 ### Validation of Input Data
 
-#### Front-end
+**Front-end**
 
 The user will be alerted with clear instructions if any errors are detected.
 
-#### Back-end
+**Back-end**
 
 The system validates the user’s input for completeness and correctness. If errors or missing inputs are detected, the system generates specific notifications for the user’s guidance. If the data is valid, the process proceeds to @sec-saving-the-lulc-classification-table.
 
@@ -108,10 +108,10 @@ The system validates the user’s input for completeness and correctness. If err
 
 ### Saving the LULC Classification Table
 
-#### Front-end
+**Front-end**
 
 The user receives a confirmation and can proceed to the next step.
 
-#### Back-end
+**Back-end**
 
 Once validated, the system saves the classification table as a variable to use in subsequent modules.
