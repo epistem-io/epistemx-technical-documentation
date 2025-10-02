@@ -86,9 +86,9 @@ The user can choose two options for LULC classification models:
 
 **Back-end**
 
-1.  The system checks whether the model’s classification scheme matches the user’s scheme.  
-2.  If incompatible, the system recommends the user to click the Train a New Model.  
-3.  The user can manually verify compatibility if desired.  
+1.  The system checks whether the model’s classification scheme matches the user’s scheme.
+2.  If incompatible, the system recommends the user to click the option Train a New Model.
+3.  The user can manually verify compatibility if desired.
 
 ## Train a New Model {#sec-create-new-model}
 
