@@ -78,7 +78,9 @@ The user can upload their `.SHP` file.
 
 **Back-end**
 
-The system supports shapefile in `.ZIP` format.
+1.  The system supports shapefile in `.ZIP` format.
+2.  An Upload button is provided. The system extracts the content to a temporary directory and recursively searches all subfolders for files.
+3.  The system displays a small preview map centered on the AOI.
 
 ### AOI from On-Screen Digitizing {#sec-aoi-from-on-screen-digitizing}
 
@@ -104,7 +106,7 @@ The user is prompted to fill in these parameters:
 
 **Back-end**
 
-1.  The system uses multi-temporal Landsat 8 and Landsat 9 surface reflectance imagery as a default data source.\
+1.  The system uses multi-temporal Landsat imagery as a default data source.\
 2.  The system retrieves images that match user’s selected criteria, including spatial resolution, year, and cloud cover. For single-year imagery, the system selects Landsat images from December 31st of year T or the lowest cloud cover scene available that year. For multi-year imagery, the system retrieves the lowest cloud cover image for each year in the specified range.\
 3.  The system crops and mosaics the selected satellite imagery to match the user’s AOI.\
 4.  The system performs cloud masking in three steps: cloud detection, mask refinement, and image compositing. The QA_PIXEL band encodes pixel conditions using specific bit flags. `Bitwise AND` operations are applied to isolate these conditions, focusing on clouds (bit 4, value 16) and cloud shadows (bit 3, value 8). Pixels matching these flags are excluded to produce a cleaner, near cloud-free image.\
@@ -134,4 +136,5 @@ The user is prompted to adjust parameters, such as increasing the cloud cover li
 **Back-end**
 
 1.  The system produces near-cloud-free Landsat imagery for the defined AOI, saves it as a variable, and visualizes the processed datasets.\
-2.  A summary report of metadata is generated, including acquisition details, cloud cover statistics, and a summary of processing steps applied.
+
+    A summary report of metadata is generated, including acquisition details, cloud cover statistics, and a summary of processing steps applied.

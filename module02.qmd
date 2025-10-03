@@ -61,8 +61,8 @@ The user selects either a hierarchical or non-hierarchical classification schema
 
 **Back-end**
 
-1.  If the user choose hierarchical schema, the system proceeds to @sec-hierarchical-classification-schema  
-2.  If the user choose non-hierarchical schema, the system proceeds to @sec-non-hierarchical-classification-schema  
+1.  If the user choose hierarchical schema, the system proceeds to @sec-hierarchical-classification-schema\
+2.  If the user choose non-hierarchical schema, the system proceeds to @sec-non-hierarchical-classification-schema
 
 ### Hierarchical Classification Schema {#sec-hierarchical-classification-schema}
 
