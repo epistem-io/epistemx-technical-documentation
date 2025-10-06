@@ -68,21 +68,21 @@ The user selects either a hierarchical or non-hierarchical classification schema
 
 **Front-end**
 
-The user fills in four columns: ID, Level, Class Name, and Colour, with a hierarchical User Interface (UI) form to simplify creating multi-level class structures.
+The user fills in four columns: ID, Level, Class Name, and Color Code, with a hierarchical User Interface (UI) form to simplify creating multi-level class structures.
 
 **Back-end**
 
-The system receives user’s input and saves it as a variable.
+The system provides an "Add Class", "Edit Class", "Delete Class" options that accepts the user's input and stores it as variables.
 
 ### Non-Hierarchical Classification Schema {#sec-non-hierarchical-classification-schema}
 
 **Front-end**
 
-The user fills in four columns: ID, Level, Class Name, and Colour.
+The user fills in three columns: ID, Class Name, and Color Code.
 
 **Back-end**
 
-The system receives user’s input and saves it as a variable.
+The system provides an "Add Class", "Edit Class", "Delete Class" options that accepts the user's input and stores it as variables.
 
 ### AI-Generated LULC Classification Recommendations
 
@@ -104,14 +104,18 @@ The user will be alerted with clear instructions if any errors are detected.
 
 The system validates the user’s input for completeness and correctness. If errors or missing inputs are detected, the system generates specific notifications for the user’s guidance. If the data is valid, the process proceeds to @sec-saving-the-lulc-classification-table.
 
-## Saving the LULC Classification Table {#sec-saving-the-lulc-classification-table}
+## Visualizing, Downloading, and Saving the LULC Classification Table {#sec-saving-the-lulc-classification-table}
 
-### Saving the LULC Classification Table
+### Visualizing, Downloading, and Saving the LULC Classification Table
 
 **Front-end**
 
-The user receives a confirmation and can proceed to the next step.
+1.  The table is displayed in a tabular format.
+2.  The user can download the table in `.CSV` file.
+3.  Next, the user receives a confirmation and can proceed to the next step.
 
 **Back-end**
 
-Once validated, the system saves the classification table as a variable to use in subsequent modules.
+1.  The system display the table in Pandas DataFrame and serves it to the front-end, along with a Download option.
+2.  The system validates the table for completeness (ensuring it contains at least one class) and correctness.
+3.  Once validated, the classification table is saved as a variable for use in subsequent modules.
