@@ -170,6 +170,7 @@ The system displays the Epistem-X public sample data repository in a panel. Each
 **Back-end**
 
 1.  The system calculates the statistical information of the training dataset, including:
+
     -   Scattergrams: For exploring relationships between spectral bands or indices.
 
     -   Histograms: For examining per-class spectral distributions.
@@ -177,22 +178,29 @@ The system displays the Epistem-X public sample data repository in a panel. Each
     -   Tabular Data View: For reviewing attribute tables
 
     -   Separability Analysis: For assessing the spectral differentiation between classes.
-2.  The system extracts spectral value within the AOI, computes pixel-level statistics, and then performs separability analysis.
-3.   For each pair of classes, the system calculates separability metrics, identifies the most difficult class pairs to distinguish, and categorizes results into three levels:
+
+    -   The system extracts spectral value within the AOI, computes pixel-level statistics, and then performs separability analysis.
+
+2.  For each pair of classes, the system calculates separability metrics, identifies the most difficult class pairs to distinguish, and categorizes results into three levels:
+
     -   Good: Classes are well separated.
 
-    -   Weak:Classes overlap partially.
+    -   Weak: Classes overlap partially.
 
     -   Poor: Classes require improvement.
-4.  The system summarizes the results by calculating the percentage of Good pairs, and displays a color-coded separability message:
+
+3.  The system summarizes the results by calculating the percentage of Good pairs, and displays a color-coded separability message:
+
     -   🟩 Green (≥70%) – Excellent separability.
 
     -   🟨 Yellow (50–69%) – Moderate separability.
 
     -   🟥 Red (\<50%) – Poor separability.
-5.   Finally, the system performs validation and quality checks on the training dataset by:
+
+4.  Finally, the system performs validation and quality checks on the training dataset by:
+
     -   Ensuring compliance with the expected format and schema.
 
-    -   Counting the number of samples in each LULC (Land Use/Land Cover) class to detect imbalance.
+    -   Counting the number of samples in each LULC class to detect imbalance.
 
     -   Verifying that all training points fall within the defined AOI.
