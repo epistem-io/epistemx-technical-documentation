@@ -169,6 +169,6 @@ The user is prompted to adjust parameters, such as increasing the cloud cover li
 
 **Back-end**
 
-1.  The system produces near-cloud-free Landsat imagery for the defined AOI, saves it as a variable, and visualizes the processed datasets.\
+1.  The system produces near-cloud-free Landsat imagery for the defined AOI, saves it as a variable, and visualizes the processed datasets.
 
-    A summary report of metadata is generated, including acquisition details, cloud cover statistics, and a summary of processing steps applied.
+2.  A summary report of metadata is generated, including acquisition details, cloud cover statistics, and a summary of processing steps applied.
