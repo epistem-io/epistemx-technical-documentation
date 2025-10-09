@@ -68,21 +68,23 @@ The user selects an administration boundary.
 
 **Back-end**
 
-The system queries the FAO Global Administrative Unit Layers (GAUL) 2015 datasets, which provide standardized information on country and sub-national boundaries, and saves the AOI as a variable.
+The system queries the FAO Global Administrative Unit Layers (GAUL) 2015 datasets, which provide standardized information on country and sub-national boundaries, and saves the AOI as a variable
 
 ### AOI from Shapefile {#sec-aoi-from-shapefile}
 
 **Front-end**
 
 1.  The user can upload their `.SHP` file. in `.ZIP` format that includes all necessary files (`.SHP`, `.SHX`, `.DBF`, `.PRJ`).
+
 2.  The user will get a feedback such as "AOI conversion completed!", "Failed to convert AOI to Google Earth Engine Format", "Geometry Validation Failed", "Error Reading Shapefile".
 
 **Back-end**
 
 1.  The system currently supports only shapefile in `.ZIP` format.
 2.  An Upload button is provided, allowing user to uploaded the file. It is then extracted to a temporary directory.
-3.  Next, the system validates and repairs the shapefile geometries (if any errors are found) in a GeoDataFrame (`.GDF`) and converts the cleaned geometries into an Earth Engine object.
-4.  The system displays a small preview map centered on the AOI.
+3.  Next, the system validates and repairs the shapefile geometries (if any errors are found) in a GeoDataFrame (`.GDF`), converts the cleaned geometries into an Earth Engine objects, and converts the coordinate system into WGS 1984.
+4.  If an error occurs still, the system displays an error message and suggests performing a shapefile simplification process using GIS software.
+5.  The system displays a small preview map centered on the AOI.
 
 ### AOI from On-Screen Digitizing {#sec-aoi-from-on-screen-digitizing}
 
@@ -92,7 +94,7 @@ The user is presented with an interactive on-screen digitization process.
 
 **Back-end**
 
-??
+The system saves the selected AOI as a variable and display it in a small preview map.
 
 ## Selecting and Preparing Satellite Imagery
 
@@ -147,8 +149,10 @@ The user is prompted to adjust parameters, such as increasing the cloud cover li
 
 **Front-end**
 
-1.  The user can visualize the near cloud-free imagery within the web portal and download it as a GeoTIFF (`.TIF` ).
-2.  A summary report containing the metadata is provided as a `.TXT` file that includes:
+1.  The user can visualize the near cloud-free imagery within the web portal and download it as a GeoTIFF (`.TIF` )
+2.  Prior to initiating the image download, the user inputs technical parameters of the image that includes: file name, coordinate system, and spatial resolution.
+3.  If the user chooses not to download it, they may proceed to [Module 2](@sec-module-2).
+4.  A summary report containing the metadata is provided as a `.TXT` file that includes:
     -   Total images found
 
     -   Data range of images
