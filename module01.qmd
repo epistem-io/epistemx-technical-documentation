@@ -70,6 +70,12 @@ The user selects an administration boundary.
 
 The system queries the FAO Global Administrative Unit Layers (GAUL) 2015 datasets, which provide standardized information on country and sub-national boundaries, and saves the AOI as a variable
 
+::: callout-tip
+## Related function
+
+`from epistemx.helpers import get_aoi_from_gaul`
+:::
+
 ### AOI from Shapefile {#sec-aoi-from-shapefile}
 
 **Front-end**
@@ -94,7 +100,11 @@ The user is presented with an interactive on-screen digitization process.
 
 **Back-end**
 
+<<<<<<< HEAD
 The system saves the selected AOI as a variable and display it in a small preview map.
+=======
+\[not developed yet\]
+>>>>>>> 56bc8f8fd31fc627cebab7c0310b01982596e104
 
 ## Selecting and Preparing Satellite Imagery
 
@@ -111,26 +121,27 @@ The user is prompted to fill in these parameters:
 **Back-end**
 
 1.  The system currently supports Landsat 1-4 at sensor radiance and Landsat 5-9 collection 2 surface reflectance Analysis Ready Data (ARD), excluding the thermal bands. Landsat mission availability is as follows:
+    
     -   Landsat 1 Multispectral Scanner/MSS (1972 - 1978)
-
     -   Landsat 2 Multispectral Scanner/MSS (1978 - 1982)
-
     -   Landsat 3 Multispectral Scanner/MSS (1978 - 1983)
-
     -   Landsat 4 Thematic Mapper/TM (1982 - 1993)
-
     -   Landsat 5 Thematic Mapper/TM (1984 - 2012)
-
     -   Landsat 7 Enhanced Thematic Mapper Plus/ETM+ (1999 - 2021)
-
     -   Landsat 8 Operational Land Imager/OLI (2013 - present)
-
     -   Landsat 9 Operational Land Imager-2/OLI-2 (2021 - present)
+    
 2.  The system retrieves images that match user’s selected criteria, including spatial resolution, year, and cloud cover. For single-year imagery, the system selects Landsat images from December 31st of year T or the lowest cloud cover scene available that year. For multi-year imagery, the system retrieves the lowest cloud cover image for each year in the specified range.
 3.  The system crops and mosaics the selected satellite imagery to match the user’s AOI.
 4.  The system performs cloud masking in three steps: cloud detection, mask refinement, and image compositing. The QA_PIXEL band encodes pixel conditions using specific bit flags. `Bitwise AND` operations are applied to isolate these conditions, focusing on clouds (bit 4, value 16) and cloud shadows (bit 3, value 8). Pixels matching these flags are excluded to produce a cleaner, near cloud-free image.
 5.  The system evaluates whether the retrieved imagery meets the required spatial resolution, input year, and cloud cover thresholds.
 6.  If there is no satellite imagery available for the user's input parameters, proceed to @sec-satellite-imagery-cannot-be-found
+
+::: callout-tip
+## Related function
+
+`from epistemx.module_1 import Reflectance_Data`
+:::
 
 ### Satellite Imagery Not Found Based on User’s Parameters {#sec-satellite-imagery-cannot-be-found}
 
@@ -143,7 +154,7 @@ The user is prompted to adjust parameters, such as increasing the cloud cover li
 1.  Before prompting the user to insert new parameters, the system searches imagery from year T to T-2 to replace cloudy areas via image compositing.
 2.  If requirements remain unmet, @sec-input-spatial-image-parameters will re-run based on new user parameters.
 
-## Satellite Imagery Post-Processing
+## Satellite Imagery Post-Processing {#sec-satellite-imagery-post-processing}
 
 ### Visualization and Saving Data
 
@@ -176,3 +187,9 @@ The user is prompted to adjust parameters, such as increasing the cloud cover li
 1.  The system produces near-cloud-free Landsat imagery for the defined AOI, saves it as a variable, and visualizes the processed datasets.
 
 2.  A summary report of metadata is generated, including acquisition details, cloud cover statistics, and a summary of processing steps applied.
+
+::: callout-tip
+## Related function
+
+`from epistemx.module_1 import Reflectance_Stats`
+:::
