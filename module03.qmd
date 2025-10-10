@@ -73,7 +73,7 @@ If the user has not completed [Module 1](@sec-module-1) and [Module 2](@sec-modu
 
 The system checks whether the [default system's classification](@sec-user-selecting-the-default-system-classification) is selected.
 
-1.  If yes, the system proceeds directly to section x to the default system training dataset.
+1.  If yes, the system proceeds directly to section @sec-preview-of-verified-training-data.
 2.  If no, the system verifies the availability of output products from previous modules. If the required products are not available, the system notifies the user to complete the previous modules before proceeding.
 
 ## Uploading the Training Data {#sec-uploading-the-training-data}
@@ -125,7 +125,7 @@ The user is given the following options to proceed:
 2.  If the user uses RESTORE+ default data, the system will proceed to @sec-using-default-restore-dataset.
 3.  If the user uses Epistem-X public repository, the system will proceed to @sec-using-epistem-x-repository.
 
-### On-Screen Sampling
+### On-Screen Sampling {#sec-on-screen-sampling}
 
 **Front-end**
 
@@ -169,6 +169,70 @@ A “Use Data” button is provided to define the selected public datasets as th
 **Back-end**
 
 The system displays the Epistem-X public sample data repository in a panel. Each dataset is presented in a table with at least three columns: data location (shown as a map inset), land cover class name, and the number of identified samples.
+
+## Verifying the Uploaded Training Data {#sec-verifying-the-uploaded-training-data}
+
+**Front-end**
+
+1.  The user receives a notification indicating the status of their uploaded sampling data:
+    -   Sufficient - the user can proceed to @sec-preview-of-verified-training-data
+
+    -   Insufficient - the number of sample points for one or more classes is inadequate. The user can either:
+
+        -   Add more training data and proceed to @sec-on-screen-sampling, or
+
+        -   Skip adding data and proceed directly to @sec-preview-of-verified-training-data in which case a notification warns that the classification result may have low accuracy.
+
+**Back-end**
+
+1.  The system analyze the sample data to determine:
+
+    -   The list and count of unique classes.
+
+    -   The number of sample points per class.
+
+2.  Verification for Module 1 and 2 includes:
+
+    -   Identifying samples located outside the AOI.
+
+    -   Comparing the number of unique classes between datasets.
+
+    -   Detecting classes missing in either datasets.
+
+    -   Flagging classes with insufficient sample points (\<20 points).
+
+    -   Identifying duplicate samples in the same pixel
+
+3.  The system filters out sample data that are either located outside the AOI and do not match the classes defined in Module 2.
+
+4.  Informational notifications are provided for: LULC classes located outside the AOI, not matching those defined in Module 2, and with missing or insufficient sample points.
+
+5.  Next, the system evaluates the adequacy of sample data quantity for each class.
+
+## Preview of Verified Training Data {#sec-preview-of-verified-training-data}
+
+**Front-end**
+
+1.  The user reviews the TrainData Recap displayed in a table.
+2.  The user selects one of the following options for splitting the sample:
+    -   Use all sample points, or
+
+    -   Split sample points into training and validation, specifying the desired percentage.
+
+**Back-end**
+
+1.  The system presents a recap table with columns for ID, class, number of points, and percentage.
+2.  The system provides options for splitting the sample point data for training and validation:
+    -   Use all sample points for training - the system consolidates all data into a single DataFrame or variable, stored as Train Data Final for use in [Module 4](@sec-module4) and [6](@sec-module-6).
+
+    -   Split the sample points between training and validation - the system partitions the data according to the user-specified percentage. The Train Data Final (for training) is stored in [Module 4](@sec-module-4) and [6](@sec-module-6), while Valid Data Final (for validation) is stored in Module [6](@sec-module-6).
+
+## Data Splitting
+
+1.  The user selects one of the following options for splitting the sample:
+    -   Use all sample points, or
+
+    -   Split sample points into training and validation, specifying the desired percentage.
 
 ## Training Data Validation and Statistical Analysis
 

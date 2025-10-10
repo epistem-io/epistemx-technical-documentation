@@ -1,5 +1,42 @@
-# Module 7 {#module-7 .unnumbered}
+# Module 7: Thematic Accuracy Assessment {#sec-module-0}
 
-This is the first module
+# Module Overview {.unnumbered}
 
-## What happens in this module?
+This module enables users to perform a thematic accuracy assessment on LULC map generated in [Module 6](@sec-module-6), comparing it against independent validation data to quantitatively evaluate its quality and reliability. It supports verification of prerequisites from Modules 1 to Module 6, allows confirmation or adjustment of data partitions and model configurations, and computes key metrics such as confusion matrices (
+
+overall accuracy (OA), Kappa coefficient (κ), producer's accuracy (PA), and user's accuracy (UA). The module provides phased outputs including numerical/visual results, improvement recommendations, and a spatial confidence level map, facilitating iterative refinements (e.g., via links back to Modules 4-6) for enhanced map accuracy in applications like environmental monitoring or policy planning.
+
+This module focuses on the evaluation and validation of LULC classification results derived from remote sensing data. The objective is to provide users with tools and guidance to assess the reliability of their classified maps and determine their suitability for further analysis. Upon completion, the user will have a validated LULC map and a clear understanding of its accuracy.
+
+# Input {.unnumbered}
+
+**User's Input**
+
+-   A list of inputs for the module's system from the user
+
+**Automatic System Input**
+
+-   
+
+**Input from Other Modules**
+
+-   LULC classification result map from [Module 6](@sec-module-6).
+-   Geo-referenced validation data points
+
+# Output {.unnumbered}
+
+-   Confusion matrix
+-   Per-class accuracy table
+-   Confidence/uncertainty value map
+
+# Process {.unnumbered}
+
+`{mermaid} flowchart TD  B([<a href="#sec-sub-step-example">Linked to the section</a>])  A --> |Section Link| B}`
+
+## Step X
+
+### Sub-Step {#sec-sub-step-example}
+
+#### Back-end
+
+#### Front-end
