@@ -63,7 +63,7 @@ G -->|User is not satisfied| D
 
 ```
 
-## Checking Prerequisites from Previous Module
+## Checking Prerequisites from Previous Modules
 
 **Front-end**
 
