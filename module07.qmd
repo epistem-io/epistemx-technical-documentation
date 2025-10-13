@@ -8,35 +8,132 @@ overall accuracy (OA), Kappa coefficient (κ), producer's accuracy (PA), and use
 
 This module focuses on the evaluation and validation of LULC classification results derived from remote sensing data. The objective is to provide users with tools and guidance to assess the reliability of their classified maps and determine their suitability for further analysis. Upon completion, the user will have a validated LULC map and a clear understanding of its accuracy.
 
-# Input {.unnumbered}
+## Input {.unnumbered}
 
-**User's Input**
+**User’s Input**
 
--   A list of inputs for the module's system from the user
+1.  Upload of test data if not available from [Module 3](@sec-module-3) (shapefile or CSV as per [Module 3](@sec-module-3)).\
+2.  Button press to initiate accuracy test.
 
 **Automatic System Input**
 
--   
+1.  None.
 
 **Input from Other Modules**
 
--   LULC classification result map from [Module 6](@sec-module-6).
--   Geo-referenced validation data points
+1.  Final land cover map ([Module 6](@sec-module-6)).\
+2.  Partitioned test samples if available ([Module 3](@sec-module-3)).\
+3.  Processed satellite imagery ([Module 1](@sec-module-1), if needed for context).
 
-# Output {.unnumbered}
+## Output {.unnumbered}
 
--   Confusion matrix
--   Per-class accuracy table
--   Confidence/uncertainty value map
+-   Confusion matrix (table).\
+-   Accuracy metrics: Overall Accuracy (OA), Kappa Coefficient, Producer's Accuracy (PA), User's Accuracy (UA).
 
-# Process {.unnumbered}
+## Process
 
-`{mermaid} flowchart TD  B([<a href="#sec-sub-step-example">Linked to the section</a>])  A --> |Section Link| B}`
+```{mermaid}
 
-## Step X
+flowchart TD
 
-### Sub-Step {#sec-sub-step-example}
+A([<a href="#sec-verify-land-cover-map-availability">Verify Land Cover Map Availability</a>])
 
-#### Back-end
+B([<a href="#sec-verify-test-data-availability">Verify Test Data Availability</a>])
 
-#### Front-end
+C([<a href="#sec-upload-and-verify-test-data">Upload & Verify Test Data (If Not Available)</a>])
+
+D([<a href="#sec-perform-accuracy-test">Perform Accuracy Test</a>])
+
+E([<a href="#sec-display-and-review-accuracy-results">Display & Review Accuracy Results</a>])
+
+A -->|Available| B
+A -->|Not Available| F([Notification to Run Module 6])
+
+B -->|Available| D
+B -->|Not Available| C
+
+C -->|Verification OK| D
+C -->|Verification Failed| G([Loop Back for Re-Upload])
+
+D --> E
+
+E -->|Satisfied| H([Finished])
+E -->|Not Satisfied| I([Notification to Check Module 3 and/or 6])
+I --> A
+```
+
+## Checking Prerequisites from Previous Modules
+
+**Front-end**
+
+The user is notified if the map is missing and prompted to complete [Module 6](@sec-module-6).
+
+**Back-end**
+
+1.  Check for the final land cover map from [Module 6](@sec-module-6).\
+2.  If not available, provide notification to run [Module 6](@sec-module-6).\
+3.  Land cover map availability test.
+
+## Thematic Accuracy Assessment
+
+### Verify Land Cover Map Availability {#sec-verify-land-cover-map-availability}
+
+**Front-end**
+
+User is notified if map is missing and prompted to complete [Module 6](@sec-module-6).
+
+**Back-end**
+
+1.  Check for final land cover map from [Module 6](@sec-module-6).\
+2.  If missing, notify user to run Module 6.
+
+### Verify Test Data Availability {#sec-verify-test-data-availability}
+
+**Front-end**
+
+1.  If test data available, allow user to proceed with accuracy test.\
+2.  Else, prompt upload.
+
+**Back-end**
+
+1.  Check for test data from [Module 3](@sec-module-3).\
+2.  If available, proceed to accuracy test.\
+3.  If not, prompt user for upload.
+
+### Upload and Verify Test Data {#sec-upload-and-verify-test-data}
+
+**Front-end**
+
+1.  User uploads test data and receives verification feedback.
+
+**Back-end**
+
+1.  Provide upload form.\
+2.  Verify uploaded data per criteria (format, content).\
+3.  If verification fails, display errors and request re-upload.
+
+### Perform Accuracy Test {#sec-perform-accuracy-test}
+
+**Front-end**
+
+User initiates accuracy test by pressing a button.
+
+**Back-end**
+
+1.  Compare classification map with reference data to generate confusion matrix.\
+2.  Compute accuracy metrics:
+    -   Overall Accuracy (OA)\
+    -   Kappa Coefficient\
+    -   Producer's Accuracy (PA)\
+    -   User's Accuracy (UA)
+
+### Display and Review Accuracy Results {#sec-display-and-review-accuracy-results}
+
+**Front-end**
+
+User reviews test results. If satisfied, process completes; if not, prompted to revisit Modules 3 and/or 6.
+
+**Back-end**
+
+1.  Display confusion matrix and accuracy metrics.\
+2.  If unsatisfactory, notify user to check training data or classification parameters.

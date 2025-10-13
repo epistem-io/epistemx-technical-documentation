@@ -4,32 +4,257 @@
 
 This module provides functionality for users to generate the final LULC map as the primary output product, derived from the validated and optimized classification model developed in Modules 1-5. Before the processing begins, it ensures that all required inputs - such as satellite imagery, classification schemes, and training samples - are properly prepared and validated. Users can specify data splits, select classification modes, perform hyperparameter tuning optimization, and apply the trained model to the entire AOI to produce a high-quality, georeferenced LULC map. The module supports phased workflows (Phase 1: simple RF-based; Phase 2: flexible algorithm with rules; Phase 3: object-based) for adaptability, aligning with hierarchical or non-hierarchical schemes from [Module 2](@sec-module-2), and incorporates feedback from optional covariate enhancements in [Module 5](@sec-module-5). Upon completion, users receive a displayable, analyzable, and downloadable map with metadata, enabling applications such as deforestation monitoring or conservation planning.
 
-# Input {.unnumbered}
+## Input {.unnumbered}
 
-**User's Input**
+**User’s Input**
 
-1.  A list of inputs for the module's system from the user
+1.  Agreement to proceed after input review (yes/no).
+2.  RF hyperparameters: number of trees (n_tree), variables per split (var_split), minimum leaf population (min_leaf_pop).
 
-**Input from External Sources**
+**Automatic System Input**
 
-1.  A list of inputs for the module's system not from the user
+1.  None.
 
 **Input from Other Modules**
 
-1.  Trained LULC classification model
+1.  Near-cloud-free satellite imagery within the AOI ([Module 1](@sec-module-1)).
+2.  LULC classification scheme table ([Module 2](@sec-module-2)).
+3.  Georeferenced training dataset ([Module 3](@sec-module-3)).
+4.  Validation dataset if available ([Module 3](@sec-module-3)).
+5.  Optimized covariates if used ([Module 5](@sec-module-5)).
+6.  Validated sample data and separability results ([Module 4](@sec-module-4)).
 
-# Output {.unnumbered}
+## Output {.unnumbered}
 
--   A list of output generated from the module
+-   Trained RF classification model.
+-   Classified LULC raster map.
+-   Model accuracy report if validation data available (including overall accuracy, precision, recall, F1-score, Kappa, model error matrix).
 
-# Process {.unnumbered}
+## Process
 
-`{mermaid} flowchart TD  B([<a href="#sec-sub-step-example">Linked to the section</a>])  A --> |Section Link| B}`
+# Process
 
-## Step X
+```{mermaid}
+flowchart TD
+%% Variables
+TrainDataFinal([TrainDataFinal (Module 3)])
+CitraLandsat([citra_landsat_user_1 (ee.image - Module 1)])
+ClassScheme([Classification scheme table (Module 2)])
+ValidDataFinal([ValidDataFinal (Module 3)])
 
-### Sub-Step {#sec-sub-step-example}
+%% Start
+Start([Module 6])
+
+%% Checks
+ParamTest([parameter and input suitability test])
+TestDataAvail([Test data availability from Module 3])
+
+%% Summary
+SummaryReport([Summary report of variables for the classification process (dataframe)])
+
+%% Specifications
+DefineSpecs([User Journey 6.2 Define Classification specifications])
+NTrees([Number of decision trees (n_tree)])
+VarSplit([Number of variables selected during decision making (var_split)])
+MinLeaf([The number of data populations for decision making (min_leaf_pop)])
+
+%% Extraction
+FeatureExtract([perform feature extraction (take image pixel values based on samples)])
+
+%% Training
+RFParams([main parameters of Random Forest])
+Bootstrap([Bootstrap sampling])
+Decision1([Decision tree-1])
+Decision2([Decision tree-2])
+DecisionN([Decision tree-n])
+Majority([Majority Voting])
+TrainedModel([TrainedModel (classifier asset)])
+
+%% Accuracy
+ModelAcc([System Response 6.3 Model accuracy test])
+OverallAcc([Overall Accuracy])
+Precision([Precision])
+Recall([Recall])
+F1([F1-score])
+Kappa([Kappa])
+ErrorMatrix([Model error matrix])
+ModelReport([model accuracy report (overall accuracy, precision, recall)])
+
+%% Classification
+Classification([Classification (applying the model to the entire image)])
+ClassResult([Classification result data (ee.image/ Peta_LULC)])
+ClassSummary([Summary of the classification process])
+
+%% Review
+ReviewResults([User Journey 6.3 Review of classification results])
+ReviewModel([Review of the results of the random forest model learning process and the classification result map])
+
+%% End
+Proceed7([User proceeds to module 7])
+Finished([Finished])
+
+%% Connections
+TrainDataFinal --> Start
+CitraLandsat --> Start
+ClassScheme --> Start
+ValidDataFinal --> Start
+
+Start --> ParamTest
+ParamTest --> TestDataAvail
+TestDataAvail -->|NO| SuggestMod3([The system suggests the user to return to Module 3 and correct the sample])
+SuggestMod3 --> ParamTest
+TestDataAvail -->|OK| SummaryReport
+SummaryReport --> DefineSpecs
+
+DefineSpecs --> NTrees
+DefineSpecs --> VarSplit
+DefineSpecs --> MinLeaf
+
+NTrees --> RFParams
+VarSplit --> RFParams
+MinLeaf --> RFParams
+
+RFParams --> FeatureExtract
+
+FeatureExtract --> Bootstrap
+Bootstrap --> Decision1
+Bootstrap --> Decision2
+Bootstrap --> DecisionN
+Decision1 --> Majority
+Decision2 --> Majority
+DecisionN --> Majority
+Majority --> TrainedModel
+
+TrainedModel --> ModelAcc
+ModelAcc --> OverallAcc
+ModelAcc --> Precision
+ModelAcc --> Recall
+ModelAcc --> F1
+ModelAcc --> Kappa
+ModelAcc --> ErrorMatrix
+OverallAcc --> ModelReport
+Precision --> ModelReport
+Recall --> ModelReport
+F1 --> ModelReport
+Kappa --> ModelReport
+ErrorMatrix --> ModelReport
+
+TrainedModel --> Classification
+Classification --> ClassResult
+Classification --> ClassSummary
+
+ModelReport --> ReviewResults
+ClassResult --> ReviewResults
+ReviewResults --> ReviewModel
+
+ReviewModel -->|Satisfied| Proceed7
+ReviewModel -->|Not Satisfied| SuggestCheck([Suggest users to double-check the parameters and training data selected for classification])
+SuggestCheck --> DefineSpecs
+
+Proceed7 --> Finished
+```
+
+## Checking Prerequisites from Previous Modules
+
+### Front-end
+
+The user is notified if inputs are insufficient or test data is missing, and prompted to return to previous modules (e.g., [Module 3](@sec-module-3) for test data) as needed.
+
+### Back-end
+
+1.  The system performs a parameter and input suitability test to verify availability and compatibility of inputs from Modules 1-5 (such as imagery, scheme, training data, optional validation data).
+2.  Test data availability from [Module 3](@sec-module-3).
+3.  If any inputs are missing or incompatible, the system directs the user to return to the incomplete module.
+4.  If no test data, suggest the user return to [Module 3](@sec-module-3) and correct the sample.
+5.  The system directs the user to return to the module that has not been completed.
+
+## Model Training and Classification
+
+### Review Inputs {#sec-review-inputs}
+
+#### Front-end
+
+1.  The user reviews the summary text report to decide if they agree to proceed.
+    -   If yes, continue to define specifications.
+    -   If no, return to relevant previous modules.
+2.  Users return to previous modules as needed.
 
 #### Back-end
 
+1.  The system generates and displays a summary report of variables for the classification process, including imagery details, classification scheme, and training data summary.
+2.  Displays a summary text and dataframe.
+3.  Lists variables used in classification.
+
+### Define Classification Specifications {#sec-define-classification-specifications}
+
 #### Front-end
+
+1.  User enters RF hyperparameter values:
+    -   Number of trees (n_tree)
+    -   Variables per split (var_split)
+    -   Minimum leaf population (min_leaf_pop)
+
+#### Back-end
+
+1.  Stores user-entered hyperparameters.
+2.  Applies them as main parameters for Random Forest training.
+
+### Feature Extraction {#sec-feature-extraction}
+
+#### Front-end
+
+Runs automatically after specifications are defined.
+
+#### Back-end
+
+Performs feature extraction by sampling pixel values from imagery based on training (and optional validation) samples.
+
+### Train Random Forest Model {#sec-train-random-forest-model}
+
+#### Front-end
+
+Shows user progress during training.
+
+#### Back-end
+
+1.  Trains RF model using prepared data:
+    -   Bootstrap sampling for subsets per tree.
+    -   Builds multiple decision trees.
+    -   Uses majority voting for predictions.
+2.  Produces trained model asset.
+
+### Model Accuracy Test {#sec-model-accuracy-test}
+
+#### Front-end
+
+Displays accuracy report if validation data is available.
+
+#### Back-end
+
+1.  Applies model to validation data if available.
+2.  Generates accuracy metrics: overall accuracy, precision, recall, F1-score, Kappa, error matrix.
+3.  Skips if no validation data.
+
+### Classification (Apply Model to Entire Image) {#sec-classification-apply-model-to-entire-image}
+
+#### Front-end
+
+Runs after training with progress shown.
+
+#### Back-end
+
+1.  Applies trained model to entire imagery.
+2.  Generates classification summary and result data.
+
+### Review Classification Results {#sec-review-classification-results}
+
+#### Front-end
+
+1.  User reviews model results and map.
+    -   If satisfied, proceed to [Module 7](@sec-module-7).
+    -   If not, adjust parameters or return to prior modules.
+
+#### Back-end
+
+1.  Displays model learning and accuracy results.
+2.  Suggests corrections or parameter checks if unsatisfied.
