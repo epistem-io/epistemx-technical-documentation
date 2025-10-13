@@ -35,7 +35,6 @@ This module allows users to review all artifacts generated from previous modules
 ## Process
 
 ```{mermaid}
-
 flowchart TD
 
 %% CHECKING PREREQUISITES
@@ -144,4 +143,3 @@ Displays generated report with maps and charts.
 **Back-end**
 
 (Post-Phase 1) Handle publishing LULC maps with user notes to platform.
-
