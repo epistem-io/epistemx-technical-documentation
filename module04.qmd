@@ -18,8 +18,7 @@ This module enables users to generate accurate LULC maps by selecting or trainin
 **Input from Other Modules**
 
 1.  Near-cloud-free satellite imagery within the AOI (@sec-satellite-imagery-post-processing).
-2.  LULC classification table( @sec-saving-the-lulc-classification-table).
-3.  Georeferenced training dataset (@sec-training-data-validation-and-statistical-analysis).
+2.  `TrainDataFinal` (@sec-data-splitting).
 
 # Output {.unnumbered}
 
@@ -58,6 +57,21 @@ D --> E
 E --> F
 F --> G
 ```
+
+## Specification of Separability Analysis Parameters 
+
+**Front-end**
+
+The user defines the parameters and selects the method for separability analysis.
+
+**Back-end**
+
+1.  There are three parameters
+    -   The methodology
+
+    -   ID and Class name column
+
+    -   Pixel size
 
 ## Selection of LULC Classification Model
 

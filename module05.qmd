@@ -99,8 +99,7 @@ This optional module enables users to refine the model based on feedback from Mo
 
 **Back-end:**
 
-1.  After adjustment, the system prompts the user to evaluate: *“Has model quality now improved?”*
-    If No:
+1.  After adjustment, the system prompts the user to evaluate: *“Has model quality now improved?”* If No:
     -   The system provides recommendations for covariate ranking analysis and reselection.
     -   Covariate optimization is performed to identify the most influential variables.
 2.  Once finalized, the system proceeds with model retraining using the optimized covariate set.
