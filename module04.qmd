@@ -1,19 +1,16 @@
-# Module 4: Training and Hyperparameter Tuning of LULC Classification Models {#sec-module-4}
+# Module 4: Spectral Separability Analysis {#sec-module-4}
 
 # Module Overview {.unnumbered}
 
-This module enables users to generate accurate LULC maps by selecting or training classification models, optimizing them through hyperparameter tuning, and validating their compatibility with user data. Users can either use existing models from other users or apply system-recommended parameters to train a new model. On the back-end, these parameters are used to train and evaluate a Random Forest (RF) classifier, resulting in a land use and land cover model with measurable quality and a georeferenced LULC map ready for download or further analysis.
+This module enables users to evaluate the spectral separability of sample classes using Jeffries–Matusita (JM) distance or Transformed Divergence (TD). It provides quantitative metrics for class distinction and visual tools for intuitive interpretation. By identifying well-separated classes and informative covariates, this analysis helps ensure data quality and supports more accurate classification or modeling workflows.
 
 # Input {.unnumbered}
 
 **User's Input**
 
-1.  Hyperparameter tuning constraints.
-2.  Training/test data split ratio.
+1.  Separability analysis parameters.
 
-**Automatic System Input**
-
-1.  Covariate default system.
+2.  User-specified spectral bands for visualization.
 
 **Input from Other Modules**
 
@@ -22,8 +19,9 @@ This module enables users to generate accurate LULC maps by selecting or trainin
 
 # Output {.unnumbered}
 
-1.  Trained LULC classification model.
-2.  LULC raster map.
+1.  Basic statistics (mean, median, variance, and standard deviation).
+
+2.  Separability values.
 
 # Process {.unnumbered}
 
@@ -31,149 +29,118 @@ This module enables users to generate accurate LULC maps by selecting or trainin
 flowchart TD
 
 %% Main entry
-A([<a href="#sec-selection-of-lulc-classification-model">Selection of LULC Classification Model</a>])
-
-%% Using Existing Model
-B([<a href="#sec-model-validation-and-compability">Model Validation & Compatibility</a>])
-
-%% Create New Model
-C([<a href="#sec-selecting-classification-algorithm-to-train-a-new-model">Selecting Classification Algorithm</a>])
-
-%% Hyperparameter Tuning subsections
-D([<a href="#sec-splitting-the-training-data">Splitting the Training Data</a>])
-E([<a href="#sec-setting-the-hyperparameters">Setting the Hyperparameters</a>])
-F([<a href="#sec-training-and-validating-the-model">Training & Validating the Model</a>])
-G([<a href="#sec-selecting-best-hyperparameter-combination">Selecting Best Hyperparameter Combination</a>])
+A([<a href="#sec-specification-of-separability-analysis-parameters">Specification of Separability Analysis Parameters</a>])
+B([Methodology])
+C([ID and Class Name])
+D([Pixel Size])
+E([<a href="#sec-reviewing-separability-results">Reviewing Separability Results</a>])
+F([Separability Analysis])
+G([Sample Stat. Calculation])
+H([<a href="#sec-spectral-profile-visualization">Spectral Profile Visualization</a>])
 
 %% Flow connections
-A -->|Use Pre-trained Model| B
-A -->|Train New Model| C
+A --> B
+A --> C
+A --> D
 
-B -->|Compatible| F
-B -->|Not Compatible| C
-
-C --> D
+B --> E
+C --> E
 D --> E
+
 E --> F
-F --> G
+E --> G
+
+F --> H
+G --> H
+
+F -->|Error|A
+G -->|Error|A
+
+
 ```
 
-## Specification of Separability Analysis Parameters 
+## Specification of Separability Analysis Parameters {#sec-specification-of-separability-analysis-parameters}
+
+### Specification of Separability Analysis Parameters
 
 **Front-end**
 
-The user defines the parameters and selects the method for separability analysis.
+1.  The user defines the parameters and selects the method for separability analysis.
+2.  Inputs include ID, Class Name, and pixel size.
 
 **Back-end**
 
-1.  There are three parameters
-    -   The methodology
+The system provides three parameters:
 
-    -   ID and Class name column
+1.  Methodology: Jeffries-Matusita or Transformed Divergence.
 
-    -   Pixel size
+2.  ID and Class Name as a drop down selection.
 
-## Selection of LULC Classification Model
+3.  Pixel Size as numeric input.
 
-### Selection of LULC Classification Model {#sec-selection-of-lulc-classification-model}
+## Reviewing Separability Results {#sec-reviewing-separability-results}
+
+### Reviewing Separability Result {#sec-selection-of-lulc-classification-model}
 
 **Front-end**
 
-The user can choose two options for LULC classification models:
+1.  If input parameters are incomplete, the user receives an error message.
+2.  If inputs are complete, the user evaluates whether the separability results are satisfactory.
+    -   If unsatisfactory, the user may refine samples for classes with low separability by adding or removing points through [Module 3](@sec-module3) or external editing.
 
-1.  Use a Pre-Trained Model (from the system or another users).
-2.  Train a New Model.
+    -   If satisfactory, the user may proceed to spectral profile visualization (@sec-spectral-profile-visualization) .
 
 **Back-end**
 
-1.  If the user chooses to use the pre-trained model, the system proceeds to @sec-using-existing-model.
-2.  If the user chooses to train a new model, the system proceeds to @sec-create-new-model.
+1.  The system validates input parameters and prompts the user to review any incomplete entries.
 
-## Using Pre-Trained Model
+2.  If it is incomplete, the system displays an error and prompts the user to review the analysis parameters.
 
-### Model Validation and Compability {#sec-model-validation-and-compability}
+3.  The system executes the separability analysis workflow that consist of two processes:
+
+    -   Sample Statistics Calculation.
+
+    -   Separability Analysis.
+
+4.  The system executes the workflow as follows:
+
+    -   Calculates the sample proportion for each class.
+    -   Extracts pixel values based on sample locations and the selected imagery.
+    -   Computes basic statistics (mean, median, variance, and standard deviation) per class and stores them in a `DataFrame` for visualization.
+    -   Runs the separability analysis using `TrainDataFinal`.
+    -   For each pair of classes, the system calculates separability metrics, identifies the most difficult class pairs to distinguish, and categorizes results into three levels:
+        -   Good separability (\>1.8): Classes are well separated.
+
+        -   Weak/Marginal separability (1.0-1.8): Classes overlap partially.
+
+        -   Class confusion (\<1.0): Classes require improvement.
+    -   Results, along with the basic statistics table, are exported as a `.TXT` report.
+    -   Detailed error messages are provided if any errors occur.
+
+## Spectral Profile Visualization {#sec-spectral-profile-visualization}
+
+### Spectral Profile Visualization {#sec-spectra-signature-visualization}
 
 **Front-end**
 
-1.  If compatible, the user can proceed to [Module 5](@sec-module-5).
-2.  If not compatible, the user is prompted to create a new model (@sec-create-new-model).
+1.  The user selects the spectral bands for visualization.
+2.  If satisfied with the result, the user proceed to the next module.
+3.  If not satisfied, the user can return to [Module 3](@sec-module-3) to modify the `TrainDataFinal`.
 
 **Back-end**
 
-1.  The system checks whether the model’s classification scheme matches the user’s scheme.
-2.  If incompatible, the system recommends the user to click the option Train a New Model.
-3.  The user can manually verify compatibility if desired.
+1.  The system checks the status of the separability analysis:
 
-## Train a New Model {#sec-create-new-model}
+    -   If successful, visualization proceeds.
 
-### Selecting Classification Algorithm to Train a New Model {#sec-selecting-classification-algorithm-to-train-a-new-model}
+    -   If unsuccessful, visualization is blocked and the user is prompted to complete the parameter specification (@sec-specification-of-separability-analysis-parameters).
 
-**Front-end**
+2.  A visualization canvas and required Python libraries are provided to support:
 
-The user is given the option to choose which classification algorithm to train the Random Forest classifier model.
+    -   Histogram
 
-**Back-end**
+    -   Box plot
 
-1.  The system can automatically generate optimal hyperparameters for Random Forest, including: number of trees, variables per split, and minimum leaf size.
-2.  Classification can be performed in three modes:
-    -   Hard Classification (Fast and Simple)
-        -   Assigns each pixel to exactly one class using a single-split mechanism.
-        -   Model performance is evaluated using accuracy against the test dataset.
-        -   Best suited for quick classifications with simple, non-hierarchical LULC classification such as Forest, Wetland Agriculture, Water Body, and Settlement.
-    -   Soft Classification (Moderate Complexity)
-        -   Uses a one-vs-rest binary approach.
-        -   Estimates the probability of each pixel belonging to each class instead of assigning it directly.
-        -   Model performance is reported using log loss (cross-entropy); lower values indicate better parameters.
-        -   Produces probability values for each land cover class, with the final map generated using rules or by selecting the highest probability per pixel.
-    -   Hierarchical Classification (Advanced)
-        -   Supports classification with nested or multi-level/hierarchy schemes.
-3.  For each classification mode, the system provides a description along with its trade-offs.
+    -   Scatter plot (2D and 3D)
 
-## Hyperparameter Tuning
-
-### Splitting the Training Data {#sec-splitting-the-training-data}
-
-**Front-end**
-
-The user selects an option and enters percentages if using a Custom Partition.
-
-**Back-end**
-
-1.  The user can split training data into training and validation/test sets.
-2.  Options:
-    -   Custom Partition: The user specifies the ratio (e.g., 70% training / 30% testing).
-    -   Default Partition: The system uses a predefined ratio automatically.
-
-### Setting the Hyperparameters
-
-**Front-end**
-
-The user selects parameters and assigns values if using the custom option.
-
-**Back-end**
-
-Options for the Random Forest’s model hyperparameter selection:
-
-1.  Custom Parameters: The user can manually set values for parameters (e.g., number of trees, max depth, minimum leaf size).
-2.  Default Parameters: The system applies recommended default values.
-
-### Training and Validating the Model {#sec-training-and-validating-the-model}
-
-**Front-end**
-
-The user is notified of model performance, including accuracy and other relevant metrics.
-
-**Back-end**
-
-1.  The system trains the model using the selected hyperparameters and the training data.
-2.  Performance is evaluated on validation data.
-
-### Selecting Best Hyperparameter Combination {#sec-selecting-best-hyperparameter-combination}
-
-**Front-end**
-
-The user can further optimize the model to improve classification performance.
-
-**Back-end**
-
-The system provides an options for model optimization.
+3.  Helper Text guides the user in interpreting the plots effectively.

@@ -33,18 +33,7 @@ In supervised classification, the quality of training data directly determines t
 # Process
 
 ```{mermaid}
-
-```
-
-```{mermaid}
-
-```
-
-```{mermaid}
-
-```
-
-```{flowchart TD}
+flowchart TD
 
 A([<a href="#sec-initial-option-for-training-data-source">Initial Option for Training Data Source</a>])
 B([<a href="#sec-user-upload-their-own-training-data">User Upload Their Own Training Data</a>])
@@ -79,10 +68,6 @@ H --> J
 
 G -->|User is satisfied| H
 G -->|User is not satisfied| D
-
-
-
-
 ```
 
 ## Checking Prerequisites from Previous Modules
@@ -241,7 +226,7 @@ The user reviews the `TrainDataRecap` displayed in a table.
 
 The system presents a recap table with columns for ID, class, number of points, and percentage.
 
-## Data Splitting
+## Data Splitting {#sec-data-splitting}
 
 **Front-end**
 
