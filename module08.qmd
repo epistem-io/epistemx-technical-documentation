@@ -45,13 +45,13 @@ Write the file in which the function was called from (e.g, `from epistemx.helper
 
 ## Module Overview
 
-This module allows users to review all artifacts generated from previous modules, perform post-classification analysis of the LULC map results from [Module 6](@sec-module-6) (limited to Phase 1 information from a single time-series land cover and land use map, such as bar charts or statistical summary tables), and export the LULC map results with metadata and accuracy assessment (if available). It activates only after completing the LULC map generation and accuracy test in Modules 6 and 7. On the back-end, the system generates an overview report using Quarto templates rendered to HTML, displays summaries and visuals, and handles exports to Google Drive with progress monitoring and notifications. Future options (not in Phase 1) include additional exports like training data visualizations, separability tables/graphs, classification model assets, soft prediction GeoTIFFs, and publishing to Epistem-Y with user notes, terms, and comments.
+This module allows users to review all artifacts generated from previous modules, perform post-classification analysis of the LULC map results from [Module 6](@sec-module-6) (limited to Phase 1 information from a single time-series land cover and land use map, such as bar charts or statistical summary tables), and export the LULC map results with metadata and accuracy assessment (if available). It activates only after completing the LULC map generation and accuracy test in Modules 6 and 7. On the back-end, the system generates an overview report rendered to HTML, displays summaries and visuals, and handles exports to Google Drive with progress monitoring and notifications.
 
 ## Input {.unnumbered}
 
 **User’s Input**
 
-1.  Click to access Module 8.\
+1.  Click to access Module 8.
 2.  Press download button to initiate export (yes/no).
 
 **Automatic System Input**
@@ -60,20 +60,20 @@ This module allows users to review all artifacts generated from previous modules
 
 **Input from Other Modules**
 
-1.  Landsat image that has been cropped and has minimal cloud cover ([Module 1](@sec-module-1)).\
-2.  Image search report (report_metadata [Module 1](@sec-module-1)).\
-3.  LULC classification scheme table ([Module 2](@sec-module-2)).\
-4.  Georeferenced training dataset ([Module 3](@sec-module-3)).\
-5.  Model specification report (report_metadata [Module 6](@sec-module-6)).\
-6.  Classified LULC map (Peta LULC [Module 6](@sec-module-6)).\
+1.  Landsat image that has been cropped and has minimal cloud cover ([Module 1](@sec-module-1)).
+2.  Image search report (report_metadata [Module 1](@sec-module-1)).
+3.  LULC classification scheme table ([Module 2](@sec-module-2)).
+4.  Georeferenced training dataset ([Module 3](@sec-module-3)).
+5.  Model specification report (report_metadata [Module 6](@sec-module-6)).
+6.  Classified LULC map (Peta LULC [Module 6](@sec-module-6)).
 7.  Confusion matrix and accuracy test table ([Module 7](@sec-module-7)).
 
 ## Output {.unnumbered}
 
--   LULC Classification Overview Report (.html via Quarto).\
--   LULC Area Summary Table (digest table of area per land cover class).\
--   Area Bar Chart.\
--   Exported assets to Google Drive: LULC map + metadata/log-summary + accuracy test results (with warning if Module 7 not run).
+1.  LULC Classification Overview Report (.html via Quarto).
+2.  LULC Area Summary Table (digest table of area per land cover class).
+3.  Area Bar Chart.
+4.  Exported assets to Google Drive: LULC map + metadata/log-summary + accuracy test results (with warning if Module 7 not run).
 
 ## Process
 
@@ -110,17 +110,17 @@ F --> I([Finished])
 
 **Front-end**
 
-The user clicks Module 8 to attempt access.
+1.  The user clicks Module 8 to attempt access.
 
-If prerequisites are missing, Module 8 remains inactive, and the user is notified to complete Modules 6 and 7.
+2.  If prerequisites are missing, Module 8 remains inactive, and the user is notified to complete Modules 6 and 7.
 
 **Back-end**
 
-Activate Module 8 only if the user has finished generating the LULC map and accuracy test; check the existence of results from Modules 6 and 7, along with prerequisites from Module 1.
+1.  Activate Module 8 only if the user has finished generating the LULC map and accuracy test; check the existence of results from Modules 6 and 7, along with prerequisites from Module 1.
 
-The system checks whether output from Module 7 is available.
+2.  The system checks whether output from Module 7 is available.
 
-If not, keep Module 8 inactive.
+3.  If not, keep Module 8 inactive.
 
 ## Post-Classification Analysis and Export
 
@@ -128,9 +128,9 @@ If not, keep Module 8 inactive.
 
 **Front-end**
 
-User attempts to access Module 8.
+1.  User attempts to access Module 8.
 
-If prerequisites missing, notify user and keep module inactive.
+2.  If prerequisites missing, notify user and keep module inactive.
 
 **Back-end**
 
@@ -173,16 +173,16 @@ Displays generated report with maps and charts.
 
 **Front-end**
 
-1.  Users can download exported assets to Google Drive if quota allows.\
-2.  Download buttons show file size and estimated time.\
+1.  Users can download exported assets to Google Drive if quota allows.
+2.  Download buttons show file size and estimated time.
 3.  Progress indicators and completion notifications appear.
 
 **Back-end**
 
-1.  Identify classified map and metadata from [Module 6](@sec-module-6).\
-2.  Include accuracy results from [Module 7](@sec-module-7) if available; log warning if not.\
-3.  Prepare export filenames and size estimates.\
-4.  Trigger Google Drive export action.\
+1.  Identify classified map and metadata from [Module 6](@sec-module-6).
+2.  Include accuracy results from [Module 7](@sec-module-7) if available; log warning if not.
+3.  Prepare export filenames and size estimates.
+4.  Trigger Google Drive export action.
 5.  Monitor export job and notify user on completion.
 
 ### Publish to Epistem-Y {#sec-publish-to-epistem-y}

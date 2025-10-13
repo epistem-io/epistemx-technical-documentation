@@ -2,9 +2,7 @@
 
 # Module Overview {.unnumbered}
 
-This module enables users to perform a thematic accuracy assessment on LULC map generated in [Module 6](@sec-module-6), comparing it against independent validation data to quantitatively evaluate its quality and reliability. It supports verification of prerequisites from Modules 1 to Module 6, allows confirmation or adjustment of data partitions and model configurations, and computes key metrics such as confusion matrices (
-
-overall accuracy (OA), Kappa coefficient (κ), producer's accuracy (PA), and user's accuracy (UA). The module provides phased outputs including numerical/visual results, improvement recommendations, and a spatial confidence level map, facilitating iterative refinements (e.g., via links back to Modules 4-6) for enhanced map accuracy in applications like environmental monitoring or policy planning.
+This module enables users to perform a thematic accuracy assessment on LULC map generated in [Module 6](@sec-module-6), comparing it against independent validation data to quantitatively evaluate its quality and reliability. It supports verification of prerequisites from Modules 1 to Module 6, allows confirmation or adjustment of data partitions and model configurations, and computes key metrics such as confusion matrices (overall accuracy (OA), Kappa coefficient (κ), producer's accuracy (PA), and user's accuracy (UA). The module provides phased outputs including numerical/visual results, improvement recommendations, and a spatial confidence level map, facilitating iterative refinements for enhanced map accuracy in applications like environmental monitoring or policy planning.
 
 This module focuses on the evaluation and validation of LULC classification results derived from remote sensing data. The objective is to provide users with tools and guidance to assess the reliability of their classified maps and determine their suitability for further analysis. Upon completion, the user will have a validated LULC map and a clear understanding of its accuracy.
 
@@ -12,7 +10,7 @@ This module focuses on the evaluation and validation of LULC classification resu
 
 **User’s Input**
 
-1.  Upload of test data if not available from [Module 3](@sec-module-3) (shapefile or CSV as per [Module 3](@sec-module-3)).\
+1.  Upload of test data if not available from [Module 3](@sec-module-3) (shapefile or CSV as per [Module 3](@sec-module-3)).
 2.  Button press to initiate accuracy test.
 
 **Automatic System Input**
@@ -21,13 +19,13 @@ This module focuses on the evaluation and validation of LULC classification resu
 
 **Input from Other Modules**
 
-1.  Final land cover map ([Module 6](@sec-module-6)).\
-2.  Partitioned test samples if available ([Module 3](@sec-module-3)).\
+1.  Final land cover map ([Module 6](@sec-module-6)).
+2.  Partitioned test samples if available ([Module 3](@sec-module-3)).
 3.  Processed satellite imagery ([Module 1](@sec-module-1), if needed for context).
 
 ## Output {.unnumbered}
 
--   Confusion matrix (table).\
+-   Confusion matrix (table).
 -   Accuracy metrics: Overall Accuracy (OA), Kappa Coefficient, Producer's Accuracy (PA), User's Accuracy (UA).
 
 ## Process
@@ -70,8 +68,8 @@ The user is notified if the map is missing and prompted to complete [Module 6](@
 
 **Back-end**
 
-1.  Check for the final land cover map from [Module 6](@sec-module-6).\
-2.  If not available, provide notification to run [Module 6](@sec-module-6).\
+1.  Check for the final land cover map from [Module 6](@sec-module-6).
+2.  If not available, provide notification to run [Module 6](@sec-module-6).
 3.  Land cover map availability test.
 
 ## Thematic Accuracy Assessment
@@ -84,20 +82,20 @@ User is notified if map is missing and prompted to complete [Module 6](@sec-modu
 
 **Back-end**
 
-1.  Check for final land cover map from [Module 6](@sec-module-6).\
+1.  Check for final land cover map from [Module 6](@sec-module-6).
 2.  If missing, notify user to run Module 6.
 
 ### Verify Test Data Availability {#sec-verify-test-data-availability}
 
 **Front-end**
 
-1.  If test data available, allow user to proceed with accuracy test.\
+1.  If test data available, allow user to proceed with accuracy test.
 2.  Else, prompt upload.
 
 **Back-end**
 
-1.  Check for test data from [Module 3](@sec-module-3).\
-2.  If available, proceed to accuracy test.\
+1.  Check for test data from [Module 3](@sec-module-3).
+2.  If available, proceed to accuracy test.
 3.  If not, prompt user for upload.
 
 ### Upload and Verify Test Data {#sec-upload-and-verify-test-data}
@@ -108,8 +106,8 @@ User is notified if map is missing and prompted to complete [Module 6](@sec-modu
 
 **Back-end**
 
-1.  Provide upload form.\
-2.  Verify uploaded data per criteria (format, content).\
+1.  Provide upload form.
+2.  Verify uploaded data per criteria (format, content).
 3.  If verification fails, display errors and request re-upload.
 
 ### Perform Accuracy Test {#sec-perform-accuracy-test}
@@ -120,11 +118,11 @@ User initiates accuracy test by pressing a button.
 
 **Back-end**
 
-1.  Compare classification map with reference data to generate confusion matrix.\
+1.  Compare classification map with reference data to generate confusion matrix.
 2.  Compute accuracy metrics:
-    -   Overall Accuracy (OA)\
-    -   Kappa Coefficient\
-    -   Producer's Accuracy (PA)\
+    -   Overall Accuracy (OA)
+    -   Kappa Coefficient
+    -   Producer's Accuracy (PA)
     -   User's Accuracy (UA)
 
 ### Display and Review Accuracy Results {#sec-display-and-review-accuracy-results}
@@ -135,5 +133,5 @@ User reviews test results. If satisfied, process completes; if not, prompted to 
 
 **Back-end**
 
-1.  Display confusion matrix and accuracy metrics.\
+1.  Display confusion matrix and accuracy metrics.
 2.  If unsatisfactory, notify user to check training data or classification parameters.
