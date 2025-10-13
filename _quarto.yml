@@ -32,6 +32,10 @@ format:
     theme:
       - cosmo
       - brand
+    number-sections: true
+    number-depth: 5
+    
+
   pdf:
     documentclass: scrreprt
 
