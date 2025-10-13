@@ -2,6 +2,10 @@
 
 # Module Overview {.unnumbered}
 
+::: callout-caution
+This module is not available in Phase 1
+:::
+
 This optional module enables users to refine the model based on feedback from Module 4. It supports the integration of additional covariates to enhance model accuracy and robustness. Users can incorporate additional covariates, including radar, spectral, and non-spectral types (For details please see @sec-manual-covariate). The updated configuration facilitates the generation of a higher-quality model compared to the previous iteration.
 
 # Input {.unnumbered}

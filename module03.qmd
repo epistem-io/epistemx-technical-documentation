@@ -1,6 +1,6 @@
 # Module 3: Training Data Generation {#sec-module-3}
 
-# Module Overview
+# Module Overview {.unnumbered}
 
 In supervised classification, the quality of training data directly determines the accuracy of the resulting model. The output of Module 3 is to produce georeferenced point vector datasets for each LULC class defined by the user in the preceding step, [Module 2](@sec-module-2), accompanied by quantitative and visual summaries that facilitate rigorous evaluation, quality control, and optimization for subsequent classification. The module supports two workflows for data preparation: (1) importing user-defined datasets, or (2) interactively generating samples using system-guided tools. Upon completion, the user obtains a structured datasets for each LULC class, together with statistical diagnostics to assess the quality and representativeness of the data prior to classification.
 
@@ -90,10 +90,11 @@ The system checks whether the [default system's classification](@sec-user-select
 **Front-end**
 
 1.  The system initiates the workflow by providing the user with two primary options:
-    -   “I have training data”.
 
+    -   “I have training data”.
     -   “I don’t have training data”.
-2.  Users with training data who created their own classification model in [Module 2](@sec-module-2) can either [upload their data](@sec-user-uploading-their-own-training-data) or and [enter it manually](@sec-on-screen-sampling) (Phase 1).
+    
+2.  Users that have training data who created their own classification model in [Module 2](@sec-module-2) can either [upload their data](@sec-user-uploading-their-own-training-data) or/and [enter it manually](@sec-on-screen-sampling) (Phase 1).
 3.  Users without training data can retrieve it directly from the system public repository.
 
 **Back-end**
@@ -182,12 +183,10 @@ The system displays the Epistem-X public sample data repository in a panel. Each
 **Front-end**
 
 1.  The user receives a notification indicating the status of their uploaded sampling data:
+
     -   Sufficient - the user can proceed to @sec-preview-of-verified-training-data
-
     -   Insufficient - the number of sample points for one or more classes is inadequate. The user can either:
-
         -   Add more training data and proceed to @sec-on-screen-sampling, or
-
         -   Skip adding data and proceed directly to @sec-preview-of-verified-training-data in which case a notification warns that the classification result may have low accuracy.
 
 **Back-end**
@@ -195,19 +194,14 @@ The system displays the Epistem-X public sample data repository in a panel. Each
 1.  The system analyze the sample data to determine:
 
     -   The list and count of unique classes.
-
     -   The number of sample points per class.
 
 2.  Verification for Module 1 and 2 includes:
 
     -   Identifying samples located outside the AOI.
-
     -   Comparing the number of unique classes between datasets.
-
     -   Detecting classes missing in either datasets.
-
     -   Flagging classes with insufficient sample points (\<20 points).
-
     -   Identifying duplicate samples in the same pixel
 
 3.  The system filters out sample data that are either located outside the AOI and do not match the classes defined in Module 2.

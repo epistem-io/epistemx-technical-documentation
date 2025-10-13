@@ -31,33 +31,29 @@ This module focuses on the evaluation and validation of LULC classification resu
 ## Process
 
 ```{mermaid}
-
 flowchart TD
 
-A([<a href="#sec-verify-land-cover-map-availability">Verify Land Cover Map Availability</a>])
+%% CHECKING PREREQUISITES
+A([<a href="#sec-checking-prerequisites">Check Prerequisites</a>])
+B([Prompt user to complete Module 6 if missing])
 
-B([<a href="#sec-verify-test-data-availability">Verify Test Data Availability</a>])
+A --> B
 
-C([<a href="#sec-upload-and-verify-test-data">Upload & Verify Test Data (If Not Available)</a>])
+%% THEMATIC ACCURACY ASSESSMENT
+C([<a href="#sec-verify-land-cover-map-availability">Verify Land Cover Map Availability</a>])
+D([<a href="#sec-verify-test-data-availability">Verify Test Data Availability</a>])
+E([<a href="#sec-upload-and-verify-test-data">Upload and Verify Test Data</a>])
+F([<a href="#sec-perform-accuracy-test">Perform Accuracy Test</a>])
+G([<a href="#sec-display-and-review-accuracy-results">Display and Review Accuracy Results</a>])
 
-D([<a href="#sec-perform-accuracy-test">Perform Accuracy Test</a>])
-
-E([<a href="#sec-display-and-review-accuracy-results">Display & Review Accuracy Results</a>])
-
-A -->|Available| B
-A -->|Not Available| F([Notification to Run Module 6])
-
-B -->|Available| D
-B -->|Not Available| C
-
-C -->|Verification OK| D
-C -->|Verification Failed| G([Loop Back for Re-Upload])
-
-D --> E
-
-E -->|Satisfied| H([Finished])
-E -->|Not Satisfied| I([Notification to Check Module 3 and/or 6])
-I --> A
+B --> C
+C --> D
+D -->|Test data available| F
+D -->|Test data missing| E
+E --> F
+F --> G
+G -->|Satisfied| H([Process Complete])
+G -->|Unsatisfied| B
 ```
 
 ## Checking Prerequisites from Previous Modules

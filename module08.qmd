@@ -1,4 +1,3 @@
-
 # Module 8: Post Classification Analysis and Housekeeping {#sec-module-8}
 
 ## Module Overview
@@ -39,30 +38,26 @@ This module allows users to review all artifacts generated from previous modules
 
 flowchart TD
 
-A([<a href="#sec-access-module-and-check-prerequisites">Access Module & Check Prerequisites</a>])
+%% CHECKING PREREQUISITES
+A([<a href="#sec-checking-prerequisites">Check Prerequisites for Module 8</a>])
+B([Notify user and keep Module 8 inactive if prerequisites missing])
+C([<a href="#sec-access-module-and-check-prerequisites">Access Module 8</a>])
+D([<a href="#sec-data-collection-and-verification">Data Collection and Verification</a>])
+E([<a href="#sec-generate-report">Generate Report</a>])
+F([<a href="#sec-display-lulc-classification-overview-report">Display LULC Overview Report</a>])
+G([<a href="#sec-export-data">Export Data</a>])
+H([<a href="#sec-publish-to-epistem-y">Publish to Epistem-Y - Post Phase 1</a>])
+I([Process Complete])
 
-B([<a href="#sec-data-collection-and-verification">Data Collection & Verification</a>])
-
-C([<a href="#sec-generate-report">Generate Report</a>])
-
-D([<a href="#sec-display-lulc-classification-overview-report">Display LULC Classification Overview Report</a>])
-
-E([<a href="#sec-export-data">Export Data</a>])
-
-F([<a href="#sec-publish-to-epistem-y">Publish to Epistem-Y (Not in Phase 1)</a>])
-
-A -->|Prerequisites Met| B
-A -->|Prerequisites Missing| G([Module 8 Inactive])
-
+%% POST-CLASSIFICATION ANALYSIS AND EXPORT
+A --> B
 B --> C
 C --> D
 D --> E
-
-E -->|Download Pressed| H([Export Process])
-H --> I([Finished])
-
-D --> F
-F --> I([Finished])
+E --> F
+F --> G
+G --> H
+H --> I
 ```
 
 ## Checking Prerequisites from Previous Modules
@@ -70,15 +65,12 @@ F --> I([Finished])
 **Front-end**
 
 1.  The user clicks Module 8 to attempt access.
-
 2.  If prerequisites are missing, Module 8 remains inactive, and the user is notified to complete Modules 6 and 7.
 
 **Back-end**
 
 1.  Activate Module 8 only if the user has finished generating the LULC map and accuracy test; check the existence of results from Modules 6 and 7, along with prerequisites from Module 1.
-
 2.  The system checks whether output from Module 7 is available.
-
 3.  If not, keep Module 8 inactive.
 
 ## Post-Classification Analysis and Export
@@ -88,7 +80,6 @@ F --> I([Finished])
 **Front-end**
 
 1.  User attempts to access Module 8.
-
 2.  If prerequisites missing, notify user and keep module inactive.
 
 **Back-end**

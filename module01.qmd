@@ -100,11 +100,7 @@ The user is presented with an interactive on-screen digitization process.
 
 **Back-end**
 
-<<<<<<< HEAD
-The system saves the selected AOI as a variable and display it in a small preview map.
-=======
-\[not developed yet\]
->>>>>>> 56bc8f8fd31fc627cebab7c0310b01982596e104
+[not developed yet]
 
 ## Selecting and Preparing Satellite Imagery
 
@@ -164,22 +160,15 @@ The user is prompted to adjust parameters, such as increasing the cloud cover li
 2.  Prior to initiating the image download, the user inputs technical parameters of the image that includes: file name, coordinate system, and spatial resolution.
 3.  If the user chooses not to download it, they may proceed to [Module 2](@sec-module-2).
 4.  A summary report containing the metadata is provided as a `.TXT` file that includes:
+    
     -   Total images found
-
     -   Data range of images
-
     -   Unique WRS tiles
-
     -   Path row tiles
-
     -   Scene IDs
-
     -   Image acquisition dates
-
     -   Average scene cloud cover
-
     -   Date range
-
     -   Cloud cover range
 
 **Back-end**
