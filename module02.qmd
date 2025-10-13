@@ -1,14 +1,12 @@
 # Module 2: Determining LULC Classification Schema and Classes {#sec-module-2}
 
-# Module Overview
+# Module Overview {.unnumbered}
 
-This module offers a flexible framework for generating Land Use/Land Cover (LULC) maps tailored to various applications, from broad assessments like deforestation monitoring to detailed analyses reflecting specific management practices or prioritized conservation areas. A key feature is its adaptability: users can generate maps with customizable classification schemes, aligning with the FAO [LCCS](https://www.fao.org/4/x0596e/x0596e00.htm), supporting both class combinations and hierarchical structures.
+This module offers a flexible framework for generating Land Use/Land Cover (LULC) maps tailored to various applications, from broad assessments like deforestation monitoring to detailed analyses reflecting specific management practices or prioritized conservation areas. In the initial phase, only non-hierarchical schemas will be implemented. All classes are treated independently, making it suitable for single-level applications such as deforestation mapping or identifying priority conservation areas. 
 
-Phase 1: In the initial phase, only non-hierarchical schemas will be implemented. All classes are treated independently, making it suitable for single-level applications such as deforestation mapping or identifying priority conservation areas. Phase 2: Hierarchical schemas will be introduced, allowing multiple levels of thematic detail where broader classes—such as Natural Forest or Agroforestry—are subdivided into finer subclasses for analysis at different scales.
+The output of this module is a well-defined list of LULC classes. The module also manages the selection, input, validation, and storage of LULC classification schemes. Users can select a predefined system schema, upload their own classification file, or enter the classification manually. The module ensures data integrity and provides a downloadable classification table for downstream analysis.
 
-The output of this module is a well-defined list of LULC classes, structured either non-hierarchically (Phase 1) or hierarchically (Phase 2), depending on the application and desired level of detail. The module also manages the selection, input, validation, and storage of LULC classification schemes. Users can select a predefined system schema, upload their own classification file, or enter the classification manually. The module ensures data integrity and provides a downloadable classification table for downstream analysis.
-
-The module incorporates RESTORE+ LULC classifications from Indonesia to support restoration planning, guiding identification of degraded areas and management priorities. These classes are offered as a predefined data classification system for both non-hierarchical and hierarchical schemes.
+The module incorporates RESTORE+ LULC classifications from Indonesia to support restoration planning, guiding identification of degraded areas and management priorities. These classes are offered as a predefined data classification system.
 
 # Input
 
@@ -86,19 +84,14 @@ If the default classification schema is selected, the user chooses a list of LUL
 **Back-end**
 
 1.  The system displays an Upload button.
-
 2.  The system validates the uploaded file, checking:
 
     -   The file is not corrupt.
-
     -   The format is valid.
-
     -   The file size is within the allowed limit.
-
     -   The file is not password-protected.
 
 3.  The system then validates and extracts data from sheets, cells, rows, and columns, converting it into a Pandas DataFrame. It checks whether the data is present or empty.
-
 4.  If the validation is successful, the system displays a preview of the data in a table and provides a verification result notification.
 
 ### User Entering the Classification Manually {#sec-user-entering-the-classification-manually}
@@ -106,7 +99,6 @@ If the default classification schema is selected, the user chooses a list of LUL
 **Front-end**
 
 1.  The user fills out the input form containing ID, Class, and Color Code fields, and optionally the Description column.
-
 2.  The system warns the user if the form is incomplete or data conversion fails.
 
 **Back-end**

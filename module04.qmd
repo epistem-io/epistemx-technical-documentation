@@ -9,7 +9,6 @@ This module enables users to evaluate the spectral separability of sample classe
 **User's Input**
 
 1.  Separability analysis parameters.
-
 2.  User-specified spectral bands for visualization.
 
 **Input from Other Modules**
@@ -20,7 +19,6 @@ This module enables users to evaluate the spectral separability of sample classe
 # Output {.unnumbered}
 
 1.  Basic statistics (mean, median, variance, and standard deviation).
-
 2.  Separability values.
 
 # Process {.unnumbered}
@@ -30,12 +28,12 @@ flowchart TD
 
 %% Main entry
 A([<a href="#sec-specification-of-separability-analysis-parameters">Specification of Separability Analysis Parameters</a>])
-B([Methodology])
-C([ID and Class Name])
-D([Pixel Size])
+B[/Methodology/]
+C[/ID and Class Name/]
+D[/Pixel Size/]
 E([<a href="#sec-reviewing-separability-results">Reviewing Separability Results</a>])
-F([Separability Analysis])
-G([Sample Stat. Calculation])
+F[\Separability Analysis\]
+G[\Sample Stat. Calculation\]
 H([<a href="#sec-spectral-profile-visualization">Spectral Profile Visualization</a>])
 
 %% Flow connections
@@ -73,9 +71,7 @@ G -->|Error|A
 The system provides three parameters:
 
 1.  Methodology: Jeffries-Matusita or Transformed Divergence.
-
 2.  ID and Class Name as a drop down selection.
-
 3.  Pixel Size as numeric input.
 
 ## Reviewing Separability Results {#sec-reviewing-separability-results}
@@ -87,7 +83,6 @@ The system provides three parameters:
 1.  If input parameters are incomplete, the user receives an error message.
 2.  If inputs are complete, the user evaluates whether the separability results are satisfactory.
     -   If unsatisfactory, the user may refine samples for classes with low separability by adding or removing points through [Module 3](@sec-module3) or external editing.
-
     -   If satisfactory, the user may proceed to spectral profile visualization (@sec-spectral-profile-visualization) .
 
 **Back-end**
@@ -99,7 +94,6 @@ The system provides three parameters:
 3.  The system executes the separability analysis workflow that consist of two processes:
 
     -   Sample Statistics Calculation.
-
     -   Separability Analysis.
 
 4.  The system executes the workflow as follows:
@@ -110,9 +104,7 @@ The system provides three parameters:
     -   Runs the separability analysis using `TrainDataFinal`.
     -   For each pair of classes, the system calculates separability metrics, identifies the most difficult class pairs to distinguish, and categorizes results into three levels:
         -   Good separability (\>1.8): Classes are well separated.
-
         -   Weak/Marginal separability (1.0-1.8): Classes overlap partially.
-
         -   Class confusion (\<1.0): Classes require improvement.
     -   Results, along with the basic statistics table, are exported as a `.TXT` report.
     -   Detailed error messages are provided if any errors occur.
@@ -132,15 +124,12 @@ The system provides three parameters:
 1.  The system checks the status of the separability analysis:
 
     -   If successful, visualization proceeds.
-
     -   If unsuccessful, visualization is blocked and the user is prompted to complete the parameter specification (@sec-specification-of-separability-analysis-parameters).
 
 2.  A visualization canvas and required Python libraries are provided to support:
 
     -   Histogram
-
     -   Box plot
-
     -   Scatter plot (2D and 3D)
 
 3.  Helper Text guides the user in interpreting the plots effectively.

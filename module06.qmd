@@ -9,7 +9,7 @@ This module provides functionality for users to generate the final LULC map as t
 **User’s Input**
 
 1.  Agreement to proceed after input review (yes/no).
-2.  RF hyperparameters: number of trees (n_tree), variables per split (var_split), minimum leaf population (min_leaf_pop).
+2.  RF hyperparameters: number of trees (`n_tree`), variables per split (`var_split`), minimum leaf population (`min_leaf_pop`).
 
 **Automatic System Input**
 
@@ -29,128 +29,37 @@ This module provides functionality for users to generate the final LULC map as t
 -   Classified LULC raster map.
 -   Model accuracy report if validation data available (including overall accuracy, precision, recall, F1-score, Kappa, model error matrix).
 
-## Process
-
-# Process
+## Process {.unnumbered}
 
 ```{mermaid}
 flowchart TD
-%% Variables
-TrainDataFinal([TrainDataFinal (Module 3)])
-CitraLandsat([citra_landsat_user_1 (ee.image - Module 1)])
-ClassScheme([Classification scheme table (Module 2)])
-ValidDataFinal([ValidDataFinal (Module 3)])
 
-%% Start
-Start([Module 6])
+%% CHECKING PREREQUISITES
+A([<a href="#sec-checking-prerequisites">Check Prerequisites</a>])
+B([Prompt Return to Previous Modules if Needed])
+C([<a href="#sec-review-inputs">Review Inputs</a>])
 
-%% Checks
-ParamTest([parameter and input suitability test])
-TestDataAvail([Test data availability from Module 3])
+A --> B
+B --> C
 
-%% Summary
-SummaryReport([Summary report of variables for the classification process (dataframe)])
+%% MODEL TRAINING AND CLASSIFICATION
+D([<a href="#sec-define-classification-specifications">Define Classification Specifications</a>])
+E([<a href="#sec-feature-extraction">Feature Extraction</a>])
+F([<a href="#sec-train-random-forest-model">Train Random Forest Model</a>])
+G([<a href="#sec-model-accuracy-test">Model Accuracy Test</a>])
+H([<a href="#sec-classification-apply-model-to-entire-image">Classification</a>])
+I([<a href="#sec-review-classification-results">Review Classification Results</a>])
+J([<a href="#sec-module-7">Proceed to Module 7</a>])
 
-%% Specifications
-DefineSpecs([User Journey 6.2 Define Classification specifications])
-NTrees([Number of decision trees (n_tree)])
-VarSplit([Number of variables selected during decision making (var_split)])
-MinLeaf([The number of data populations for decision making (min_leaf_pop)])
+C --> D
+D --> E
+E --> F
+F --> G
+G --> H
+H --> I
+I -->|Satisfied| J
+I -->|Unsatisfied| D
 
-%% Extraction
-FeatureExtract([perform feature extraction (take image pixel values based on samples)])
-
-%% Training
-RFParams([main parameters of Random Forest])
-Bootstrap([Bootstrap sampling])
-Decision1([Decision tree-1])
-Decision2([Decision tree-2])
-DecisionN([Decision tree-n])
-Majority([Majority Voting])
-TrainedModel([TrainedModel (classifier asset)])
-
-%% Accuracy
-ModelAcc([System Response 6.3 Model accuracy test])
-OverallAcc([Overall Accuracy])
-Precision([Precision])
-Recall([Recall])
-F1([F1-score])
-Kappa([Kappa])
-ErrorMatrix([Model error matrix])
-ModelReport([model accuracy report (overall accuracy, precision, recall)])
-
-%% Classification
-Classification([Classification (applying the model to the entire image)])
-ClassResult([Classification result data (ee.image/ Peta_LULC)])
-ClassSummary([Summary of the classification process])
-
-%% Review
-ReviewResults([User Journey 6.3 Review of classification results])
-ReviewModel([Review of the results of the random forest model learning process and the classification result map])
-
-%% End
-Proceed7([User proceeds to module 7])
-Finished([Finished])
-
-%% Connections
-TrainDataFinal --> Start
-CitraLandsat --> Start
-ClassScheme --> Start
-ValidDataFinal --> Start
-
-Start --> ParamTest
-ParamTest --> TestDataAvail
-TestDataAvail -->|NO| SuggestMod3([The system suggests the user to return to Module 3 and correct the sample])
-SuggestMod3 --> ParamTest
-TestDataAvail -->|OK| SummaryReport
-SummaryReport --> DefineSpecs
-
-DefineSpecs --> NTrees
-DefineSpecs --> VarSplit
-DefineSpecs --> MinLeaf
-
-NTrees --> RFParams
-VarSplit --> RFParams
-MinLeaf --> RFParams
-
-RFParams --> FeatureExtract
-
-FeatureExtract --> Bootstrap
-Bootstrap --> Decision1
-Bootstrap --> Decision2
-Bootstrap --> DecisionN
-Decision1 --> Majority
-Decision2 --> Majority
-DecisionN --> Majority
-Majority --> TrainedModel
-
-TrainedModel --> ModelAcc
-ModelAcc --> OverallAcc
-ModelAcc --> Precision
-ModelAcc --> Recall
-ModelAcc --> F1
-ModelAcc --> Kappa
-ModelAcc --> ErrorMatrix
-OverallAcc --> ModelReport
-Precision --> ModelReport
-Recall --> ModelReport
-F1 --> ModelReport
-Kappa --> ModelReport
-ErrorMatrix --> ModelReport
-
-TrainedModel --> Classification
-Classification --> ClassResult
-Classification --> ClassSummary
-
-ModelReport --> ReviewResults
-ClassResult --> ReviewResults
-ReviewResults --> ReviewModel
-
-ReviewModel -->|Satisfied| Proceed7
-ReviewModel -->|Not Satisfied| SuggestCheck([Suggest users to double-check the parameters and training data selected for classification])
-SuggestCheck --> DefineSpecs
-
-Proceed7 --> Finished
 ```
 
 ## Checking Prerequisites from Previous Modules
