@@ -30,7 +30,7 @@ In supervised classification, the quality of training data directly determines t
 -   Georeferenced validation datasets.
 -   Statistical analyses of the datasets.
 
-# Process
+# Process {.unnumbered}
 
 ```{mermaid}
 flowchart TD
@@ -51,10 +51,9 @@ K([<a href="#sec-verifying-the-uploaded-training-data">Verifying the Uploaded Tr
 A -->|User has training data| B
 A -->|User doesn't have training data| C
 
-B -->|Add new samples via on-screen sampling| D
-B -->|No additional samples| G
 B --> K
-K --> G
+K --> |Invalid input data| B
+K --> |Input data is valid| G
 
 C -->|Use on-screen sampling| D
 C -->|Use RESTORE+ dataset| E
@@ -93,8 +92,9 @@ The system checks whether the [default system's classification](@sec-user-select
 
     -   “I have training data”.
     -   “I don’t have training data”.
-    
+
 2.  Users that have training data who created their own classification model in [Module 2](@sec-module-2) can either [upload their data](@sec-user-uploading-their-own-training-data) or/and [enter it manually](@sec-on-screen-sampling) (Phase 1).
+
 3.  Users without training data can retrieve it directly from the system public repository.
 
 **Back-end**
