@@ -2,116 +2,122 @@
 
 # Module Overview {.unnumbered}
 
-A key feature of this module is its adaptability: users can generate maps with customizable classification schemes, from broad outputs like deforestation maps to detailed products reflecting specific management practices or prioritized classes for greater accuracy. This flexibility aligns with the FAO [LCCS](https://www.fao.org/4/x0596e/x0596e00.htm), supporting class combinations and hierarchical structures. The output of this module is a well-defined list of LULC classes, structured either hierarchically, with multiple levels of thematic detail where broader classes like Natural Forest or Agroforestry are subdivided into finer subclasses for analysis at different scales, or non-hierarchically, where all classes are treated independently, suitable for single-level applications such as deforestation mapping or identifying priority conservation areas.
+This module offers a flexible framework for generating Land Use/Land Cover (LULC) maps tailored to various applications, from broad assessments like deforestation monitoring to detailed analyses reflecting specific management practices or prioritized conservation areas. In the initial phase, only non-hierarchical schemas will be implemented. All classes are treated independently, making it suitable for single-level applications such as deforestation mapping or identifying priority conservation areas.
+
+The output of this module is a well-defined list of LULC classes. The module also manages the selection, input, validation, and storage of LULC classification schemes. Users can select a predefined system schema, upload their own classification file, or enter the classification manually. The module ensures data integrity and provides a downloadable classification table for downstream analysis.
+
+The module incorporates RESTORE+ LULC classifications from Indonesia to support restoration planning, guiding identification of degraded areas and management priorities. These classes are offered as a predefined data classification system.
 
 # Input {.unnumbered}
 
 **User’s Input**
 
-1.  Selection of a classification schema.
-2.  User-defined list of LULC classes.
-3.  User-provided prompt for Artificial Intelligent (AI).
+1.  Default LULC class list.
+2.  Manually entered LULC class list.
+3.  Uploaded LULC class list.
 
 **Automatic System Input**
 
 1.  FAO LULC classes.
 2.  RESTORE+ LULC classes.
 
-**Input from Other Module**
-
-1.  User-selected AOI (@sec-selection-of-aoi).
-2.  Near-cloud-free satellite imagery (@sec-satellite-imagery-post-processing).
-
 # Output {.unnumbered}
 
 LULC classification table
 
-# Process {.unnumbered}
+# Process
 
 ```{mermaid}
 flowchart TD
 
-A([<a href="#classification-schema-selection">Classification Schema Selection</a>])
-B([<a href="#sec-hierarchical-classification-schema">Hierarchical Classification Schema</a>])
-C([<a href="#sec-non-hierarchical-classification-schema">Non-Hierarchical Classification Schema</a>])
-D([<a href="#ai-generated-lulc-classification-recommendation">AI-Generated LULC Classification Recommendation</a>])
+A([<a href="#sec-selection-of-classification-schema">Selection of Classification Schema</a>])
+B([<a href="#sec-user-selecting-the-default-system-classification">User Selecting the Default System's Classification</a>])
+C([<a href="#sec-user-uploading-their-own-classification">User Uploading Their Own Classification</a>])
+D([<a href="#sec-user-entering-the-classification-manually">User Entering the Classification Manually</a>])
 E([<a href="#validation-of-input-data">Validation of Input Data</a>])
-F([<a href="#sec-saving-the-lulc-classification-table">Saving the LULC Classification Table</a>])
+F([<a href="#sec-saving-the-lulc-classification-table">Downloading and Saving the LULC Classification Table</a>])
 
 %% Flow connections
-A -->|Hierarchical| B
-A -->|Non-Hierarchical| C
+A --> B
+A --> C
+A --> D
 
-B --> D
-C --> D
-
+B --> E
+C --> E
 D --> E
+
+
 E -->|Valid| F
 E -->|Invalid| A
-
 ```
 
-## Selection of Classification Scheme and LULC Input Method
-
-### Classification Schema Selection
+## Selection of Classification Schema {#sec-selection-of-classification-schema}
 
 **Front-end**
 
-The user selects either a hierarchical or non-hierarchical classification schema.
+The user has the option to use the system’s default classification schema, upload a file containing their own classification scheme, or enter the classification manually.
 
 **Back-end**
 
-1.  If the user choose hierarchical schema, the system proceeds to @sec-hierarchical-classification-schema  
-2.  If the user choose non-hierarchical schema, the system proceeds to @sec-non-hierarchical-classification-schema  
+1.  If the user chooses the default schema, the system proceeds to @sec-user-selecting-the-default-system-classification
+2.  If the user chooses to upload their own schema, the system proceeds to @sec-user-uploading-their-own-classification
+3.  If the user chooses to enter the classification manually, the system proceeds to @sec-user-entering-the-classification-manually
 
-### Hierarchical Classification Schema {#sec-hierarchical-classification-schema}
+### User Selecting the Default System's Classification {#sec-user-selecting-the-default-system-classification}
 
 **Front-end**
 
-The user fills in four columns: ID, Level, Class Name, and Colour, with a hierarchical User Interface (UI) form to simplify creating multi-level class structures.
+If the default classification schema is selected, the user chooses a list of LULC classes from either the RESTORE+ or LCCS dataset.
 
 **Back-end**
 
-The system receives user’s input and saves it as a variable.
+1.  The system loads the default N classes from the database and displays the classification in tabular format with an N-class template containing the attributes: ID, Class, and Color Code.
+2.  The system then records the user's selection in its internal database table.
 
-### Non-Hierarchical Classification Schema {#sec-non-hierarchical-classification-schema}
+### User Uploading Their Own Classification {#sec-user-uploading-their-own-classification}
 
 **Front-end**
 
-The user fills in four columns: ID, Level, Class Name, and Colour.
+1.  The user uploads the `.XLSX`, `.XLS`, or `.CSV` file.
+2.  If there is an error, the user receives a warning and is prompted to re-upload the corrected file or format.
 
 **Back-end**
 
-The system receives user’s input and saves it as a variable.
+1.  The system displays an Upload button.
 
-### AI-Generated LULC Classification Recommendations
+2.  The system validates the uploaded file, checking:
+
+    -   The file is not corrupt.
+    -   The format is valid.
+    -   The file size is within the allowed limit.
+    -   The file is not password-protected.
+
+3.  The system then validates and extracts data from sheets, cells, rows, and columns, converting it into a Pandas DataFrame. It checks whether the data is present or empty.
+
+4.  If the validation is successful, the system displays a preview of the data in a table and provides a verification result notification.
+
+### User Entering the Classification Manually {#sec-user-entering-the-classification-manually}
 
 **Front-end**
 
-The user can choose to create an AI prompt to generate potential LULC classes.
+1.  The user fills out the input form containing ID, Class, and Color Code fields, and optionally the Description column.
+2.  The system warns the user if the form is incomplete or data conversion fails.
 
 **Back-end**
 
-## Validation of Input Data
+1.  The system displays the input form and checks that all required columns are filled.
+2.  Once the input form is converted into a Pandas DataFrame, the data are previewed in a table with a verification status.
 
-### Validation of Input Data
+## Downloading and Saving the LULC Classification Table {#sec-saving-the-lulc-classification-table}
+
+### Downloading and Saving the LULC Classification Table
 
 **Front-end**
 
-The user will be alerted with clear instructions if any errors are detected.
+1.  The user can download the table in Excel file format and save it in their local drive.
+2.  The system confirms the download; the user then proceed to [Module 3](@sec-module-3).
 
 **Back-end**
 
-The system validates the user’s input for completeness and correctness. If errors or missing inputs are detected, the system generates specific notifications for the user’s guidance. If the data is valid, the process proceeds to @sec-saving-the-lulc-classification-table.
-
-## Saving the LULC Classification Table {#sec-saving-the-lulc-classification-table}
-
-### Saving the LULC Classification Table
-
-**Front-end**
-
-The user receives a confirmation and can proceed to the next step.
-
-**Back-end**
-
-Once validated, the system saves the classification table as a variable to use in subsequent modules.
+1.  The system provides a button to download the result file.
+2.  The classification table is saved as a variable for use in subsequent modules.

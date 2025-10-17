@@ -1,5 +1,168 @@
-# Module 6 {#module-6 .unnumbered}
+# Module 6: LULC Map Generation {#sec-module-0}
 
-This is the first module
+# Module Overview {.unnumbered}
 
-## What happens in this module?
+This module provides functionality for users to generate the final LULC map as the primary output product, derived from the validated and optimized classification model developed in Modules 1-5. Before the processing begins, it ensures that all required inputs - such as satellite imagery, classification schemes, and training samples - are properly prepared and validated. Users can specify data splits, select classification modes, perform hyperparameter tuning optimization, and apply the trained model to the entire AOI to produce a high-quality, georeferenced LULC map. The module supports Random Forest (RF) based classification for adaptability, aligning with hierarchical or non-hierarchical schemes from [Module 2](@sec-module-2), and incorporates feedback from optional covariate enhancements in [Module 5](@sec-module-5). Upon completion, users receive a displayable, analyzable, and downloadable map with metadata, enabling applications such as deforestation monitoring or conservation planning.
+
+## Input {.unnumbered}
+
+**User’s Input**
+
+1.  Agreement to proceed after input review (yes/no).
+2.  RF hyperparameters: number of trees (`n_tree`), variables per split (`var_split`), minimum leaf population (`min_leaf_pop`).
+
+**Automatic System Input**
+
+1.  None.
+
+**Input from Other Modules**
+
+1.  Near-cloud-free satellite imagery within the AOI ([Module 1](@sec-module-1)).
+2.  LULC classification scheme table ([Module 2](@sec-module-2)).
+3.  Georeferenced training dataset ([Module 3](@sec-module-3)).
+4.  Validation dataset ([Module 3](@sec-module-3)).
+5.  Validated sample data and separability results ([Module 4](@sec-module-4)).
+
+## Output {.unnumbered}
+
+-   Trained RF classification model.
+-   Classified LULC raster map.
+-   Model accuracy report if validation data available (including overall accuracy, precision, recall, F1-score, Kappa, model error matrix).
+
+## Process {.unnumbered}
+
+```{mermaid}
+flowchart TD
+
+%% CHECKING PREREQUISITES
+A([<a href="#sec-checking-prerequisites">Check Prerequisites</a>])
+B([Prompt Return to Previous Modules if Needed])
+C([<a href="#sec-review-inputs">Review Inputs</a>])
+
+A --> B
+B --> C
+
+%% MODEL TRAINING AND CLASSIFICATION
+D([<a href="#sec-define-classification-specifications">Define Classification Specifications</a>])
+E([<a href="#sec-feature-extraction">Feature Extraction</a>])
+F([<a href="#sec-train-random-forest-model">Train Random Forest Model</a>])
+G([<a href="#sec-model-accuracy-test">Model Accuracy Test</a>])
+H([<a href="#sec-classification-apply-model-to-entire-image">Classification</a>])
+I([<a href="#sec-review-classification-results">Review Classification Results</a>])
+J([<a href="#sec-module-7">Proceed to Module 7</a>])
+
+C --> D
+D --> E
+E --> F
+F --> G
+G --> H
+H --> I
+I -->|Satisfied| J
+I -->|Unsatisfied| D
+
+```
+
+## Checking Prerequisites from Previous Modules
+
+### Front-end
+
+The user is notified if inputs are insufficient or test data is missing, and prompted to return to previous modules (e.g., [Module 3](@sec-module-3) for test data) as needed.
+
+### Back-end
+
+1.  The system performs a parameter and input suitability test to verify availability and compatibility of inputs from Modules 1-5 (such as imagery, scheme, training data, optional validation data).
+2.  Test data availability from [Module 3](@sec-module-3).
+3.  If any inputs are missing or incompatible, the system directs the user to return to the incomplete module.
+4.  If no test data, suggest the user return to [Module 3](@sec-module-3) and correct the sample.
+5.  The system directs the user to return to the module that has not been completed.
+
+## Model Training and Classification
+
+### Review Inputs {#sec-review-inputs}
+
+#### Front-end
+
+1.  The user reviews the summary text report to decide if they agree to proceed.
+    -   If yes, continue to define specifications.
+    -   If no, return to relevant previous modules.
+2.  Users return to previous modules as needed.
+
+#### Back-end
+
+1.  The system generates and displays a summary report of variables for the classification process, including imagery details, classification scheme, and training data summary.
+2.  Displays a summary text and dataframe.
+3.  Lists variables used in classification.
+
+### Define Classification Specifications {#sec-define-classification-specifications}
+
+#### Front-end
+
+1.  User enters RF hyperparameter values:
+    -   Number of trees (n_tree)
+    -   Variables per split (var_split)
+    -   Minimum leaf population (min_leaf_pop)
+
+#### Back-end
+
+1.  Stores user-entered hyperparameters.
+2.  Applies them as main parameters for Random Forest training.
+
+### Feature Extraction {#sec-feature-extraction}
+
+#### Front-end
+
+Runs automatically after specifications are defined.
+
+#### Back-end
+
+Performs feature extraction by sampling pixel values from imagery based on training (and optional validation) samples.
+
+### Train Random Forest Model {#sec-train-random-forest-model}
+
+#### Front-end
+
+Shows user progress during training.
+
+#### Back-end
+
+1.  Trains RF model using prepared data:
+    -   Bootstrap sampling for subsets per tree.
+    -   Builds multiple decision trees.
+    -   Uses majority voting for predictions.
+2.  Produces trained model asset.
+
+### Model Accuracy Test {#sec-model-accuracy-test}
+
+#### Front-end
+
+Displays accuracy report if validation data is available.
+
+#### Back-end
+
+1.  Applies model to validation data if available.
+2.  Generates accuracy metrics: overall accuracy, precision, recall, F1-score, Kappa, error matrix.
+3.  Skips if no validation data.
+
+### Classification (Apply Model to Entire Image) {#sec-classification-apply-model-to-entire-image}
+
+#### Front-end
+
+Runs after training with progress shown.
+
+#### Back-end
+
+1.  Applies trained model to entire imagery.
+2.  Generates classification summary and result data.
+
+### Review Classification Results {#sec-review-classification-results}
+
+#### Front-end
+
+1.  User reviews model results and map.
+    -   If satisfied, proceed to [Module 7](@sec-module-7).
+    -   If not, adjust parameters or return to prior modules.
+
+#### Back-end
+
+1.  Displays model learning and accuracy results.
+2.  Suggests corrections or parameter checks if unsatisfied.
