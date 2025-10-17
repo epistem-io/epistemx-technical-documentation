@@ -54,22 +54,6 @@ F --> E
 
 ```
 
-## Initialize Logging and Classes
-
-### Initialize Logging and Classes
-
-**Back-end**
-
-The system configure global logging and set up two main classes for data retrieval and statistics.
-
-::: callout-tip
-## Related Functions
-
-`logging.basicConfig()` to sets up global log format.
-
-`Reflectance_Data.__init__()` to initializes logger for this class.
-:::
-
 ## Selection of AOI {#sec-selection-of-aoi}
 
 ::: callout-note
@@ -170,7 +154,7 @@ The user is prompted to fill in these parameters:
 Local helper function: `parse_year_or_date()`
 :::
 
-4.  The system crops and mosaics the selected satellite imagery to match the user’s AOI and date range.
+4.  The system clips and mosaics the selected satellite imagery to match the user’s AOI and date range.
 
 ::: callout-tip
 ## Related Functions
@@ -231,9 +215,6 @@ Conditional logging via `self.logger.info()` / `self.logger.warning()`
     -   Date range
     -   Cloud cover range
 
-::: callout-tip
-:::
-
 **Back-end**
 
 1.  The system produces near-cloud-free Landsat imagery for the defined AOI, saves it as a variable, and visualizes the processed datasets.
@@ -241,7 +222,30 @@ Conditional logging via `self.logger.info()` / `self.logger.warning()`
 2.  A summary report of metadata is generated, including acquisition details, cloud cover statistics, and a summary of processing steps applied.
 
 ::: callout-tip
-## Related function
+:::
 
-Reflectance_Stats.get_collection_statistics()
+::: callout-tip
+## Main Related function
+
+`rename_landsat_bands ()` to rename bands per sensor type, so all sensors have common names.
+
+`Reflectance_Data.get_optical_data()` to get reflectance data from all input parameters.
+
+`ee.Filter.lt()` to remove images exceeding cloud cover limit.
+
+`parse_year_or_date()` to convert year input (e.g., 2022) into full date strings.
+
+`ee.ImageCollection()` to load a satellite image collection.
+
+`.filterBounds()` to clip and mosaic the satellite image to AOI.
+
+`.filterDate()` to filter the image collection by a date range.
+
+`mask_landsat_sr()` to mask cloud and cloud shadow.
+
+`self.logger.info()` to logs informational message.
+
+`self.logger.warning()` to logs warning if images not found.
+
+`Reflectance_Stats.get_collection_statistics()` to compute summary statistic of reflectance values of an ee.ImageCollection over an AOI and time range.
 :::
