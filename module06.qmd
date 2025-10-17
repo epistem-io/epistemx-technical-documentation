@@ -58,7 +58,7 @@ F --> G
 G --> H
 H --> I
 I -->|Satisfied| J
-I -->|Unsatisfied| D
+I -->|Unsatisfied| D   
 
 ```
 
@@ -107,6 +107,18 @@ The user is notified if inputs are insufficient or test data is missing, and pro
 1.  Stores user-entered hyperparameters.
 2.  Applies them as main parameters for Random Forest training.
 
+::: callout-tip
+Related functions from epistemx.module_6_part2 import Hyperparameter_tuning
+
+Hyperparameter_tuning.Hard_classification_tuning
+
+Hyperparameter_tuning.Soft_classification_tuning
+
+Hyperparameter_tuning.hard_tuning_kfold
+
+Hyperparameter_tuning.soft_tuning_kfold
+:::
+
 ### Feature Extraction {#sec-feature-extraction}
 
 #### Front-end
@@ -116,6 +128,16 @@ Runs automatically after specifications are defined.
 #### Back-end
 
 Performs feature extraction by sampling pixel values from imagery based on training (and optional validation) samples.
+
+::: callout-tip
+Related functions from epistemx.module_6_part1 import FeatureExtraction
+
+FeatureExtraction.random_split
+
+FeatureExtraction.stratified_split
+
+FeatureExtraction.stratified_kfold
+:::
 
 ### Train Random Forest Model {#sec-train-random-forest-model}
 
@@ -154,6 +176,14 @@ Runs after training with progress shown.
 1.  Applies trained model to entire imagery.
 2.  Generates classification summary and result data.
 
+::: callout-tip
+Related functions from epistemx.module_6_part3_and_7 import Generate_and_evaluate_LULC
+
+Generate_and_evaluate_LULC.multiclass_classification
+
+Generate_and_evaluate_LULC.ovr_classification
+:::
+
 ### Review Classification Results {#sec-review-classification-results}
 
 #### Front-end
@@ -165,4 +195,13 @@ Runs after training with progress shown.
 #### Back-end
 
 1.  Displays model learning and accuracy results.
-2.  Suggests corrections or parameter checks if unsatisfied.
+2.  Suggests corrections or parameter checks if unsatisfied. 
+
+::: callout-tip
+
+Related functions from epistemx.module_6_part3_and_7 import Generate_and_evaluate_LULC
+
+Generate_and_evaluate_LULC.thematic_assessment
+
+Generate_and_evaluate_LULC.print_metrics 
+:::
