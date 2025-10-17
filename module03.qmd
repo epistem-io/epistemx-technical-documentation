@@ -20,9 +20,16 @@ In supervised classification, the quality of training data directly determines t
 
 **Input from Other Modules**
 
-1.  User-selected AOI (@sec-selection-of-aoi).
+<!-- 1.  User-selected AOI (@sec-selection-of-aoi). The image submitted to this module is already in the AOI  -->
+
 2.  Near-cloud-free satellite imagery (@sec-satellite-imagery-post-processing).
 3.  LULC classification table (@sec-saving-the-lulc-classification-table).
+
+::: callout-tip
+## Input Variables
+
+`training_data` : ee.FeatureCollection - Training polygons/points `image`: ee.Image - The image to extract spectral values `class_property` : str - Property/columen containing class ID (unique) `region` : ee.Geometry - Optional region to limit analysis `class_name_property`: str - Property/column containing class name
+:::
 
 # Output {.unnumbered}
 
@@ -31,43 +38,6 @@ In supervised classification, the quality of training data directly determines t
 -   Statistical analyses of the datasets.
 
 # Process {.unnumbered}
-
-```{mermaid}
-flowchart TD
-
-A([<a href="#sec-initial-option-for-training-data-source">Initial Option for Training Data Source</a>])
-B([<a href="#sec-user-upload-their-own-training-data">User Upload Their Own Training Data</a>])
-C([<a href="#sec-options-when-user-doesnt-have-training-data">Options When User Doesn't Have Training Data</a>])
-D([<a href="#sec-on-screen-sampling">On-Screen Sampling</a>])
-E([<a href="#sec-using-default-restore-dataset">Using Default RESTORE+ Dataset</a>])
-F([<a href="#sec-using-epistem-x-repository">Using Epistem-X Repository</a>])
-G([<a href="#sec-preview-of-verified-training-data">Preview of Verified Training Data</a>])
-H([<a href="#sec-data-splitting">Data Splitting</a>])
-I([Train Data Final → Proceed to Module 4 and 6])
-J([Valid Data Final → Proceed to Module 6])
-K([<a href="#sec-verifying-the-uploaded-training-data">Verifying the Uploaded Training Data</a>])
-
-%% Flow connections
-A -->|User has training data| B
-A -->|User doesn't have training data| C
-
-B --> K
-K --> |Invalid input data| B
-K --> |Input data is valid| G
-
-C -->|Use on-screen sampling| D
-C -->|Use RESTORE+ dataset| E
-C -->|Use Epistem-X repository| F
-
-D --> G
-E --> G
-F --> G
-H --> I
-H --> J
-
-G -->|User is satisfied| H
-G -->|User is not satisfied| D
-```
 
 ## Checking Prerequisites from Previous Modules
 
@@ -81,6 +51,12 @@ The system checks whether the [default system's classification](@sec-user-select
 
 1.  If yes, the system proceeds directly to @sec-preview-of-verified-training-data.
 2.  If no, the system verifies the availability of output products from previous modules. If the required products are not available, the system notifies the user to complete the previous modules before proceeding.
+
+::: callout-tip
+## Backend function
+
+None, only front-end interface
+:::
 
 ## Training Data Generation
 
@@ -100,22 +76,30 @@ The system checks whether the [default system's classification](@sec-user-select
 **Back-end**
 
 1.  If the user chooses to upload their own training data, the system will continue to @sec-user-upload-their-own-training-data.
-2.  If the user does not have their own training data, the system will continue to @sec-user-does-not-have-training-data.
+2.  If the user does not have their own training data, the system will continue to @user-dont-have-training-data.
+
+::: callout-tip
+## Backend function
+
+None, only front-end interface
+:::
 
 ### User Uploading Their Own Training Data {#sec-user-upload-their-own-training-data}
 
 **Front-end**
 
 1.  The user uploads one of the supported file types.
-2.  The user chooses Yes or No whether they want to add more training data through on-screen sampling.
 
 **Back-end**
 
-1.  The system provides an upload interface that accepts only `.SHP` and `.ZIP` file (containing point features with LULC class attributes) or `.CSV`/`.XLS`/`.XLSX` format (containing point coordinates and associated LULC class labels established in [Module 2](@sec-module-2)). The system will then check if the uploaded data fulfills the requirement. If discrepancies are detected, the system will flag the inconsistent classes. The user can then either:
-    -   Re-upload corrected training data or
-    -   Add the missing or inconsistent samples through the system’s on-screen sampling interface (@sec-on-screen-sampling).
-2.  If the user chooses to add training data with on-screen sampling, the system will proceed to @sec-on-screen-sampling, with additional uploaded samples appearing on the interface.
-3.  If the user does not want to add training data with on-screen sampling, the system will analyze the training data and proceed to @sec-preview-of-verified-training-data.
+1.  The system provides an upload interface that accepts only `.SHP` and `.ZIP` file (containing point features with LULC class attributes) or `.CSV`/`.XLS`/`.XLSX` format (containing point coordinates and associated LULC class labels established in [Module 2](@sec-module-2)). 
+
+::: callout-tip
+## Backend function
+
+Not developed
+
+:::
 
 ### User Does Not Have Training Data {#user-dont-have-training-data}
 
@@ -123,33 +107,41 @@ The system checks whether the [default system's classification](@sec-user-select
 
 The user is given the following options to proceed:
 
-1.  Use on-screen sampling.
+<!-- 1.  Use on-screen sampling. Feature not developed yet-->
 2.  Use RESTORE+ default data.
 3.  Use Epistem-X public repository.
 
 **Back-end**
 
-1.  If the user uses on-screen sampling, the system will proceed to @sec-on-screen-sampling.
+<!-- 1.  If the user uses on-screen sampling, the system will proceed to @sec-on-screen-sampling. -->
 2.  If the user uses RESTORE+ default data, the system will proceed to @sec-using-default-restore-dataset.
 3.  If the user uses Epistem-X public repository, the system will proceed to @sec-using-epistem-x-repository.
 
-### On-Screen Sampling {#sec-on-screen-sampling}
+<!-- ### On-Screen Sampling {#sec-on-screen-sampling} -->
 
-**Front-end**
+<!-- **Front-end** -->
 
-1.  The User Interface (UI) provides an interactive environment for visual sampling on a basemap.
-2.  A two-way binding mechanism ensures that every sampling action on the basemap is immediately reflected in the panel, and vice versa.
+<!-- 1.  The User Interface (UI) provides an interactive environment for visual sampling on a basemap. -->
 
-**Back-end**
+<!-- 2.  A two-way binding mechanism ensures that every sampling action on the basemap is immediately reflected in the panel, and vice versa. -->
 
-1.  The system will display a panel containing a table with the following columns:
-    -   Land cover class name.
-    -   Number of identified samples.
-    -   Button to add points on the basemap.
-2.  The user selects the land cover class in the table to which sample data will be added:
-    -   The user performs on-screen sampling (adding, removing, or relocating points).
-    -   The system updates the “number of identified samples” column in real time while the user performs on-screen sampling.
-3.  The system provides a button to save the results of the on-screen sampling, which the user can click once sufficient data has been added and stores it as a variable `OnScreenSampledReferenceData`.
+<!-- **Back-end** -->
+
+<!-- 1.  The system will display a panel containing a table with the following columns: -->
+
+<!--     -   Land cover class name. -->
+
+<!--     -   Number of identified samples. -->
+
+<!--     -   Button to add points on the basemap. -->
+
+<!-- 2.  The user selects the land cover class in the table to which sample data will be added: -->
+
+<!--     -   The user performs on-screen sampling (adding, removing, or relocating points). -->
+
+<!--     -   The system updates the “number of identified samples” column in real time while the user performs on-screen sampling. -->
+
+<!-- 3.  The system provides a button to save the results of the on-screen sampling, which the user can click once sufficient data has been added and stores it as a variable `OnScreenSampledReferenceData`. -->
 
 ### Using Default RESTORE+ Datasets {#sec-using-default-restore-dataset}
 
@@ -160,6 +152,13 @@ The system provides a “Use Data” button to define the RESTORE+ datasets as t
 **Back-end**
 
 The system recalls RESTORE+ datasets and displays the datasets in a panel containing this information: LULC class and number of identified samples inside the AOI.
+
+::: callout-tip
+## Backend function
+
+Not developed
+
+:::
 
 ### Using Epistem-X Repository {#sec-using-epistem-x-repository}
 
@@ -178,16 +177,24 @@ A “Use Data” button is provided to define the selected public datasets as th
 
 The system displays the Epistem-X public sample data repository in a panel. Each dataset is presented in a table with at least three columns: data location (shown as a map inset), land cover class name, and the number of identified samples.
 
+::: callout-tip
+## Backend function
+
+Not developed
+
+:::
+
 ## Verifying the Uploaded Training Data {#sec-verifying-the-uploaded-training-data}
 
 **Front-end**
 
 1.  The user receives a notification indicating the status of their uploaded sampling data:
 
-    -   Sufficient - the user can proceed to @sec-preview-of-verified-training-data
-    -   Insufficient - the number of sample points for one or more classes is inadequate. The user can either:
-        -   Add more training data and proceed to @sec-on-screen-sampling, or
-        -   Skip adding data and proceed directly to @sec-preview-of-verified-training-data in which case a notification warns that the classification result may have low accuracy.
+    -   Verification success - the user can proceed to @sec-preview-of-verified-training-data
+    -   Verification fail - the number of sample points for one or more classes is inadequate. 
+    <!-- If verification failed, the user can either: -->
+    <!--     -   Add more training data and proceed to @sec-on-screen-sampling, or -->
+    <!--     -   Skip adding data and proceed directly to @sec-preview-of-verified-training-data in which case a notification warns that the classification result may have low accuracy. -->
 
 **Back-end**
 
@@ -195,6 +202,13 @@ The system displays the Epistem-X public sample data repository in a panel. Each
 
     -   The list and count of unique classes.
     -   The number of sample points per class.
+    
+::: callout-tip
+## Backend function
+
+`sample_stats`
+
+:::
 
 2.  Verification for Module 1 and 2 includes:
 
@@ -208,30 +222,44 @@ The system displays the Epistem-X public sample data repository in a panel. Each
 
 4.  Informational notifications are provided for: LULC classes located outside the AOI, not matching those defined in Module 2, and with missing or insufficient sample points.
 
-5.  Next, the system evaluates the adequacy of sample data quantity for each class.
+6.  Next, the system evaluates the adequacy of sample data quantity for each class.
+
+::: callout-tip
+## Backend function
+
+Not developed yet. Needs error handling of each verification steps
+
+:::
 
 ## Preview of Verified Training Data {#sec-preview-of-verified-training-data}
 
 **Front-end**
 
-The user reviews the `TrainDataRecap` displayed in a table.
+The user reviews the training data summary displayed in a table.
 
 **Back-end**
 
 The system presents a recap table with columns for ID, class, number of points, and percentage.
 
-## Data Splitting {#sec-data-splitting}
+::: callout-tip
+## Backend function
 
-**Front-end**
+`get_sample_stats_df`
 
-The user selects one of the following options for splitting the `TrainDataRecap`:
+:::
 
-1.  Use all sample points for training, or
-2.  Split sample points into training and validation, specifying the desired percentage.
+<!-- ## Data Splitting {#sec-data-splitting} MOVED TO MODULE 6-->
 
-**Back-end**
+<!-- **Front-end** -->
 
-The system provides options for splitting the sample point data for training and validation:
+<!-- The user selects one of the following options for splitting the training data summary: -->
 
-1.  Use all sample points for training - the system consolidates all data into a single DataFrame or variable, stored as `TrainDataFinal` for use in [Module 4](@sec-module4) and [6](@sec-module-6).
-2.  Split the sample points between training and validation - the system partitions the data according to the user-specified percentage defined in the `TrainSplitPct` variable. The `TrainDataFinal` (for training) is stored in [Module 4](@sec-module-4) and [6](@sec-module-6), while `ValidDataFinal` (for validation) is stored in Module [6](@sec-module-6).
+<!-- 1.  Use all sample points for training, or -->
+<!-- 2.  Split sample points into training and validation, specifying the desired percentage. -->
+
+<!-- **Back-end** -->
+
+<!-- The system provides options for splitting the sample point data for training and validation: -->
+
+<!-- 1.  Use all sample points for training - the system consolidates all data into a single DataFrame or variable, stored as a new object to be used in [Module 4](@sec-module4) and [6](@sec-module-6). -->
+<!-- 2.  Split the sample points between training and validation - the system partitions the data according to the user-specified percentage defined in the `TrainSplitPct` variable. The `TrainDataFinal` (for training) is stored in [Module 4](@sec-module-4) and [6](@sec-module-6), while `ValidDataFinal` (for validation) is stored in Module [6](@sec-module-6). -->

@@ -14,48 +14,15 @@ This module enables users to evaluate the spectral separability of sample classe
 **Input from Other Modules**
 
 1.  Near-cloud-free satellite imagery within the AOI (@sec-satellite-imagery-post-processing).
-2.  `TrainDataFinal` (@sec-data-splitting).
+2.  Training Data (@sec-module-3).
 
 # Output {.unnumbered}
 
-1.  Basic statistics (mean, median, variance, and standard deviation).
-2.  Separability values.
+<!-- 1.  Basic statistics (mean, median, variance, and standard deviation). -->
+
+1.  Separability analysis result in diagram visualization and text description.
 
 # Process {.unnumbered}
-
-```{mermaid}
-flowchart TD
-
-%% Main entry
-A([<a href="#sec-specification-of-separability-analysis-parameters">Specification of Separability Analysis Parameters</a>])
-B[/Methodology/]
-C[/ID and Class Name/]
-D[/Pixel Size/]
-E([<a href="#sec-reviewing-separability-results">Reviewing Separability Results</a>])
-F[\Separability Analysis\]
-G[\Sample Stat. Calculation\]
-H([<a href="#sec-spectral-profile-visualization">Spectral Profile Visualization</a>])
-
-%% Flow connections
-A --> B
-A --> C
-A --> D
-
-B --> E
-C --> E
-D --> E
-
-E --> F
-E --> G
-
-F --> H
-G --> H
-
-F -->|Error|A
-G -->|Error|A
-
-
-```
 
 ## Specification of Separability Analysis Parameters {#sec-specification-of-separability-analysis-parameters}
 
@@ -64,7 +31,7 @@ G -->|Error|A
 **Front-end**
 
 1.  The user defines the parameters and selects the method for separability analysis.
-2.  Inputs include ID, Class Name, and pixel size.
+2.  Inputs include ID, Class Name, and pixel size of the samples that will go through the separability analysis.
 
 **Back-end**
 
@@ -74,9 +41,15 @@ The system provides three parameters:
 2.  ID and Class Name as a drop down selection.
 3.  Pixel Size as numeric input.
 
-## Reviewing Separability Results {#sec-reviewing-separability-results}
+::: callout-tip
+## Backend function
 
-### Reviewing Separability Result {#sec-selection-of-lulc-classification-model}
+Receives input variable from user choice in the front-end
+:::
+
+## Run Separability Analysis {#sec-run-separability-analysis}
+
+### Validating Separability Input {#sec-reviewing-separability-input}
 
 **Front-end**
 
@@ -89,25 +62,82 @@ The system provides three parameters:
 
 1.  The system validates input parameters and prompts the user to review any incomplete entries.
 
+::: callout-tip
+## Backend function
+
+Not developed
+:::
+
 2.  If it is incomplete, the system displays an error and prompts the user to review the analysis parameters.
 
-3.  The system executes the separability analysis workflow that consist of two processes:
+::: callout-tip
+## Backend function
+
+Not developed. Needs error handling
+:::
+
+-   The system executes the separability analysis workflow that consist of two processes:
 
     -   Sample Statistics Calculation.
     -   Separability Analysis.
 
-4.  The system executes the workflow as follows:
+-   The system executes the workflow of **Sample Statistics Calculation** as follows:
 
     -   Calculates the sample proportion for each class.
+
+        ::: callout-tip
+        ## Backend function
+
+        `limit_samples_per_class` This function limits the number of samples for each class that will extract the band values to prevent computational time out
+        :::
+
     -   Extracts pixel values based on sample locations and the selected imagery.
-    -   Computes basic statistics (mean, median, variance, and standard deviation) per class and stores them in a `DataFrame` for visualization.
-    -   Runs the separability analysis using `TrainDataFinal`.
-    -   For each pair of classes, the system calculates separability metrics, identifies the most difficult class pairs to distinguish, and categorizes results into three levels:
+
+        ::: callout-tip
+        ## Backend function
+
+        `extract_spectral_values`
+        :::
+
+    -   Computes basic statistics (mean, median, variance, and standard deviation) per class and stores them in a dataframe for visualization.
+
+        ::: callout-tip
+        ## Backend function
+
+        `sample_pixel_stats` `get_sample_pixel_stats_df`
+        :::
+
+-   The system executes the workflow of **Separability Analysis** as follows:
+
+    -   For each of the classes chosen by user to run the separability analysis, the system calculates separability metrics.
+
+        ::: callout-tip
+        ## Backend function
+
+        `check_class_separability`, with sub-function `_jeffries_matusita_distance` or `transform_divergence`
+        :::
+
+    -   Separability analysis identifies the most difficult class pairs to distinguish, and categorizes results into three levels:
+
         -   Good separability (\>1.8): Classes are well separated.
+
         -   Weak/Marginal separability (1.0-1.8): Classes overlap partially.
+
         -   Class confusion (\<1.0): Classes require improvement.
-    -   Results, along with the basic statistics table, are exported as a `.TXT` report.
-    -   Detailed error messages are provided if any errors occur.
+
+            ::: callout-tip
+            ## Backend function
+
+            `separability_level`
+            :::
+
+        -   Pair class with the lowest level of separability is also reported
+
+            ::: callout-tip
+            ## Backend function
+
+            `lowest_separability`
+            :::
 
 ## Spectral Profile Visualization {#sec-spectral-profile-visualization}
 
@@ -117,7 +147,7 @@ The system provides three parameters:
 
 1.  The user selects the spectral bands for visualization.
 2.  If satisfied with the result, the user proceed to the next module.
-3.  If not satisfied, the user can return to [Module 3](@sec-module-3) to modify the `TrainDataFinal`.
+3.  If not satisfied, the user can return to [Module 3](@sec-module-3) to modify the training data input.
 
 **Back-end**
 
@@ -126,10 +156,34 @@ The system provides three parameters:
     -   If successful, visualization proceeds.
     -   If unsuccessful, visualization is blocked and the user is prompted to complete the parameter specification (@sec-specification-of-separability-analysis-parameters).
 
+::: callout-tip
+## Backend function
+
+Error handling in `check_class_separability` function
+:::
+
 2.  A visualization canvas and required Python libraries are provided to support:
 
     -   Histogram
-    -   Box plot
-    -   Scatter plot (2D and 3D)
 
-3.  Helper Text guides the user in interpreting the plots effectively.
+        ::: callout-tip
+        ## Backend function
+
+        `plot_facet_histograms`
+        :::
+
+    -   Boxplot
+
+        ::: callout-tip
+        ## Backend function
+
+         `plot_boxplots_by_band`
+        :::
+
+    -   Table containing information of the separability result summary
+
+        ::: callout-tip
+        ## Backend function
+
+        `get_separability_df`
+        :::
