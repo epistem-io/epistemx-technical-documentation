@@ -1,0 +1,462 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Epistem-X Technical Documentation",
+    "section": "",
+    "text": "About the project\nThe Epistem initiative aims to develop an open source landscape monitoring technology to empower actors involved in efforts to avoid deforestation, forest/landscape restoration, and other nature-based solutions (NbS). These actors cover a wide range of institutions whose needs and usage for landscape monitoring data represent diverse needs to address landscape degradation and restoration. They typically suffer from the lack of accessible data such as land cover map, change map, as well as ground-truthing/reference datasets that are fundamental for planning, mobilizing funds, monitoring and evaluating accountability of NbS implementation. Furthermore, even when monitoring tools exist, making sure they integrate into real-world NbS implementations and address the specific operational hurdles faced by users on the ground remains a substantial challenge. In response to these pressing NbS data needs, we are developing Epistem-X, a landscape monitoring technology designed with the following key characteristics.\n\n\nEpistem-X",
+    "crumbs": [
+      "About the project"
+    ]
+  },
+  {
+    "objectID": "intro.html",
+    "href": "intro.html",
+    "title": "Introduction",
+    "section": "",
+    "text": "System Overview\nThis document is a technical specification for the Epistem-X workflow. It is intended for back-end engineers, remote sensing scientists, data engineers, and DevOps to implement a production-ready mapping pipeline.\nThe envisioned landscape monitoring system is designed to comprise three core components, as illustrated in Figure 1. These components work in an integrated manner to provide a robust, scalable, and flexible solution for generating high-quality Land Use and Land Cover (LULC) maps. By combining advanced algorithms, structured reference data, and user-friendly interfaces, the system will support diverse stakeholders in monitoring, managing, and making informed decisions about landscapes.",
+    "crumbs": [
+      "Introduction"
+    ]
+  },
+  {
+    "objectID": "intro.html#system-overview",
+    "href": "intro.html#system-overview",
+    "title": "Introduction",
+    "section": "",
+    "text": "Figure 1: System architecture and core components of the LULC monitoring system\n\n\n\n\nLULC Classification Algorithm\n[insert brief summary of all the modules]\n\n\nReference Data Repository\n[insert brief summary of Epistem-Y]\n\n\nUser Interface\n[insert UI description]",
+    "crumbs": [
+      "Introduction"
+    ]
+  },
+  {
+    "objectID": "intro.html#epistem-x-development-phases",
+    "href": "intro.html#epistem-x-development-phases",
+    "title": "Introduction",
+    "section": "Epistem-X Development Phases",
+    "text": "Epistem-X Development Phases\nEpistem-X will progress through a structured development lifecycle consisting of three phases. Phase 1 is targeted for completion by December 2025, followed by Phase 2, which is planned for delivery by June 2026.\n\nPhase 1: Express Map\n\n\n\n\n\n\nPhase 1 User’s Focus\n\n\n\nUsers seeking to create their first land cover map quickly, easily, and with high-quality results.\n\n\nPhase 1 serves as the primary entry point for all Epistem users. The platform provides a guided workflow designed to produce standardized, high-quality maps with minimal complexity. Users follow a core set of steps to achieve results without navigating complex options.\n[in this development phase, what can the user do with this tool? what are the inputs/outputs?]\n\n\nPhase 2: Map Studio\n\n\n\n\n\n\nPhase 2 User’s Focus\n\n\n\nUsers with foundational knowledge seeking more complex mapping, experimenting with additional datasets, and refining map details according to specific needs.\n\n\n\n\nPhase 3: Map Lab\n\n\n\n\n\n\nPhase 3 User’s Focus\n\n\n\nUsers requiring in-depth analysis, collaborative workflows, and the ability to learn from other Epistem users.",
+    "crumbs": [
+      "Introduction"
+    ]
+  },
+  {
+    "objectID": "intro.html#modules-overview",
+    "href": "intro.html#modules-overview",
+    "title": "Introduction",
+    "section": "Modules Overview",
+    "text": "Modules Overview\nThe workflow for generating LULC maps consists of eight sequential modules:\nModule 1: Generating cloud-free satellite images\nModule 2: Determining the LULC classification schema and classes\nModule 3: Obtaining representative training data\nModule 4: Performing separability analysis and selecting covariates\nModule 5: Incorporating non-image covariates to improve model accuracy\nModule 6: Generating the preliminary LULC map\nModule 7: Assessing thematic accuracy using independent validation data\nModule 8: Performing post-classification analysis and data housekeeping\nEach module builds on the previous one, ensuring a systematic and reproducible workflow from raw imagery to a validated, fully documented LULC map.",
+    "crumbs": [
+      "Introduction"
+    ]
+  },
+  {
+    "objectID": "module01.html",
+    "href": "module01.html",
+    "title": "1  Module 1: Acquisition of Near-Cloud-Free Satellite Imagery",
+    "section": "",
+    "text": "Module Overview\nThe output of this module is high-quality, near-cloud-free satellite imagery, which is essential for producing accurate and reliable land use and land cover (LULC) datasets. This module focuses on acquiring satellite imagery that has been pre-processed and corrected, including procedures such as cloud masking and shadow removal.",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Module 1: Acquisition of Near-Cloud-Free Satellite Imagery</span>"
+    ]
+  },
+  {
+    "objectID": "module01.html#sec-selection-of-aoi",
+    "href": "module01.html#sec-selection-of-aoi",
+    "title": "1  Module 1: Acquisition of Near-Cloud-Free Satellite Imagery",
+    "section": "1.1 Selection of AOI",
+    "text": "1.1 Selection of AOI\n\n\n\n\n\n\nNote\n\n\n\nSection 1.1.1, Section 1.1.2, Section 1.1.3 are options.\n\n\n\n1.1.1 AOI from Administrative Boundaries\nFront-end\nThe user selects an administration boundary.\nBack-end\nThe system queries the FAO Global Administrative Unit Layers (GAUL) 2015 datasets, which provide standardized information on country and sub-national boundaries, and saves the AOI as a variable\n\n\n\n\n\n\nRelated function\n\n\n\nfrom epistemx.helpers import get_aoi_from_gaul\n\n\n\n\n1.1.2 AOI from Shapefile\nFront-end\n\nThe user can upload their .SHP file. in .ZIP format that includes all necessary files (.SHP, .SHX, .DBF, .PRJ).\nThe user will get a feedback such as “AOI conversion completed!”, “Failed to convert AOI to Google Earth Engine Format”, “Geometry Validation Failed”, “Error Reading Shapefile”.\n\nBack-end\n\nThe system currently supports only shapefile in .ZIP format.\nAn Upload button is provided, allowing user to uploaded the file. It is then extracted to a temporary directory.\nNext, the system validates and repairs the shapefile geometries (if any errors are found) in a GeoDataFrame (.GDF), converts the cleaned geometries into an Earth Engine objects, and converts the coordinate system into WGS 1984.\nIf an error occurs still, the system displays an error message and suggests performing a shapefile simplification process using GIS software.\nThe system displays a small preview map centered on the AOI.\n\n\n\n1.1.3 AOI from On-Screen Digitizing\nFront-end\nThe user is presented with an interactive on-screen digitization process.\nBack-end\n[not developed yet]",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Module 1: Acquisition of Near-Cloud-Free Satellite Imagery</span>"
+    ]
+  },
+  {
+    "objectID": "module01.html#selecting-and-preparing-satellite-imagery",
+    "href": "module01.html#selecting-and-preparing-satellite-imagery",
+    "title": "1  Module 1: Acquisition of Near-Cloud-Free Satellite Imagery",
+    "section": "1.2 Selecting and Preparing Satellite Imagery",
+    "text": "1.2 Selecting and Preparing Satellite Imagery\n\n1.2.1 Input Spatial Image Parameters\nFront-end\nThe user is prompted to fill in these parameters:\n\nSpatial resolution (meters): Specify the desired spatial resolution.\nInput year: Choose either single-date or multi-year imagery.\nMaximum cloud cover: Set a preferred cloud cover threshold, or use the default value of 30%.\n\nBack-end\n\nThe system currently supports Landsat 1-4 at sensor radiance and Landsat 5-9 collection 2 surface reflectance Analysis Ready Data (ARD), excluding the thermal bands. Landsat mission availability is as follows:\n\nLandsat 1 Multispectral Scanner/MSS (1972 - 1978)\nLandsat 2 Multispectral Scanner/MSS (1978 - 1982)\nLandsat 3 Multispectral Scanner/MSS (1978 - 1983)\nLandsat 4 Thematic Mapper/TM (1982 - 1993)\nLandsat 5 Thematic Mapper/TM (1984 - 2012)\nLandsat 7 Enhanced Thematic Mapper Plus/ETM+ (1999 - 2021)\nLandsat 8 Operational Land Imager/OLI (2013 - present)\nLandsat 9 Operational Land Imager-2/OLI-2 (2021 - present)\n\nThe system retrieves images that match user’s selected criteria, including spatial resolution, year, and cloud cover. For single-year imagery, the system selects Landsat images from December 31st of year T or the lowest cloud cover scene available that year. For multi-year imagery, the system retrieves the lowest cloud cover image for each year in the specified range.\nThe system crops and mosaics the selected satellite imagery to match the user’s AOI.\nThe system performs cloud masking in three steps: cloud detection, mask refinement, and image compositing. The QA_PIXEL band encodes pixel conditions using specific bit flags. Bitwise AND operations are applied to isolate these conditions, focusing on clouds (bit 4, value 16) and cloud shadows (bit 3, value 8). Pixels matching these flags are excluded to produce a cleaner, near cloud-free image.\n\n\n\n\n\n\n\nRelated function\n\n\n\ndef mask_landsat_sr(image, cloud_conf_thresh=2, shadow_conf_thresh=2, cirrus_conf_thresh=2):\n\n\n\nThe system evaluates whether the retrieved imagery meets the required spatial resolution, input year, and cloud cover thresholds.\nIf there is no satellite imagery available for the user’s input parameters, proceed to Section 1.2.2\n\n\n\n\n\n\n\nRelated function\n\n\n\nfrom epistemx.module_1 import Reflectance_Data\n\n\n\n\n1.2.2 Satellite Imagery Not Found Based on User’s Parameters\nFront-end\nThe user is prompted to adjust parameters, such as increasing the cloud cover limit, selecting a different time period, or choosing a different spatial resolution.The user will then get a feedback: “No images found for the selected criteria, increase cloud cover threshold or change the date range”.\nBack-end\n\nBefore prompting the user to insert new parameters, the system searches imagery from year T to T-2 to replace cloudy areas via image compositing.\nIf requirements remain unmet, Section 1.2.1 will re-run based on new user parameters.",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Module 1: Acquisition of Near-Cloud-Free Satellite Imagery</span>"
+    ]
+  },
+  {
+    "objectID": "module01.html#sec-satellite-imagery-post-processing",
+    "href": "module01.html#sec-satellite-imagery-post-processing",
+    "title": "1  Module 1: Acquisition of Near-Cloud-Free Satellite Imagery",
+    "section": "1.3 Satellite Imagery Post-Processing",
+    "text": "1.3 Satellite Imagery Post-Processing\n\n1.3.1 Visualization and Saving Data\nFront-end\n\nThe user can visualize the near cloud-free imagery within the web portal and download it as a GeoTIFF (.TIF )\nPrior to initiating the image download, the user inputs technical parameters of the image that includes: file name, coordinate system, and spatial resolution.\nIf the user chooses not to download it, they may proceed to Module 2.\nA summary report containing the metadata is provided as a .TXT file that includes:\n\nTotal images found\nData range of images\nUnique WRS tiles\nPath row tiles\nScene IDs\nImage acquisition dates\nAverage scene cloud cover\nDate range\nCloud cover range\n\n\nBack-end\n\nThe system produces near-cloud-free Landsat imagery for the defined AOI, saves it as a variable, and visualizes the processed datasets.\nA summary report of metadata is generated, including acquisition details, cloud cover statistics, and a summary of processing steps applied.\n\n\n\n\n\n\n\nRelated function\n\n\n\nfrom epistemx.module_1 import Reflectance_Stats\ndef get_collection_statistics(collection, compute_stats=True, print_report=False):",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Module 1: Acquisition of Near-Cloud-Free Satellite Imagery</span>"
+    ]
+  },
+  {
+    "objectID": "module02.html",
+    "href": "module02.html",
+    "title": "2  Module 2: Determining LULC Classification Schema and Classes",
+    "section": "",
+    "text": "Module Overview\nThis module offers a flexible framework for generating Land Use/Land Cover (LULC) maps tailored to various applications, from broad assessments like deforestation monitoring to detailed analyses reflecting specific management practices or prioritized conservation areas. In the initial phase, only non-hierarchical schemas will be implemented. All classes are treated independently, making it suitable for single-level applications such as deforestation mapping or identifying priority conservation areas.\nThe output of this module is a well-defined list of LULC classes. The module also manages the selection, input, validation, and storage of LULC classification schemes. Users can select a predefined system schema, upload their own classification file, or enter the classification manually. The module ensures data integrity and provides a downloadable classification table for downstream analysis.\nThe module incorporates RESTORE+ LULC classifications from Indonesia to support restoration planning, guiding identification of degraded areas and management priorities. These classes are offered as a predefined data classification system.",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Module 2: Determining LULC Classification Schema and Classes</span>"
+    ]
+  },
+  {
+    "objectID": "module02.html#sec-selection-of-classification-schema",
+    "href": "module02.html#sec-selection-of-classification-schema",
+    "title": "2  Module 2: Determining LULC Classification Schema and Classes",
+    "section": "3.1 Selection of Classification Schema",
+    "text": "3.1 Selection of Classification Schema\nFront-end\nThe user has the option to use the system’s default classification schema, upload a file containing their own classification scheme, or enter the classification manually.\nBack-end\n\nIf the user chooses the default schema, the system proceeds to Section 3.1.1\nIf the user chooses to upload their own schema, the system proceeds to Section 3.1.2\nIf the user chooses to enter the classification manually, the system proceeds to Section 3.1.3\n\n\n3.1.1 User Selecting the Default System’s Classification\nFront-end\nIf the default classification schema is selected, the user chooses a list of LULC classes from either the RESTORE+ or LCCS dataset.\nBack-end\n\nThe system loads the default N classes from the database and displays the classification in tabular format with an N-class template containing the attributes: ID, Class, and Color Code.\nThe system then records the user’s selection in its internal database table.\n\n\n\n3.1.2 User Uploading Their Own Classification\nFront-end\n\nThe user uploads the .XLSX, .XLS, or .CSV file.\nIf there is an error, the user receives a warning and is prompted to re-upload the corrected file or format.\n\nBack-end\n\nThe system displays an Upload button.\nThe system validates the uploaded file, checking:\n\nThe file is not corrupt.\nThe format is valid.\nThe file size is within the allowed limit.\nThe file is not password-protected.\n\nThe system then validates and extracts data from sheets, cells, rows, and columns, converting it into a Pandas DataFrame. It checks whether the data is present or empty.\nIf the validation is successful, the system displays a preview of the data in a table and provides a verification result notification.\n\n\n\n3.1.3 User Entering the Classification Manually\nFront-end\n\nThe user fills out the input form containing ID, Class, and Color Code fields, and optionally the Description column.\nThe system warns the user if the form is incomplete or data conversion fails.\n\nBack-end\n\nThe system displays the input form and checks that all required columns are filled.\nOnce the input form is converted into a Pandas DataFrame, the data are previewed in a table with a verification status.",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Module 2: Determining LULC Classification Schema and Classes</span>"
+    ]
+  },
+  {
+    "objectID": "module02.html#sec-saving-the-lulc-classification-table",
+    "href": "module02.html#sec-saving-the-lulc-classification-table",
+    "title": "2  Module 2: Determining LULC Classification Schema and Classes",
+    "section": "3.2 Downloading and Saving the LULC Classification Table",
+    "text": "3.2 Downloading and Saving the LULC Classification Table\n\n3.2.1 Downloading and Saving the LULC Classification Table\nFront-end\n\nThe user can download the table in Excel file format and save it in their local drive.\nThe system confirms the download; the user then proceed to Module 3.\n\nBack-end\n\nThe system provides a button to download the result file.\nThe classification table is saved as a variable for use in subsequent modules.",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Module 2: Determining LULC Classification Schema and Classes</span>"
+    ]
+  },
+  {
+    "objectID": "module03.html",
+    "href": "module03.html",
+    "title": "3  Module 3: Training Data Generation",
+    "section": "",
+    "text": "Module Overview\nIn supervised classification, the quality of training data directly determines the accuracy of the resulting model. The output of Module 3 is to produce georeferenced point vector datasets for each LULC class defined by the user in the preceding step, Module 2, accompanied by quantitative and visual summaries that facilitate rigorous evaluation, quality control, and optimization for subsequent classification. The module supports two workflows for data preparation: (1) importing user-defined datasets, or (2) interactively generating samples using system-guided tools. Upon completion, the user obtains a structured datasets for each LULC class, together with statistical diagnostics to assess the quality and representativeness of the data prior to classification.",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Module 3: Training Data Generation</span>"
+    ]
+  },
+  {
+    "objectID": "module03.html#checking-prerequisites-from-previous-modules",
+    "href": "module03.html#checking-prerequisites-from-previous-modules",
+    "title": "3  Module 3: Training Data Generation",
+    "section": "3.1 Checking Prerequisites from Previous Modules",
+    "text": "3.1 Checking Prerequisites from Previous Modules\nFront-end\nIf the user has not completed Module 1 and Module 2, the system displays a warning message prompting them to finish those modules first.\nBack-end\nThe system checks whether the default system’s classification is selected in Module 2.\n\nIf yes, the system proceeds directly to Section 3.4.\nIf no, the system verifies the availability of output products from previous modules. If the required products are not available, the system notifies the user to complete the previous modules before proceeding.",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Module 3: Training Data Generation</span>"
+    ]
+  },
+  {
+    "objectID": "module03.html#training-data-generation",
+    "href": "module03.html#training-data-generation",
+    "title": "3  Module 3: Training Data Generation",
+    "section": "3.2 Training Data Generation",
+    "text": "3.2 Training Data Generation\n\n3.2.1 Initial Option for Training Data Source\nFront-end\n\nThe system initiates the workflow by providing the user with two primary options:\n\n“I have training data”.\n“I don’t have training data”.\n\nUsers that have training data who created their own classification model in Module 2 can either upload their data or/and enter it manually (Phase 1).\nUsers without training data can retrieve it directly from the system public repository.\n\nBack-end\n\nIf the user chooses to upload their own training data, the system will continue to Section 3.2.2.\nIf the user does not have their own training data, the system will continue to ?sec-user-does-not-have-training-data.\n\n\n\n3.2.2 User Uploading Their Own Training Data\nFront-end\n\nThe user uploads one of the supported file types.\nThe user chooses Yes or No whether they want to add more training data through on-screen sampling.\n\nBack-end\n\nThe system provides an upload interface that accepts only .SHP and .ZIP file (containing point features with LULC class attributes) or .CSV/.XLS/.XLSX format (containing point coordinates and associated LULC class labels established in Module 2). The system will then check if the uploaded data fulfills the requirement. If discrepancies are detected, the system will flag the inconsistent classes. The user can then either:\n\nRe-upload corrected training data or\nAdd the missing or inconsistent samples through the system’s on-screen sampling interface (Section 3.2.4).\n\nIf the user chooses to add training data with on-screen sampling, the system will proceed to Section 3.2.4, with additional uploaded samples appearing on the interface.\nIf the user does not want to add training data with on-screen sampling, the system will analyze the training data and proceed to Section 3.4.\n\n\n\n3.2.3 User Does Not Have Training Data\nFront-end\nThe user is given the following options to proceed:\n\nUse on-screen sampling.\nUse RESTORE+ default data.\nUse Epistem-X public repository.\n\nBack-end\n\nIf the user uses on-screen sampling, the system will proceed to Section 3.2.4.\nIf the user uses RESTORE+ default data, the system will proceed to Section 3.2.5.\nIf the user uses Epistem-X public repository, the system will proceed to Section 3.2.6.\n\n\n\n3.2.4 On-Screen Sampling\nFront-end\n\nThe User Interface (UI) provides an interactive environment for visual sampling on a basemap.\nA two-way binding mechanism ensures that every sampling action on the basemap is immediately reflected in the panel, and vice versa.\n\nBack-end\n\nThe system will display a panel containing a table with the following columns:\n\nLand cover class name.\nNumber of identified samples.\nButton to add points on the basemap.\n\nThe user selects the land cover class in the table to which sample data will be added:\n\nThe user performs on-screen sampling (adding, removing, or relocating points).\nThe system updates the “number of identified samples” column in real time while the user performs on-screen sampling.\n\nThe system provides a button to save the results of the on-screen sampling, which the user can click once sufficient data has been added and stores it as a variable OnScreenSampledReferenceData.\n\n\n\n3.2.5 Using Default RESTORE+ Datasets\nFront-end\nThe system provides a “Use Data” button to define the RESTORE+ datasets as the sample data variable.\nBack-end\nThe system recalls RESTORE+ datasets and displays the datasets in a panel containing this information: LULC class and number of identified samples inside the AOI.\n\n\n3.2.6 Using Epistem-X Repository\nFront-end\nThe user selects a dataset from the repository and closes the panel. The user accesses public training datasets from the Epistem-X repository and can:\n\nBrowse and select point-based training data.\nChoose specific coordinates for relevant regions.\nSelect predefined models or spectral signature libraries.\nApply these publicly available models/signatures to support the classification process.\n\nA “Use Data” button is provided to define the selected public datasets as the sample data variable.\nBack-end\nThe system displays the Epistem-X public sample data repository in a panel. Each dataset is presented in a table with at least three columns: data location (shown as a map inset), land cover class name, and the number of identified samples.",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Module 3: Training Data Generation</span>"
+    ]
+  },
+  {
+    "objectID": "module03.html#sec-verifying-the-uploaded-training-data",
+    "href": "module03.html#sec-verifying-the-uploaded-training-data",
+    "title": "3  Module 3: Training Data Generation",
+    "section": "3.3 Verifying the Uploaded Training Data",
+    "text": "3.3 Verifying the Uploaded Training Data\nFront-end\n\nThe user receives a notification indicating the status of their uploaded sampling data:\n\nSufficient - the user can proceed to Section 3.4\nInsufficient - the number of sample points for one or more classes is inadequate. The user can either:\n\nAdd more training data and proceed to Section 3.2.4, or\nSkip adding data and proceed directly to Section 3.4 in which case a notification warns that the classification result may have low accuracy.\n\n\n\nBack-end\n\nThe system analyze the sample data to determine:\n\nThe list and count of unique classes.\nThe number of sample points per class.\n\nVerification for Module 1 and 2 includes:\n\nIdentifying samples located outside the AOI.\nComparing the number of unique classes between datasets.\nDetecting classes missing in either datasets.\nFlagging classes with insufficient sample points (&lt;20 points).\nIdentifying duplicate samples in the same pixel\n\nThe system filters out sample data that are either located outside the AOI and do not match the classes defined in Module 2.\nInformational notifications are provided for: LULC classes located outside the AOI, not matching those defined in Module 2, and with missing or insufficient sample points.\nNext, the system evaluates the adequacy of sample data quantity for each class.",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Module 3: Training Data Generation</span>"
+    ]
+  },
+  {
+    "objectID": "module03.html#sec-preview-of-verified-training-data",
+    "href": "module03.html#sec-preview-of-verified-training-data",
+    "title": "3  Module 3: Training Data Generation",
+    "section": "3.4 Preview of Verified Training Data",
+    "text": "3.4 Preview of Verified Training Data\nFront-end\nThe user reviews the TrainDataRecap displayed in a table.\nBack-end\nThe system presents a recap table with columns for ID, class, number of points, and percentage.",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Module 3: Training Data Generation</span>"
+    ]
+  },
+  {
+    "objectID": "module03.html#sec-data-splitting",
+    "href": "module03.html#sec-data-splitting",
+    "title": "3  Module 3: Training Data Generation",
+    "section": "3.5 Data Splitting",
+    "text": "3.5 Data Splitting\nFront-end\nThe user selects one of the following options for splitting the TrainDataRecap:\n\nUse all sample points for training, or\nSplit sample points into training and validation, specifying the desired percentage.\n\nBack-end\nThe system provides options for splitting the sample point data for training and validation:\n\nUse all sample points for training - the system consolidates all data into a single DataFrame or variable, stored as TrainDataFinal for use in Module 4 and 6.\nSplit the sample points between training and validation - the system partitions the data according to the user-specified percentage defined in the TrainSplitPct variable. The TrainDataFinal (for training) is stored in Module 4 and 6, while ValidDataFinal (for validation) is stored in Module 6.",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Module 3: Training Data Generation</span>"
+    ]
+  },
+  {
+    "objectID": "module04.html",
+    "href": "module04.html",
+    "title": "4  Module 4: Spectral Separability Analysis",
+    "section": "",
+    "text": "Module Overview\nThis module enables users to evaluate the spectral separability of sample classes using Jeffries–Matusita (JM) distance or Transformed Divergence (TD). It provides quantitative metrics for class distinction and visual tools for intuitive interpretation. By identifying well-separated classes and informative covariates, this analysis helps ensure data quality and supports more accurate classification or modeling workflows.",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Module 4: Spectral Separability Analysis</span>"
+    ]
+  },
+  {
+    "objectID": "module04.html#sec-specification-of-separability-analysis-parameters",
+    "href": "module04.html#sec-specification-of-separability-analysis-parameters",
+    "title": "4  Module 4: Spectral Separability Analysis",
+    "section": "4.1 Specification of Separability Analysis Parameters",
+    "text": "4.1 Specification of Separability Analysis Parameters\n\n4.1.1 Specification of Separability Analysis Parameters\nFront-end\n\nThe user defines the parameters and selects the method for separability analysis.\nInputs include ID, Class Name, and pixel size.\n\nBack-end\nThe system provides three parameters:\n\nMethodology: Jeffries-Matusita or Transformed Divergence.\nID and Class Name as a drop down selection.\nPixel Size as numeric input.",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Module 4: Spectral Separability Analysis</span>"
+    ]
+  },
+  {
+    "objectID": "module04.html#sec-reviewing-separability-results",
+    "href": "module04.html#sec-reviewing-separability-results",
+    "title": "4  Module 4: Spectral Separability Analysis",
+    "section": "4.2 Reviewing Separability Results",
+    "text": "4.2 Reviewing Separability Results\n\n4.2.1 Reviewing Separability Result\nFront-end\n\nIf input parameters are incomplete, the user receives an error message.\nIf inputs are complete, the user evaluates whether the separability results are satisfactory.\n\nIf unsatisfactory, the user may refine samples for classes with low separability by adding or removing points through Module 3 or external editing.\nIf satisfactory, the user may proceed to spectral profile visualization (Section 4.3) .\n\n\nBack-end\n\nThe system validates input parameters and prompts the user to review any incomplete entries.\nIf it is incomplete, the system displays an error and prompts the user to review the analysis parameters.\nThe system executes the separability analysis workflow that consist of two processes:\n\nSample Statistics Calculation.\nSeparability Analysis.\n\nThe system executes the workflow as follows:\n\nCalculates the sample proportion for each class.\nExtracts pixel values based on sample locations and the selected imagery.\nComputes basic statistics (mean, median, variance, and standard deviation) per class and stores them in a DataFrame for visualization.\nRuns the separability analysis using TrainDataFinal.\nFor each pair of classes, the system calculates separability metrics, identifies the most difficult class pairs to distinguish, and categorizes results into three levels:\n\nGood separability (&gt;1.8): Classes are well separated.\nWeak/Marginal separability (1.0-1.8): Classes overlap partially.\nClass confusion (&lt;1.0): Classes require improvement.\n\nResults, along with the basic statistics table, are exported as a .TXT report.\nDetailed error messages are provided if any errors occur.",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Module 4: Spectral Separability Analysis</span>"
+    ]
+  },
+  {
+    "objectID": "module04.html#sec-spectral-profile-visualization",
+    "href": "module04.html#sec-spectral-profile-visualization",
+    "title": "4  Module 4: Spectral Separability Analysis",
+    "section": "4.3 Spectral Profile Visualization",
+    "text": "4.3 Spectral Profile Visualization\n\n4.3.1 Spectral Profile Visualization\nFront-end\n\nThe user selects the spectral bands for visualization.\nIf satisfied with the result, the user proceed to the next module.\nIf not satisfied, the user can return to Module 3 to modify the TrainDataFinal.\n\nBack-end\n\nThe system checks the status of the separability analysis:\n\nIf successful, visualization proceeds.\nIf unsuccessful, visualization is blocked and the user is prompted to complete the parameter specification (Section 4.1).\n\nA visualization canvas and required Python libraries are provided to support:\n\nHistogram\nBox plot\nScatter plot (2D and 3D)\n\nHelper Text guides the user in interpreting the plots effectively.",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Module 4: Spectral Separability Analysis</span>"
+    ]
+  },
+  {
+    "objectID": "module05.html",
+    "href": "module05.html",
+    "title": "5  Module 5: Improving Model Quality with Multi-Source Data",
+    "section": "",
+    "text": "Module Overview\nThis optional module enables users to refine the model based on feedback from Module 4. It supports the integration of additional covariates to enhance model accuracy and robustness. Users can incorporate additional covariates, including radar, spectral, and non-spectral types (For details please see Section 5.3). The updated configuration facilitates the generation of a higher-quality model compared to the previous iteration.",
+    "crumbs": [
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Module 5: Improving Model Quality with Multi-Source Data</span>"
+    ]
+  },
+  {
+    "objectID": "module05.html#sec-selection-of-covariate",
+    "href": "module05.html#sec-selection-of-covariate",
+    "title": "5  Module 5: Improving Model Quality with Multi-Source Data",
+    "section": "5.1 Selection of Covariate",
+    "text": "5.1 Selection of Covariate\n\n5.1.1 Selection of Covariate\nFront-end:\n\nThe user selects a list of covariates according to the classification objectives and receives system recommendations.\nIf a Default Covariates is chosen, the user can either:\n\nAccept the default covariates set to proceed with retraining the model, or\nModify the covariates list, which redirects to the covariate customization options.\n\nIf a Manual Covariates is chosen, the user selects the three covariates options with system guidance.\n\nBack-end:\n\nThe system provides two selection modes:\n\nSystem Default Covariates: Retrieves and displays a default set of covariates used in the classification model, including metadata (e.g., description, intended use).\nManual Covariate: Displays categorized options:\n\nRadar-based covariates.\nSpectral transformations.\nNon-spectral covariates.\n\n\nThe system also provides recommendations for effective covariate use.",
+    "crumbs": [
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Module 5: Improving Model Quality with Multi-Source Data</span>"
+    ]
+  },
+  {
+    "objectID": "module05.html#system-default-covariates",
+    "href": "module05.html#system-default-covariates",
+    "title": "5  Module 5: Improving Model Quality with Multi-Source Data",
+    "section": "5.2 System Default Covariates",
+    "text": "5.2 System Default Covariates\n\n5.2.1 System Default Covariates\nFront-end:\n\nThe user reviews and optionally adjusts the default covariate list.\n\nBack-end:\n\nThe system displays the default covariates and allows user modifications.\nProvides information on the trade-offs involved in adjusting covariate set.",
+    "crumbs": [
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Module 5: Improving Model Quality with Multi-Source Data</span>"
+    ]
+  },
+  {
+    "objectID": "module05.html#sec-manual-covariate",
+    "href": "module05.html#sec-manual-covariate",
+    "title": "5  Module 5: Improving Model Quality with Multi-Source Data",
+    "section": "5.3 Manual Covariates",
+    "text": "5.3 Manual Covariates\n\n5.3.1 Manual Covariates\nFront-end:\n\nThe user reviews a detailed overview of selected covariates and can adjust them through customization options.\n\nBack-end:\n\nThe system summarizes the chosen covariates before returning to the workflow from Module 4.\nDetailed covariate categories include:\n\nRadar-based covariates: Includes raw radar backscatter (Sentinel-1, PALSAR), temporal and seasonal composites, and derived features (ratios, texture, vegetation indices).\nSpectral transformations that consists of four parts:\n\nBuilt-up/Soil indices: OSAVI (Optimized Soil-Adjusted Vegetation Index), MSAVI (Modified Soil Adjusted Vegetation Index), NDBI (Normalized Difference Built-up Index), SAVI (Soil Adjusted Vegetation Index).\nVegetation indices: GBNDVI (Green-Blue Normalized Difference Vegetation Index), ARVI (Atmospherically Resistant Vegetation Index), CVI (Chlorophyll Vegetation Index), RVMI (Red-Edge Vegetation Moisture Index), GNDVI (Green Normalized Difference Vegetation Index), NDVI (Normalized Difference Vegetation Index), EVI (Enhanced Vegetation Index).\nWater or water-related indices: AWEI (Automated Water Extraction Index), MNDWI (Modified Normalized Difference Water Index), NDMI (Normalized Difference Moisture Index), NDWI (Normalized Difference Water Index), MNDWI (Modified NDWI).\nBurn index: NBR (Normalized Burn Ratio).\n\nNon-spectral covariates: Includes terrain metrics (elevation, slope, aspect) and distance metrics (to roads, coastlines, and settlements).\n\nThe system highlights the trade-offs between covariate selection and model training efficiency.",
+    "crumbs": [
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Module 5: Improving Model Quality with Multi-Source Data</span>"
+    ]
+  },
+  {
+    "objectID": "module05.html#sec-model-evaluation-and-optimization-feedback",
+    "href": "module05.html#sec-model-evaluation-and-optimization-feedback",
+    "title": "5  Module 5: Improving Model Quality with Multi-Source Data",
+    "section": "5.4 Model Evaluation and Optimization Feedback",
+    "text": "5.4 Model Evaluation and Optimization Feedback\n\n5.4.1 Model Evaluation and Optimization Feedback\nFront-end:\n\nThe user evaluates model performance: “Improved” or “Not Improved”.\n\nIf Improved, the system outputs the LULC classification model with the optimized covariate set.\nIf Not Improved, the user reviews the optimized covariates and decides whether to apply them to generate the LULC classification model.\n\n\nBack-end:\n\nAfter adjustment, the system prompts the user to evaluate: “Has model quality now improved?” If No:\n\nThe system provides recommendations for covariate ranking analysis and reselection.\nCovariate optimization is performed to identify the most influential variables.\n\nOnce finalized, the system proceeds with model retraining using the optimized covariate set.",
+    "crumbs": [
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Module 5: Improving Model Quality with Multi-Source Data</span>"
+    ]
+  },
+  {
+    "objectID": "module06.html",
+    "href": "module06.html",
+    "title": "6  Module 6: LULC Map Generation",
+    "section": "",
+    "text": "Module Overview\nThis module provides functionality for users to generate the final LULC map as the primary output product, derived from the validated and optimized classification model developed in Modules 1-5. Before the processing begins, it ensures that all required inputs - such as satellite imagery, classification schemes, and training samples - are properly prepared and validated. Users can specify data splits, select classification modes, perform hyperparameter tuning optimization, and apply the trained model to the entire AOI to produce a high-quality, georeferenced LULC map. The module supports Random Forest (RF) based classification for adaptability, aligning with hierarchical or non-hierarchical schemes from Module 2, and incorporates feedback from optional covariate enhancements in Module 5. Upon completion, users receive a displayable, analyzable, and downloadable map with metadata, enabling applications such as deforestation monitoring or conservation planning.",
+    "crumbs": [
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Module 6: LULC Map Generation</span>"
+    ]
+  },
+  {
+    "objectID": "module06.html#input",
+    "href": "module06.html#input",
+    "title": "6  Module 6: LULC Map Generation",
+    "section": "Input",
+    "text": "Input\nUser’s Input\n\nAgreement to proceed after input review (yes/no).\nRF hyperparameters: number of trees (n_tree), variables per split (var_split), minimum leaf population (min_leaf_pop).\n\nAutomatic System Input\n\nNone.\n\nInput from Other Modules\n\nNear-cloud-free satellite imagery within the AOI (Module 1).\nLULC classification scheme table (Module 2).\nGeoreferenced training dataset (Module 3).\nValidation dataset (Module 3).\nValidated sample data and separability results (Module 4).",
+    "crumbs": [
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Module 6: LULC Map Generation</span>"
+    ]
+  },
+  {
+    "objectID": "module06.html#output",
+    "href": "module06.html#output",
+    "title": "6  Module 6: LULC Map Generation",
+    "section": "Output",
+    "text": "Output\n\nTrained RF classification model.\nClassified LULC raster map.\nModel accuracy report if validation data available (including overall accuracy, precision, recall, F1-score, Kappa, model error matrix).",
+    "crumbs": [
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Module 6: LULC Map Generation</span>"
+    ]
+  },
+  {
+    "objectID": "module06.html#process",
+    "href": "module06.html#process",
+    "title": "6  Module 6: LULC Map Generation",
+    "section": "Process",
+    "text": "Process\n\n\n\n\n\nflowchart TD\n\n%% CHECKING PREREQUISITES\nA([&lt;a href=\"#sec-checking-prerequisites\"&gt;Check Prerequisites&lt;/a&gt;])\nB([Prompt Return to Previous Modules if Needed])\nC([&lt;a href=\"#sec-review-inputs\"&gt;Review Inputs&lt;/a&gt;])\n\nA --&gt; B\nB --&gt; C\n\n%% MODEL TRAINING AND CLASSIFICATION\nD([&lt;a href=\"#sec-define-classification-specifications\"&gt;Define Classification Specifications&lt;/a&gt;])\nE([&lt;a href=\"#sec-feature-extraction\"&gt;Feature Extraction&lt;/a&gt;])\nF([&lt;a href=\"#sec-train-random-forest-model\"&gt;Train Random Forest Model&lt;/a&gt;])\nG([&lt;a href=\"#sec-model-accuracy-test\"&gt;Model Accuracy Test&lt;/a&gt;])\nH([&lt;a href=\"#sec-classification-apply-model-to-entire-image\"&gt;Classification&lt;/a&gt;])\nI([&lt;a href=\"#sec-review-classification-results\"&gt;Review Classification Results&lt;/a&gt;])\nJ([&lt;a href=\"#sec-module-7\"&gt;Proceed to Module 7&lt;/a&gt;])\n\nC --&gt; D\nD --&gt; E\nE --&gt; F\nF --&gt; G\nG --&gt; H\nH --&gt; I\nI --&gt;|Satisfied| J\nI --&gt;|Unsatisfied| D",
+    "crumbs": [
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Module 6: LULC Map Generation</span>"
+    ]
+  },
+  {
+    "objectID": "module06.html#checking-prerequisites-from-previous-modules",
+    "href": "module06.html#checking-prerequisites-from-previous-modules",
+    "title": "6  Module 6: LULC Map Generation",
+    "section": "6.1 Checking Prerequisites from Previous Modules",
+    "text": "6.1 Checking Prerequisites from Previous Modules\n\n6.1.1 Front-end\nThe user is notified if inputs are insufficient or test data is missing, and prompted to return to previous modules (e.g., Module 3 for test data) as needed.\n\n\n6.1.2 Back-end\n\nThe system performs a parameter and input suitability test to verify availability and compatibility of inputs from Modules 1-5 (such as imagery, scheme, training data, optional validation data).\nTest data availability from Module 3.\nIf any inputs are missing or incompatible, the system directs the user to return to the incomplete module.\nIf no test data, suggest the user return to Module 3 and correct the sample.\nThe system directs the user to return to the module that has not been completed.",
+    "crumbs": [
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Module 6: LULC Map Generation</span>"
+    ]
+  },
+  {
+    "objectID": "module06.html#model-training-and-classification",
+    "href": "module06.html#model-training-and-classification",
+    "title": "6  Module 6: LULC Map Generation",
+    "section": "6.2 Model Training and Classification",
+    "text": "6.2 Model Training and Classification\n\n6.2.1 Review Inputs\n\n6.2.1.1 Front-end\n\nThe user reviews the summary text report to decide if they agree to proceed.\n\nIf yes, continue to define specifications.\nIf no, return to relevant previous modules.\n\nUsers return to previous modules as needed.\n\n\n\n6.2.1.2 Back-end\n\nThe system generates and displays a summary report of variables for the classification process, including imagery details, classification scheme, and training data summary.\nDisplays a summary text and dataframe.\nLists variables used in classification.\n\n\n\n\n6.2.2 Define Classification Specifications\n\n6.2.2.1 Front-end\n\nUser enters RF hyperparameter values:\n\nNumber of trees (n_tree)\nVariables per split (var_split)\nMinimum leaf population (min_leaf_pop)\n\n\n\n\n6.2.2.2 Back-end\n\nStores user-entered hyperparameters.\nApplies them as main parameters for Random Forest training.\n\n\n\n\n6.2.3 Feature Extraction\n\n6.2.3.1 Front-end\nRuns automatically after specifications are defined.\n\n\n6.2.3.2 Back-end\nPerforms feature extraction by sampling pixel values from imagery based on training (and optional validation) samples.\n\n\n\n6.2.4 Train Random Forest Model\n\n6.2.4.1 Front-end\nShows user progress during training.\n\n\n6.2.4.2 Back-end\n\nTrains RF model using prepared data:\n\nBootstrap sampling for subsets per tree.\nBuilds multiple decision trees.\nUses majority voting for predictions.\n\nProduces trained model asset.\n\n\n\n\n6.2.5 Model Accuracy Test\n\n6.2.5.1 Front-end\nDisplays accuracy report if validation data is available.\n\n\n6.2.5.2 Back-end\n\nApplies model to validation data if available.\nGenerates accuracy metrics: overall accuracy, precision, recall, F1-score, Kappa, error matrix.\nSkips if no validation data.\n\n\n\n\n6.2.6 Classification (Apply Model to Entire Image)\n\n6.2.6.1 Front-end\nRuns after training with progress shown.\n\n\n6.2.6.2 Back-end\n\nApplies trained model to entire imagery.\nGenerates classification summary and result data.\n\n\n\n\n6.2.7 Review Classification Results\n\n6.2.7.1 Front-end\n\nUser reviews model results and map.\n\nIf satisfied, proceed to Module 7.\nIf not, adjust parameters or return to prior modules.\n\n\n\n\n6.2.7.2 Back-end\n\nDisplays model learning and accuracy results.\nSuggests corrections or parameter checks if unsatisfied.",
+    "crumbs": [
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Module 6: LULC Map Generation</span>"
+    ]
+  },
+  {
+    "objectID": "module07.html",
+    "href": "module07.html",
+    "title": "7  Module 7: Thematic Accuracy Assessment",
+    "section": "",
+    "text": "Module Overview\nThis module enables users to perform a thematic accuracy assessment on LULC map generated in Module 6, comparing it against independent validation data to quantitatively evaluate its quality and reliability. It supports verification of prerequisites from Modules 1 to Module 6, allows confirmation or adjustment of data partitions and model configurations, and computes key metrics such as confusion matrices (overall accuracy (OA), Kappa coefficient (κ), producer’s accuracy (PA), and user’s accuracy (UA). The module provides phased outputs including numerical/visual results, improvement recommendations, and a spatial confidence level map, facilitating iterative refinements for enhanced map accuracy in applications like environmental monitoring or policy planning.\nThis module focuses on the evaluation and validation of LULC classification results derived from remote sensing data. The objective is to provide users with tools and guidance to assess the reliability of their classified maps and determine their suitability for further analysis. Upon completion, the user will have a validated LULC map and a clear understanding of its accuracy.",
+    "crumbs": [
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Module 7: Thematic Accuracy Assessment</span>"
+    ]
+  },
+  {
+    "objectID": "module07.html#input",
+    "href": "module07.html#input",
+    "title": "7  Module 7: Thematic Accuracy Assessment",
+    "section": "Input",
+    "text": "Input\nUser’s Input\n\nUpload of test data if not available from Module 3 (shapefile or CSV as per Module 3).\nButton press to initiate accuracy test.\n\nAutomatic System Input\n\nNone.\n\nInput from Other Modules\n\nFinal land cover map (Module 6).\nPartitioned test samples if available (Module 3).\nProcessed satellite imagery (Module 1, if needed for context).",
+    "crumbs": [
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Module 7: Thematic Accuracy Assessment</span>"
+    ]
+  },
+  {
+    "objectID": "module07.html#output",
+    "href": "module07.html#output",
+    "title": "7  Module 7: Thematic Accuracy Assessment",
+    "section": "Output",
+    "text": "Output\n\nConfusion matrix (table).\nAccuracy metrics: Overall Accuracy (OA), Kappa Coefficient, Producer’s Accuracy (PA), User’s Accuracy (UA).",
+    "crumbs": [
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Module 7: Thematic Accuracy Assessment</span>"
+    ]
+  },
+  {
+    "objectID": "module07.html#process",
+    "href": "module07.html#process",
+    "title": "7  Module 7: Thematic Accuracy Assessment",
+    "section": "7.1 Process",
+    "text": "7.1 Process\n\n\n\n\n\nflowchart TD\n\n%% CHECKING PREREQUISITES\nA([&lt;a href=\"#sec-checking-prerequisites\"&gt;Check Prerequisites&lt;/a&gt;])\nB([Prompt user to complete Module 6 if missing])\n\nA --&gt; B\n\n%% THEMATIC ACCURACY ASSESSMENT\nC([&lt;a href=\"#sec-verify-land-cover-map-availability\"&gt;Verify Land Cover Map Availability&lt;/a&gt;])\nD([&lt;a href=\"#sec-verify-test-data-availability\"&gt;Verify Test Data Availability&lt;/a&gt;])\nE([&lt;a href=\"#sec-upload-and-verify-test-data\"&gt;Upload and Verify Test Data&lt;/a&gt;])\nF([&lt;a href=\"#sec-perform-accuracy-test\"&gt;Perform Accuracy Test&lt;/a&gt;])\nG([&lt;a href=\"#sec-display-and-review-accuracy-results\"&gt;Display and Review Accuracy Results&lt;/a&gt;])\n\nB --&gt; C\nC --&gt; D\nD --&gt;|Test data available| F\nD --&gt;|Test data missing| E\nE --&gt; F\nF --&gt; G\nG --&gt;|Satisfied| H([Process Complete])\nG --&gt;|Unsatisfied| B",
+    "crumbs": [
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Module 7: Thematic Accuracy Assessment</span>"
+    ]
+  },
+  {
+    "objectID": "module07.html#checking-prerequisites-from-previous-modules",
+    "href": "module07.html#checking-prerequisites-from-previous-modules",
+    "title": "7  Module 7: Thematic Accuracy Assessment",
+    "section": "7.2 Checking Prerequisites from Previous Modules",
+    "text": "7.2 Checking Prerequisites from Previous Modules\nFront-end\nThe user is notified if the map is missing and prompted to complete Module 6.\nBack-end\n\nCheck for the final land cover map from Module 6.\nIf not available, provide notification to run Module 6.\nLand cover map availability test.",
+    "crumbs": [
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Module 7: Thematic Accuracy Assessment</span>"
+    ]
+  },
+  {
+    "objectID": "module07.html#thematic-accuracy-assessment",
+    "href": "module07.html#thematic-accuracy-assessment",
+    "title": "7  Module 7: Thematic Accuracy Assessment",
+    "section": "7.3 Thematic Accuracy Assessment",
+    "text": "7.3 Thematic Accuracy Assessment\n\n7.3.1 Verify Land Cover Map Availability\nFront-end\nUser is notified if map is missing and prompted to complete Module 6.\nBack-end\n\nCheck for final land cover map from Module 6.\nIf missing, notify user to run Module 6.\n\n\n\n7.3.2 Verify Test Data Availability\nFront-end\n\nIf test data available, allow user to proceed with accuracy test.\nElse, prompt upload.\n\nBack-end\n\nCheck for test data from Module 3.\nIf available, proceed to accuracy test.\nIf not, prompt user for upload.\n\n\n\n7.3.3 Upload and Verify Test Data\nFront-end\n\nUser uploads test data and receives verification feedback.\n\nBack-end\n\nProvide upload form.\nVerify uploaded data per criteria (format, content).\nIf verification fails, display errors and request re-upload.\n\n\n\n7.3.4 Perform Accuracy Test\nFront-end\nUser initiates accuracy test by pressing a button.\nBack-end\n\nCompare classification map with reference data to generate confusion matrix.\nCompute accuracy metrics:\n\nOverall Accuracy (OA)\nKappa Coefficient\nProducer’s Accuracy (PA)\nUser’s Accuracy (UA)\n\n\n\n\n7.3.5 Display and Review Accuracy Results\nFront-end\nUser reviews test results. If satisfied, process completes; if not, prompted to revisit Modules 3 and/or 6.\nBack-end\n\nDisplay confusion matrix and accuracy metrics.\nIf unsatisfactory, notify user to check training data or classification parameters.",
+    "crumbs": [
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Module 7: Thematic Accuracy Assessment</span>"
+    ]
+  },
+  {
+    "objectID": "module08.html",
+    "href": "module08.html",
+    "title": "8  Module 8: Post Classification Analysis and Housekeeping",
+    "section": "",
+    "text": "8.1 Module Overview\nThis module allows users to review all artifacts generated from previous modules, perform post-classification analysis of the LULC map results from Module 6 (limited to Phase 1 information from a single time-series land cover and land use map, such as bar charts or statistical summary tables), and export the LULC map results with metadata and accuracy assessment (if available). It activates only after completing the LULC map generation and accuracy test in Modules 6 and 7. On the back-end, the system generates an overview report rendered to HTML, displays summaries and visuals, and handles exports to Google Drive with progress monitoring and notifications.",
+    "crumbs": [
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Module 8: Post Classification Analysis and Housekeeping</span>"
+    ]
+  },
+  {
+    "objectID": "module08.html#input",
+    "href": "module08.html#input",
+    "title": "8  Module 8: Post Classification Analysis and Housekeeping",
+    "section": "Input",
+    "text": "Input\nUser’s Input\n\nClick to access Module 8.\nPress download button to initiate export (yes/no).\n\nAutomatic System Input\n\nNone.\n\nInput from Other Modules\n\nLandsat image that has been cropped and has minimal cloud cover (Module 1).\nImage search report (report_metadata Module 1).\nLULC classification scheme table (Module 2).\nGeoreferenced training dataset (Module 3).\nModel specification report (report_metadata Module 6).\nClassified LULC map (Peta LULC Module 6).\nConfusion matrix and accuracy test table (Module 7).",
+    "crumbs": [
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Module 8: Post Classification Analysis and Housekeeping</span>"
+    ]
+  },
+  {
+    "objectID": "module08.html#output",
+    "href": "module08.html#output",
+    "title": "8  Module 8: Post Classification Analysis and Housekeeping",
+    "section": "Output",
+    "text": "Output\n\nLULC Classification Overview Report (.html via Quarto).\nLULC Area Summary Table (digest table of area per land cover class).\nArea Bar Chart.\nExported assets to Google Drive: LULC map + metadata/log-summary + accuracy test results (with warning if Module 7 not run).",
+    "crumbs": [
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Module 8: Post Classification Analysis and Housekeeping</span>"
+    ]
+  },
+  {
+    "objectID": "module08.html#process",
+    "href": "module08.html#process",
+    "title": "8  Module 8: Post Classification Analysis and Housekeeping",
+    "section": "8.2 Process",
+    "text": "8.2 Process\n\n\n\n\n\nflowchart TD\n\n%% CHECKING PREREQUISITES\nA([&lt;a href=\"#sec-checking-prerequisites\"&gt;Check Prerequisites for Module 8&lt;/a&gt;])\nB([Notify user and keep Module 8 inactive if prerequisites missing])\nC([&lt;a href=\"#sec-access-module-and-check-prerequisites\"&gt;Access Module 8&lt;/a&gt;])\nD([&lt;a href=\"#sec-data-collection-and-verification\"&gt;Data Collection and Verification&lt;/a&gt;])\nE([&lt;a href=\"#sec-generate-report\"&gt;Generate Report&lt;/a&gt;])\nF([&lt;a href=\"#sec-display-lulc-classification-overview-report\"&gt;Display LULC Overview Report&lt;/a&gt;])\nG([&lt;a href=\"#sec-export-data\"&gt;Export Data&lt;/a&gt;])\nH([&lt;a href=\"#sec-publish-to-epistem-y\"&gt;Publish to Epistem-Y - Post Phase 1&lt;/a&gt;])\nI([Process Complete])\n\n%% POST-CLASSIFICATION ANALYSIS AND EXPORT\nA --&gt; B\nB --&gt; C\nC --&gt; D\nD --&gt; E\nE --&gt; F\nF --&gt; G\nG --&gt; H\nH --&gt; I",
+    "crumbs": [
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Module 8: Post Classification Analysis and Housekeeping</span>"
+    ]
+  },
+  {
+    "objectID": "module08.html#checking-prerequisites-from-previous-modules",
+    "href": "module08.html#checking-prerequisites-from-previous-modules",
+    "title": "8  Module 8: Post Classification Analysis and Housekeeping",
+    "section": "8.3 Checking Prerequisites from Previous Modules",
+    "text": "8.3 Checking Prerequisites from Previous Modules\nFront-end\n\nThe user clicks Module 8 to attempt access.\nIf prerequisites are missing, Module 8 remains inactive, and the user is notified to complete Modules 6 and 7.\n\nBack-end\n\nActivate Module 8 only if the user has finished generating the LULC map and accuracy test; check the existence of results from Modules 6 and 7, along with prerequisites from Module 1.\nThe system checks whether output from Module 7 is available.\nIf not, keep Module 8 inactive.",
+    "crumbs": [
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Module 8: Post Classification Analysis and Housekeeping</span>"
+    ]
+  },
+  {
+    "objectID": "module08.html#post-classification-analysis-and-export",
+    "href": "module08.html#post-classification-analysis-and-export",
+    "title": "8  Module 8: Post Classification Analysis and Housekeeping",
+    "section": "8.4 Post-Classification Analysis and Export",
+    "text": "8.4 Post-Classification Analysis and Export\n\n8.4.1 Access Module and Check Prerequisites\nFront-end\n\nUser attempts to access Module 8.\nIf prerequisites missing, notify user and keep module inactive.\n\nBack-end\nActivate Module 8 only if outputs from Modules 6 and 7 exist, and Module 1 prerequisites met.\n\n\n8.4.2 Data Collection and Verification\nFront-end\nRuns automatically upon access.\nBack-end\n\nCollect and verify data and variables: AOI, year, image type, cloud percentage, land cover classes, training data digest, model specifications from Module 6, minimum-cloud mosaic and metadata from Module 1, classified LULC map and metadata, accuracy test table from Module 7.\n\nCalculate area summary table and generate bar graph visualization.\n\n\n\n8.4.3 Generate Report\nFront-end\nPrepares report for display.\nBack-end\nUses Module 8 Report and LULC Map Templates (.qmd) to render summary report to HTML with visuals and stats.\n\n\n8.4.4 Display LULC Classification Overview Report\nFront-end\nUser views summary including:\n\nAOI and metadata from Modules 1-6 and 7, such as thumbnails, bar charts, tables, accuracy results.\n\nBack-end\nDisplays generated report with maps and charts.\n\n\n8.4.5 Export Data\nFront-end\n\nUsers can download exported assets to Google Drive if quota allows.\nDownload buttons show file size and estimated time.\nProgress indicators and completion notifications appear.\n\nBack-end\n\nIdentify classified map and metadata from Module 6.\nInclude accuracy results from Module 7 if available; log warning if not.\nPrepare export filenames and size estimates.\nTrigger Google Drive export action.\nMonitor export job and notify user on completion.\n\n\n\n8.4.6 Publish to Epistem-Y\nFront-end\n(Not in Phase 1) Menu option for publishing assets with terms acceptance and comment fields.\nBack-end\n(Post-Phase 1) Handle publishing LULC maps with user notes to platform.",
+    "crumbs": [
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Module 8: Post Classification Analysis and Housekeeping</span>"
+    ]
+  },
+  {
+    "objectID": "summary.html",
+    "href": "summary.html",
+    "title": "9  Summary",
+    "section": "",
+    "text": "In summary, this book has no content whatsoever.\n\n1 + 1\n\n[1] 2",
+    "crumbs": [
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Summary</span>"
+    ]
+  }
+]
