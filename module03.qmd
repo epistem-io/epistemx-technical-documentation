@@ -178,7 +178,7 @@ A “Use Data” button is provided to define the selected public datasets as th
 
 The system displays the Epistem-X public sample data repository in a panel. Each dataset is presented in a table with at least three columns: data location (shown as a map inset), land cover class name, and the number of identified samples.
 
-## Verifying the Uploaded Training Data {#sec-verifying-the-uploaded-training-data}
+## Verifying the Input Training Data {#sec-verifying-the-uploaded-training-data}
 
 **Front-end**
 
@@ -191,31 +191,45 @@ The system displays the Epistem-X public sample data repository in a panel. Each
 
 **Back-end**
 
-1.  The system analyze the sample data to determine:
+1.  The system chooses whether to display the Class ID or the Class Name for the training data.
+
+::: callout-tip
+## Related Function(s)
+
+`get_display_property()` to check if a class name property is provided.
+:::
+
+2.  The system generates a dictionary that maps class IDs to their corresponding class names, and then adds a 'Class Name' column to the DataFrame based on this mapping.
+
+::: callout-tip
+## Related Function(s)
+
+`class_renaming()` to crate a mapping between class IDs and class names.
+
+`add_class_names()` to add new column with class names to a Pandas DataFrame.
+:::
+
+3.  The system analyze the sample data to determine:
 
     -   The list and count of unique classes.
 
     -   The number of sample points per class.
 
 ::: callout-tip
-## Related Functions
+## Related Function(s)
 
-`sample_stats ()` to compute training data statistics: counts the number of samples per class, total number of samples, gets unique class, calculates class balance (proportion of each class).
+`sample_stats()` to compute basic statistics of the training data.
 :::
 
-2.  Verification for Module 1 and 2 includes:
-
+4.  Verification for Module 1 and 2 includes:
     -   Identifying samples located outside the AOI.
     -   Comparing the number of unique classes between datasets.
     -   Detecting classes missing in either datasets.
     -   Flagging classes with insufficient sample points (\<20 points).
     -   Identifying duplicate samples in the same pixel
-
-3.  The system filters out sample data that are either located outside the AOI and do not match the classes defined in Module 2.
-
-4.  Informational notifications are provided for: LULC classes located outside the AOI, not matching those defined in Module 2, and with missing or insufficient sample points.
-
-5.  Next, the system evaluates the adequacy of sample data quantity for each class.
+5.  The system filters out sample data that are either located outside the AOI and do not match the classes defined in Module 2.
+6.  Informational notifications are provided for: LULC classes located outside the AOI, not matching those defined in Module 2, and with missing or insufficient sample points.
+7.  Next, the system evaluates the adequacy of sample data quantity for each class.
 
 ## Preview of Verified Training Data {#sec-preview-of-verified-training-data}
 
@@ -228,9 +242,9 @@ The user reviews the `TrainDataRecap` displayed in a table.
 The system presents a recap table with columns for ID, class, number of points, and percentage.
 
 ::: callout-tip
-## Related Functions
+## Related Function(s)
 
-`get_sample_stats_df ()` to convert training data table to pandas DataFrame.
+`get_sample_stats_df()` to convert the result from `sample_stats()` into a formatted DataFrame.
 :::
 
 ## Data Splitting {#sec-data-splitting}
