@@ -201,17 +201,17 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#module-overview" id="toc-module-overview" class="nav-link active" data-scroll-target="#module-overview">Module Overview</a></li>
   <li><a href="#input" id="toc-input" class="nav-link" data-scroll-target="#input">Input</a></li>
   <li><a href="#output" id="toc-output" class="nav-link" data-scroll-target="#output">Output</a></li>
-  <li><a href="#process" id="toc-process" class="nav-link" data-scroll-target="#process"><span class="header-section-number">3</span> Process</a>
+  <li><a href="#process" id="toc-process" class="nav-link" data-scroll-target="#process">Process</a>
   <ul class="collapse">
-  <li><a href="#sec-selection-of-classification-schema" id="toc-sec-selection-of-classification-schema" class="nav-link" data-scroll-target="#sec-selection-of-classification-schema"><span class="header-section-number">3.1</span> Selection of Classification Schema</a>
+  <li><a href="#sec-selection-of-classification-schema" id="toc-sec-selection-of-classification-schema" class="nav-link" data-scroll-target="#sec-selection-of-classification-schema"><span class="header-section-number">2.1</span> Selection of Classification Schema</a>
   <ul class="collapse">
-  <li><a href="#sec-user-selecting-the-default-system-classification" id="toc-sec-user-selecting-the-default-system-classification" class="nav-link" data-scroll-target="#sec-user-selecting-the-default-system-classification"><span class="header-section-number">3.1.1</span> User Selecting the Default System’s Classification</a></li>
-  <li><a href="#sec-user-uploading-their-own-classification" id="toc-sec-user-uploading-their-own-classification" class="nav-link" data-scroll-target="#sec-user-uploading-their-own-classification"><span class="header-section-number">3.1.2</span> User Uploading Their Own Classification</a></li>
-  <li><a href="#sec-user-entering-the-classification-manually" id="toc-sec-user-entering-the-classification-manually" class="nav-link" data-scroll-target="#sec-user-entering-the-classification-manually"><span class="header-section-number">3.1.3</span> User Entering the Classification Manually</a></li>
+  <li><a href="#sec-user-uploading-their-own-classification" id="toc-sec-user-uploading-their-own-classification" class="nav-link" data-scroll-target="#sec-user-uploading-their-own-classification"><span class="header-section-number">2.1.1</span> User Uploading Their Own Classification</a></li>
+  <li><a href="#sec-user-entering-the-classification-manually" id="toc-sec-user-entering-the-classification-manually" class="nav-link" data-scroll-target="#sec-user-entering-the-classification-manually"><span class="header-section-number">2.1.2</span> User Entering the Classification Manually</a></li>
+  <li><a href="#sec-user-selecting-the-default-system-classification" id="toc-sec-user-selecting-the-default-system-classification" class="nav-link" data-scroll-target="#sec-user-selecting-the-default-system-classification"><span class="header-section-number">2.1.3</span> User Selecting the Default System’s Classification</a></li>
   </ul></li>
-  <li><a href="#sec-saving-the-lulc-classification-table" id="toc-sec-saving-the-lulc-classification-table" class="nav-link" data-scroll-target="#sec-saving-the-lulc-classification-table"><span class="header-section-number">3.2</span> Downloading and Saving the LULC Classification Table</a>
+  <li><a href="#sec-saving-the-lulc-classification-table" id="toc-sec-saving-the-lulc-classification-table" class="nav-link" data-scroll-target="#sec-saving-the-lulc-classification-table"><span class="header-section-number">2.2</span> Downloading and Saving the LULC Classification Table</a>
   <ul class="collapse">
-  <li><a href="#downloading-and-saving-the-lulc-classification-table" id="toc-downloading-and-saving-the-lulc-classification-table" class="nav-link" data-scroll-target="#downloading-and-saving-the-lulc-classification-table"><span class="header-section-number">3.2.1</span> Downloading and Saving the LULC Classification Table</a></li>
+  <li><a href="#downloading-and-saving-the-lulc-classification-table" id="toc-downloading-and-saving-the-lulc-classification-table" class="nav-link" data-scroll-target="#downloading-and-saving-the-lulc-classification-table"><span class="header-section-number">2.2.1</span> Downloading and Saving the LULC Classification Table</a></li>
   </ul></li>
   </ul></li>
   </ul>
@@ -263,8 +263,8 @@ ul.task-list li input[type="checkbox"] {
 <h1 class="unnumbered">Output</h1>
 <p>LULC classification table</p>
 </section>
-<section id="process" class="level1" data-number="3">
-<h1 data-number="3"><span class="header-section-number">3</span> Process</h1>
+<section id="process" class="level1 unnumbered">
+<h1 class="unnumbered">Process</h1>
 <div class="cell" data-layout-align="default">
 <div class="cell-output-display">
 <div>
@@ -297,28 +297,18 @@ E --&gt;|Invalid| A
 </div>
 </div>
 </div>
-<section id="sec-selection-of-classification-schema" class="level2" data-number="3.1">
-<h2 data-number="3.1" class="anchored" data-anchor-id="sec-selection-of-classification-schema"><span class="header-section-number">3.1</span> Selection of Classification Schema</h2>
+<section id="sec-selection-of-classification-schema" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="sec-selection-of-classification-schema"><span class="header-section-number">2.1</span> Selection of Classification Schema</h2>
 <p><strong>Front-end</strong></p>
 <p>The user has the option to use the system’s default classification schema, upload a file containing their own classification scheme, or enter the classification manually.</p>
 <p><strong>Back-end</strong></p>
 <ol type="1">
-<li>If the user chooses the default schema, the system proceeds to <a href="#sec-user-selecting-the-default-system-classification" class="quarto-xref"><span>Section 3.1.1</span></a></li>
-<li>If the user chooses to upload their own schema, the system proceeds to <a href="#sec-user-uploading-their-own-classification" class="quarto-xref"><span>Section 3.1.2</span></a></li>
-<li>If the user chooses to enter the classification manually, the system proceeds to <a href="#sec-user-entering-the-classification-manually" class="quarto-xref"><span>Section 3.1.3</span></a></li>
+<li>If the user chooses the default schema, the system proceeds to <a href="#sec-user-selecting-the-default-system-classification" class="quarto-xref"><span>Section 2.1.3</span></a></li>
+<li>If the user chooses to upload their own schema, the system proceeds to <a href="#sec-user-uploading-their-own-classification" class="quarto-xref"><span>Section 2.1.1</span></a></li>
+<li>If the user chooses to enter the classification manually, the system proceeds to <a href="#sec-user-entering-the-classification-manually" class="quarto-xref"><span>Section 2.1.2</span></a></li>
 </ol>
-<section id="sec-user-selecting-the-default-system-classification" class="level3" data-number="3.1.1">
-<h3 data-number="3.1.1" class="anchored" data-anchor-id="sec-user-selecting-the-default-system-classification"><span class="header-section-number">3.1.1</span> User Selecting the Default System’s Classification</h3>
-<p><strong>Front-end</strong></p>
-<p>If the default classification schema is selected, the user chooses a list of LULC classes from either the RESTORE+ or LCCS dataset.</p>
-<p><strong>Back-end</strong></p>
-<ol type="1">
-<li>The system loads the default N classes from the database and displays the classification in tabular format with an N-class template containing the attributes: ID, Class, and Color Code.</li>
-<li>The system then records the user’s selection in its internal database table.</li>
-</ol>
-</section>
-<section id="sec-user-uploading-their-own-classification" class="level3" data-number="3.1.2">
-<h3 data-number="3.1.2" class="anchored" data-anchor-id="sec-user-uploading-their-own-classification"><span class="header-section-number">3.1.2</span> User Uploading Their Own Classification</h3>
+<section id="sec-user-uploading-their-own-classification" class="level3" data-number="2.1.1">
+<h3 data-number="2.1.1" class="anchored" data-anchor-id="sec-user-uploading-their-own-classification"><span class="header-section-number">2.1.1</span> User Uploading Their Own Classification</h3>
 <p><strong>Front-end</strong></p>
 <ol type="1">
 <li>The user uploads the <code>.XLSX</code>, <code>.XLS</code>, or <code>.CSV</code> file.</li>
@@ -338,8 +328,8 @@ E --&gt;|Invalid| A
 <li><p>If the validation is successful, the system displays a preview of the data in a table and provides a verification result notification.</p></li>
 </ol>
 </section>
-<section id="sec-user-entering-the-classification-manually" class="level3" data-number="3.1.3">
-<h3 data-number="3.1.3" class="anchored" data-anchor-id="sec-user-entering-the-classification-manually"><span class="header-section-number">3.1.3</span> User Entering the Classification Manually</h3>
+<section id="sec-user-entering-the-classification-manually" class="level3" data-number="2.1.2">
+<h3 data-number="2.1.2" class="anchored" data-anchor-id="sec-user-entering-the-classification-manually"><span class="header-section-number">2.1.2</span> User Entering the Classification Manually</h3>
 <p><strong>Front-end</strong></p>
 <ol type="1">
 <li>The user fills out the input form containing ID, Class, and Color Code fields, and optionally the Description column.</li>
@@ -351,11 +341,21 @@ E --&gt;|Invalid| A
 <li>Once the input form is converted into a Pandas DataFrame, the data are previewed in a table with a verification status.</li>
 </ol>
 </section>
+<section id="sec-user-selecting-the-default-system-classification" class="level3" data-number="2.1.3">
+<h3 data-number="2.1.3" class="anchored" data-anchor-id="sec-user-selecting-the-default-system-classification"><span class="header-section-number">2.1.3</span> User Selecting the Default System’s Classification</h3>
+<p><strong>Front-end</strong></p>
+<p>If the default classification schema is selected, the user chooses a list of LULC classes from either the RESTORE+ or LCCS dataset.</p>
+<p><strong>Back-end</strong></p>
+<ol type="1">
+<li>The system loads the default N classes from the database and displays the classification in tabular format with an N-class template containing the attributes: ID, Class, and Color Code.</li>
+<li>The system then records the user’s selection in its internal database table.</li>
+</ol>
 </section>
-<section id="sec-saving-the-lulc-classification-table" class="level2" data-number="3.2">
-<h2 data-number="3.2" class="anchored" data-anchor-id="sec-saving-the-lulc-classification-table"><span class="header-section-number">3.2</span> Downloading and Saving the LULC Classification Table</h2>
-<section id="downloading-and-saving-the-lulc-classification-table" class="level3" data-number="3.2.1">
-<h3 data-number="3.2.1" class="anchored" data-anchor-id="downloading-and-saving-the-lulc-classification-table"><span class="header-section-number">3.2.1</span> Downloading and Saving the LULC Classification Table</h3>
+</section>
+<section id="sec-saving-the-lulc-classification-table" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="sec-saving-the-lulc-classification-table"><span class="header-section-number">2.2</span> Downloading and Saving the LULC Classification Table</h2>
+<section id="downloading-and-saving-the-lulc-classification-table" class="level3" data-number="2.2.1">
+<h3 data-number="2.2.1" class="anchored" data-anchor-id="downloading-and-saving-the-lulc-classification-table"><span class="header-section-number">2.2.1</span> Downloading and Saving the LULC Classification Table</h3>
 <p><strong>Front-end</strong></p>
 <ol type="1">
 <li>The user can download the table in Excel file format and save it in their local drive.</li>
