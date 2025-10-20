@@ -109,6 +109,12 @@ The system provides three parameters:
     -   Results, along with the basic statistics table, are exported as a `.TXT` report.
     -   Detailed error messages are provided if any errors occur.
 
+::: callout-tip
+## Related Functions
+
+`get_separability_df()` to compute class separability. `lowest_separability()` to retrieve the class pair with the lowest separability value. `separability_level()` to categorize the separability values into Good, Waek, or Confusion. `sum_separability ()` to summarize the separability results.
+:::
+
 ## Spectral Profile Visualization {#sec-spectral-profile-visualization}
 
 ### Spectral Profile Visualization {#sec-spectra-signature-visualization}
@@ -133,3 +139,13 @@ The system provides three parameters:
     -   Scatter plot (2D and 3D)
 
 3.  Helper Text guides the user in interpreting the plots effectively.
+
+::: callout-tip
+## Related Functions
+
+`plot_facet_histograms()` to plot faceted histograms of the bands.
+
+`plot_boxplots_by_band()` to plot boxplots of the bands.
+
+`print_analysis_summary()` to summarize the training dataset, showing class balance, class separability, and the most problematic class pairs.
+:::

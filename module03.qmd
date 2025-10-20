@@ -194,7 +194,14 @@ The system displays the Epistem-X public sample data repository in a panel. Each
 1.  The system analyze the sample data to determine:
 
     -   The list and count of unique classes.
+
     -   The number of sample points per class.
+
+::: callout-tip
+## Related Functions
+
+`sample_stats ()` to compute training data statistics: counts the number of samples per class, total number of samples, gets unique class, calculates class balance (proportion of each class).
+:::
 
 2.  Verification for Module 1 and 2 includes:
 
@@ -219,6 +226,12 @@ The user reviews the `TrainDataRecap` displayed in a table.
 **Back-end**
 
 The system presents a recap table with columns for ID, class, number of points, and percentage.
+
+::: callout-tip
+## Related Functions
+
+`get_sample_stats_df ()` to convert training data table to pandas DataFrame.
+:::
 
 ## Data Splitting {#sec-data-splitting}
 

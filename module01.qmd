@@ -103,7 +103,7 @@ The user is presented with an interactive on-screen digitization process.
 **Back-end**
 
 1.  The system declares Landsat collections for optical and thermal processing.
-2.  The system currently supports Landsat 1-4 at sensor radiance and Landsat 5-9 collection 2 surface reflectance Analysis Ready Data (ARD), excluding the thermal bands. Landsat mission availability is as follows:
+2.  The system currently supports Landsat 1-4 at sensor radiance and Landsat 5-9 collection 2 surface reflectance Analysis Ready Data (ARD). Landsat mission availability is as follows:
     -   Landsat 1 Multispectral Scanner/MSS (1972 - 1978)
     -   Landsat 2 Multispectral Scanner/MSS (1978 - 1982)
     -   Landsat 3 Multispectral Scanner/MSS (1978 - 1983)
@@ -117,7 +117,7 @@ The user is presented with an interactive on-screen digitization process.
 ::: callout-tip
 ## Related Functions
 
-`rename_landsat_bands ()`
+`rename_landsat_bands()`to rename bands per sensor type.
 :::
 
 ### Input Spatial Image Parameters
@@ -137,11 +137,9 @@ The user is prompted to fill in these parameters:
 ::: callout-tip
 ## Related Functions
 
+`get_optical_data()` to retrieve and filter the Landsat image collection based on the input parameters.
+
 `Reflectance_Data.get_optical_data()` to get reflectance data from all input parameters.
-
-`ee.Filter.lt()` to remove images exceeding cloud cover limit.
-
-`Reflectance_Stats.get_collection_statistics()` (again, for filtered set)
 :::
 
 2.  For single-year imagery, the system selects Landsat images from December 31st of year T or the lowest cloud cover scene available that year. For multi-year imagery, the system retrieves the lowest cloud cover image for each year in the specified range.
@@ -151,7 +149,7 @@ The user is prompted to fill in these parameters:
 ::: callout-tip
 ## Related Functions
 
-Local helper function: `parse_year_or_date()`
+`parse_year_or_date()` to standardize time inputs into `ee.Date` object.
 :::
 
 4.  The system clips and mosaics the selected satellite imagery to match the user’s AOI and date range.
@@ -222,10 +220,11 @@ Conditional logging via `self.logger.info()` / `self.logger.warning()`
 2.  A summary report of metadata is generated, including acquisition details, cloud cover statistics, and a summary of processing steps applied.
 
 ::: callout-tip
-:::
-
-::: callout-tip
 ## Main Related function
+
+`reflectance_data()` to fetch and analyze Landsat optical/thermal image collections.
+
+`get_optical_data()` to retrieve and filter the image collections based on the input parameters.
 
 `rename_landsat_bands ()` to rename bands per sensor type, so all sensors have common names.
 
@@ -248,4 +247,6 @@ Conditional logging via `self.logger.info()` / `self.logger.warning()`
 `self.logger.warning()` to logs warning if images not found.
 
 `Reflectance_Stats.get_collection_statistics()` to compute summary statistic of reflectance values of an ee.ImageCollection over an AOI and time range.
+
+`print_collection_report()` to display the image collection statistics report.
 :::
