@@ -137,9 +137,7 @@ The user is prompted to fill in these parameters:
 ::: callout-tip
 ## Related Functions
 
-`get_optical_data()` to retrieve and filter the Landsat image collection based on the input parameters.
-
-`Reflectance_Data.get_optical_data()` to get reflectance data from all input parameters.
+`get_optical_data()` to retrieve and the Landsat image collection based on the input parameters.
 :::
 
 2.  For single-year imagery, the system selects Landsat images from December 31st of year T or the lowest cloud cover scene available that year. For multi-year imagery, the system retrieves the lowest cloud cover image for each year in the specified range.
@@ -154,18 +152,12 @@ The user is prompted to fill in these parameters:
 
 4.  The system clips and mosaics the selected satellite imagery to match the user’s AOI and date range.
 
-::: callout-tip
-## Related Functions
-
-`ee.ImageCollection()`; `.filterBounds()`; `.filterDate()`
-:::
-
 5.  The system performs cloud masking in three steps: cloud detection, mask refinement, and image compositing. The QA_PIXEL band encodes pixel conditions using specific bit flags. `Bitwise AND` operations are applied to isolate these conditions, focusing on clouds (bit 4, value 16) and cloud shadows (bit 3, value 8). Pixels matching these flags are excluded to produce a cleaner, near cloud-free image.
 
 ::: callout-tip
 ## Related Functions
 
-`mask_landsat_sr()`
+`mask_landsat_sr()` to mask cloud and cloud shadow.
 :::
 
 5.  The system evaluates whether the retrieved imagery meets the required spatial resolution, input year, and cloud cover thresholds.
@@ -182,12 +174,6 @@ The user is prompted to adjust parameters, such as increasing the cloud cover li
 
 1.  Before prompting the user to insert new parameters, the system searches imagery from year T to T-2 to replace cloudy areas via image compositing.
 2.  If requirements remain unmet, @sec-input-spatial-image-parameters will re-run based on new user parameters.
-
-::: callout-tip
-## Related function
-
-Conditional logging via `self.logger.info()` / `self.logger.warning()`
-:::
 
 ## Satellite Imagery Post-Processing {#sec-satellite-imagery-post-processing}
 
@@ -220,33 +206,31 @@ Conditional logging via `self.logger.info()` / `self.logger.warning()`
 2.  A summary report of metadata is generated, including acquisition details, cloud cover statistics, and a summary of processing steps applied.
 
 ::: callout-tip
-## Main Related function
+## Related Functions
 
-`reflectance_data()` to fetch and analyze Landsat optical/thermal image collections.
-
-`get_optical_data()` to retrieve and filter the image collections based on the input parameters.
-
-`rename_landsat_bands ()` to rename bands per sensor type, so all sensors have common names.
-
-`Reflectance_Data.get_optical_data()` to get reflectance data from all input parameters.
-
-`ee.Filter.lt()` to remove images exceeding cloud cover limit.
-
-`parse_year_or_date()` to convert year input (e.g., 2022) into full date strings.
-
-`ee.ImageCollection()` to load a satellite image collection.
-
-`.filterBounds()` to clip and mosaic the satellite image to AOI.
-
-`.filterDate()` to filter the image collection by a date range.
-
-`mask_landsat_sr()` to mask cloud and cloud shadow.
-
-`self.logger.info()` to logs informational message.
-
-`self.logger.warning()` to logs warning if images not found.
-
-`Reflectance_Stats.get_collection_statistics()` to compute summary statistic of reflectance values of an ee.ImageCollection over an AOI and time range.
+`get_collection_statistics()` to calculate statistics of the image collection.
 
 `print_collection_report()` to display the image collection statistics report.
+:::
+
+::: callout-tip
+## Main Related function
+
+List of functions in `Reflectance_Data` Class:
+
+1.  `\_\_init\_\_` to create a logger and logs initialization.
+2.  `mask_landsat_sr()` to mask cloud and cloud shadow.
+3.  `rename_landsat_bands()` to rename bands per sensor type, so all sensors have common names.
+4.  `get_optical_data()` to retrieve and filter the image collections based on the input parameters.
+
+Nested Helper Functions inside `get_optical_data()`:
+
+1.  `parse_year_or_date()` to convert year input (e.g., 2022) into full date strings.
+2.  `add_aoi_cloud()` to calculate the percentage of cloud coverage within AOI for each image.
+
+List of functions in `Reflectance_Stats` Class:
+
+1.  `\_\_init\_\_` to create a logger and logs initialization.
+2.  `get_collection_statistics()` to claculate the image collections' statistics.
+3.  `print_collection_report()` to display the image collection statistics report.
 :::
