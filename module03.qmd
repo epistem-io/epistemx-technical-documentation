@@ -117,7 +117,7 @@ The system checks whether the [default system's classification](@sec-user-select
 2.  If the user chooses to add training data with on-screen sampling, the system will proceed to @sec-on-screen-sampling, with additional uploaded samples appearing on the interface.
 3.  If the user does not want to add training data with on-screen sampling, the system will analyze the training data and proceed to @sec-preview-of-verified-training-data.
 
-### User Does Not Have Training Data {#user-dont-have-training-data}
+### User Does Not Have Training Data {#sec-user-does-not-have-training-data}
 
 **Front-end**
 
