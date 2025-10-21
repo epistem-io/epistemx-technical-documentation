@@ -175,7 +175,7 @@ The user is prompted to adjust parameters, such as increasing the cloud cover li
 1.  Before prompting the user to insert new parameters, the system searches imagery from year T to T-2 to replace cloudy areas via image compositing.
 2.  If requirements remain unmet, @sec-input-spatial-image-parameters will re-run based on new user parameters.
 
-## Satellite Imagery Post-Processing {#sec-satellite-imagery-post-processing}
+## Visualization and Saving Data {#sec-visualization-and-saving-data}
 
 ### Visualization and Saving Data
 
