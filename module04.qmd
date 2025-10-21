@@ -15,7 +15,6 @@ This module enables users to evaluate the spectral separability of sample classe
 
 1.  Near-cloud-free satellite imagery within the AOI (@sec-satellite-imagery-post-processing).
 2.  `TrainDataFinal` (@sec-data-splitting).
-3.  
 
 # Output {.unnumbered}
 
@@ -124,7 +123,7 @@ The system provides three parameters:
 `check_class_separability()` to compute pairwise class separability.
 :::
 
-2.  The system runs the separability analysis. Both methods TM and TD take the spectral pixel data of two classes and calculate how distinct they are based on their means and covariance matrices. The resulting values range from 0 (no separability) to 2 (perfect separability).
+3.  The system runs the separability analysis. Both methods TM and TD take the spectral pixel data of two classes and calculate how distinct they are based on their means and covariance matrices. The resulting values range from 0 (no separability) to 2 (perfect separability).
 
 ::: callout-tip
 ## Related Function(s)
@@ -134,7 +133,7 @@ The system provides three parameters:
 `transform_divergence()` to compute separability value with TD method.
 :::
 
-3.  Finally, the result matrix is converted into a readable, cleaned, long-format pandas DataFrame.
+4.  Finally, the result matrix is converted into a readable, cleaned, long-format pandas DataFrame.
 
 ::: callout-tip
 ## Related Function(s)
@@ -142,7 +141,7 @@ The system provides three parameters:
 `get_separability_df()` to convert `check_class_separability()` into pandas DataFrame.
 :::
 
-3.  The system provides a function to filter and highlight the class pairs that are most difficult to distinguish, based on their separability values.
+5.  The system provides a function to filter and highlight the class pairs that are most difficult to distinguish, based on their separability values.
 
 ::: callout-tip
 ## Related Function(s)
@@ -150,7 +149,7 @@ The system provides three parameters:
 `lowest_separability()` to identify the N class with the lowest values.
 :::
 
-3.  The separability values are assigned to a categorical level indicating how well two classes can be separated. The system groups the numeric values into these categories.
+6.  The separability values are assigned to a categorical level indicating how well two classes can be separated. The system groups the numeric values into these categories.
 
     -   Good separability (\>1.8): Classes are well separated.
     -   Weak/Marginal separability (1.0-1.8): Classes overlap partially.
@@ -162,7 +161,7 @@ The system provides three parameters:
 `separability_level()` to interpret separability metric values to three categories.
 :::
 
-4.  The system summarizes the number of class pairs in each category to provide an overall view of class separability.
+7.  The system summarizes the number of class pairs in each category to provide an overall view of class separability.
 
 ::: callout-tip
 ## Related Function(s)
@@ -170,8 +169,8 @@ The system provides three parameters:
 `sum_separability()` to count the number pf class pairs in each category.
 :::
 
-5.  Results, along with the basic statistics table, are exported as a `.TXT` report.
-6.  Detailed error messages are provided if any errors occur.
+8.  Results, along with the basic statistics table, are exported as a `.TXT` report.
+9.  Detailed error messages are provided if any errors occur.
 
 ## Reviewing Separability Results {#sec-reviewing-separability-results}
 
@@ -223,11 +222,11 @@ The user selects the spectral bands for visualization. This allows the user to e
 
         -   This helps the user see how pixel value distributions differ between classes for each spectral band.
 
-            ::: callout-tip
-            ## Related Function(s)
+        ::: callout-tip
+        ## Related Function(s)
 
-            `plot_facet_histograms()` to plot histogram of the bands.
-            :::
+        `plot_facet_histograms()` to plot histogram of the bands.
+        :::
 
     -   Box plot
 
@@ -241,11 +240,11 @@ The user selects the spectral bands for visualization. This allows the user to e
 
         -   It rotates class labels for readability (useful when there are many classes).
 
-            ::: callout-tip
-            ## Related Functions
+        ::: callout-tip
+        ## Related Function(s)
 
-            `plot_boxplots_by_band()` to plot boxplots of the bands.
-            :::
+        `plot_boxplots_by_band()` to plot boxplots of the bands.
+        :::
 
     -   Scatter plot (2D and 3D)
 
@@ -253,8 +252,8 @@ The user selects the spectral bands for visualization. This allows the user to e
 
 4.  The system summarize a comprehensive textual summary of the separability results. The system calls `sum_separability()` and `lowest_separability()` and displays key statistics and interpretations in a readable table format.
 
-    ::: callout-tip
-    ## Related Functions
+::: callout-tip
+## Related Function(s)
 
-    `print_analysis_summary()` to summarize the result.
-    :::
+`print_analysis_summary()` to summarize the result.
+:::
