@@ -14,48 +14,15 @@ This module enables users to evaluate the spectral separability of sample classe
 **Input from Other Modules**
 
 1.  Near-cloud-free satellite imagery within the AOI (@sec-satellite-imagery-post-processing).
-2.  `TrainDataFinal` (@sec-data-splitting).
+2.  Training Data (@sec-module-3).
 
 # Output {.unnumbered}
 
-1.  Basic statistics (mean, median, variance, and standard deviation).
-2.  Separability values.
+<!-- 1.  Basic statistics (mean, median, variance, and standard deviation). -->
+
+1.  Separability analysis result in diagram visualization and text description.
 
 # Process {.unnumbered}
-
-```{mermaid}
-flowchart TD
-
-%% Main entry
-A([<a href="#sec-specification-of-separability-analysis-parameters">Specification of Separability Analysis Parameters</a>])
-B[/Methodology/]
-C[/ID and Class Name/]
-D[/Pixel Size/]
-E([<a href="#sec-reviewing-separability-results">Reviewing Separability Results</a>])
-F[\Separability Analysis\]
-G[\Sample Stat. Calculation\]
-H([<a href="#sec-spectral-profile-visualization">Spectral Profile Visualization</a>])
-
-%% Flow connections
-A --> B
-A --> C
-A --> D
-
-B --> E
-C --> E
-D --> E
-
-E --> F
-E --> G
-
-F --> H
-G --> H
-
-F -->|Error|A
-G -->|Error|A
-
-
-```
 
 ## Spectral Feature Sampling {#sec-spectral-feature-sampling}
 
@@ -89,14 +56,14 @@ G -->|Error|A
 `get_sample_pixel_stats_df()` to `convert sample_pixel_stats()` into pandas DataFrame.
 :::
 
-## Specification of Separability Analysis Parameters
+## Specification of Separability Analysis Parameters {#sec-specification-of-separability-analysis-parameters}
 
 ### Specification of Separability Analysis Parameters
 
 **Front-end**
 
 1.  The user defines the parameters and selects the method for separability analysis.
-2.  Inputs include ID, Class Name, and pixel size.
+2.  Inputs include ID, Class Name, and pixel size of the samples that will go through the separability analysis.
 
 **Back-end**
 
@@ -106,71 +73,75 @@ The system provides three parameters:
 2.  ID and Class Name as a drop down selection.
 3.  Pixel Size as numeric input.
 
-## Computing the Separability Analysis {#sec-computing-the-separability-analysis}
+::: callout-tip
+## Backend function
+
+Receives input variable from user choice in the front-end
+:::
+
+## Computing the Separability Analysis {#sec-run-separability-analysis}
 
 ### Computing the Separability Analysis
 
 **Back-end**
 
-1.  The system executes the separability analysis workflow that consist of two processes:
-    -   Sample Statistics Calculation.
-    -   Separability Analysis.
-2.  The system first generates all possible class pairs in the dataset, since separability metrics like JM or TD are defined for two classes at a time. It then creates a matrix to store the separability value for each class pair.
+1.  The system executes the separability analysis workflow that consist of two processes: **Sample Statistics Calculation** and **Separability Analysis**
 
-::: callout-tip
-## Related Function(s)
+2.  The system executes the workflow of **Sample Statistics Calculation** as follows:
 
-`check_class_separability()` to compute pairwise class separability.
-:::
+    -   Calculates the sample proportion for each class.
 
-3.  The system runs the separability analysis. Both methods TM and TD take the spectral pixel data of two classes and calculate how distinct they are based on their means and covariance matrices. The resulting values range from 0 (no separability) to 2 (perfect separability).
+        ::: callout-tip
+        ## Backend function
 
-::: callout-tip
-## Related Function(s)
+        `limit_samples_per_class` This function limits the number of samples for each class that will extract the band values to prevent computational time out
+        :::
 
-`_jeffries_matusita_distance()` to compute separability value with JM method.
+    -   Extracts pixel values based on sample locations and the selected imagery.
 
-`transform_divergence()` to compute separability value with TD method.
-:::
+        ::: callout-tip
+        ## Backend function
 
-4.  Finally, the result matrix is converted into a readable, cleaned, long-format pandas DataFrame.
+        `extract_spectral_values`
+        :::
 
-::: callout-tip
-## Related Function(s)
+    -   Computes basic statistics (mean, median, variance, and standard deviation) per class and stores them in a dataframe for visualization.
 
-`get_separability_df()` to convert `check_class_separability()` into pandas DataFrame.
-:::
+        ::: callout-tip
+        ## Backend function
 
-5.  The system provides a function to filter and highlight the class pairs that are most difficult to distinguish, based on their separability values.
+        `sample_pixel_stats` `get_sample_pixel_stats_df`
+        :::
 
-::: callout-tip
-## Related Function(s)
+3.  The system executes the workflow of **Separability Analysis** as follows:
 
-`lowest_separability()` to identify the N class with the lowest values.
-:::
+    -   For each of the classes chosen by user to run the separability analysis, the system calculates separability metrics.
 
-6.  The separability values are assigned to a categorical level indicating how well two classes can be separated. The system groups the numeric values into these categories.
+        ::: callout-tip
+        ## Backend function
 
-    -   Good separability (\>1.8): Classes are well separated.
-    -   Weak/Marginal separability (1.0-1.8): Classes overlap partially.
-    -   Class confusion (\<1.0): Classes require improvement.
+        `check_class_separability`, with sub-function `_jeffries_matusita_distance` or `transform_divergence`
+        :::
 
-::: callout-tip
-## Related Function(s)
+    -   Separability analysis identifies the most difficult class pairs to distinguish, and categorizes results into three levels:
 
-`separability_level()` to interpret separability metric values to three categories.
-:::
+        -   Good separability (\>1.8): Classes are well separated.
+        -   Weak/Marginal separability (1.0-1.8): Classes overlap partially.
+        -   Class confusion (\<1.0): Classes require improvement.
 
-7.  The system summarizes the number of class pairs in each category to provide an overall view of class separability.
+            ::: callout-tip
+            ## Backend function
 
-::: callout-tip
-## Related Function(s)
+            `separability_level`
+            :::
 
-`sum_separability()` to count the number pf class pairs in each category.
-:::
+    -   Pair class with the lowest level of separability is also reported
 
-8.  Results, along with the basic statistics table, are exported as a `.TXT` report.
-9.  Detailed error messages are provided if any errors occur.
+        ::: callout-tip
+        ## Backend function
+
+        `lowest_separability`
+        :::
 
 ## Reviewing Separability Results {#sec-reviewing-separability-results}
 
@@ -189,17 +160,16 @@ The system provides three parameters:
 
 2.  If it is incomplete, the system displays an error and prompts the user to review the analysis parameters.
 
+
 ## Spectral Profile Visualization {#sec-spectral-profile-visualization}
 
 ### Spectral Profile Visualization {#sec-spectra-signature-visualization}
 
 **Front-end**
 
-The user selects the spectral bands for visualization. This allows the user to evaluate whether the spectral data and class separability are satisfactory:
-
--   If satisfied with the result, the user proceed to the next module.
-
--   If not satisfied, the user can return to [Module 3](@sec-module-3) to modify the `TrainDataFinal`.
+1.  The user selects the spectral bands for visualization.
+2.  If satisfied with the result, the user proceed to the next module.
+3.  If not satisfied, the user can return to [Module 3](@sec-module-3) to modify the training data input.
 
 **Back-end**
 
@@ -208,52 +178,34 @@ The user selects the spectral bands for visualization. This allows the user to e
     -   If successful, visualization proceeds.
     -   If unsuccessful, visualization is blocked and the user is prompted to complete the parameter specification (@sec-specification-of-separability-analysis-parameters).
 
-2.  A visualization canvas and the required Python libraries are provided to support the visualization of results and spectral data distribution through:
+::: callout-tip
+## Backend function
+
+Error handling in `check_class_separability` function
+:::
+
+2.  A visualization canvas and required Python libraries are provided to support:
 
     -   Histogram
 
-        Histogram visualizes the distribution of pixel values for selected spectral bands, separated by class. It reveals overlap or separation between classes visually.
-
-        -   The system checks if the DataFrame has data; if not, it stops.
-
-        -   If the user doesn’t specify which bands to plot, it automatically selects the first few bands (max_bands=3).
-
-        -   For each selected band, it creates faceted histograms, where each class appears in a separate subplot (facet).
-
-        -   This helps the user see how pixel value distributions differ between classes for each spectral band.
-
         ::: callout-tip
-        ## Related Function(s)
+        ## Backend function
 
-        `plot_facet_histograms()` to plot histogram of the bands.
+        `plot_facet_histograms`
         :::
 
-    -   Box plot
-
-        Box plot displays pixel values distributions for each spectral band across all classes. It shows the range, median, and variability of spectral values per class, helping identify overlaps.
-
-        -   The system checks that data exists; otherwise, exits.
-
-        -   It selects the spectral bands to plot (either user-defined or the first few).
-
-        -   For each band, it creates a boxplot where: The x-axis shows class IDs and the y-axis shows pixel values for that band.
-
-        -   It rotates class labels for readability (useful when there are many classes).
+    -   Boxplot
 
         ::: callout-tip
-        ## Related Function(s)
+        ## Backend function
 
-        `plot_boxplots_by_band()` to plot boxplots of the bands.
+         `plot_boxplots_by_band`
         :::
 
-    -   Scatter plot (2D and 3D)
+    -   Table containing information of the separability result summary
 
-3.  Helper Text guides the user in interpreting the plots effectively.
+        ::: callout-tip
+        ## Backend function
 
-4.  The system summarize a comprehensive textual summary of the separability results. The system calls `sum_separability()` and `lowest_separability()` and displays key statistics and interpretations in a readable table format.
-
-::: callout-tip
-## Related Function(s)
-
-`print_analysis_summary()` to summarize the result.
-:::
+        `get_separability_df`
+        :::
