@@ -9,13 +9,13 @@ book:
     - index.qmd
     - intro.qmd
     - module01.qmd
-    - module02.qmd
+    - placeholders/module02_placeholder.qmd
     - module03.qmd
     - module04.qmd
-    - module05.qmd
+    - placeholders/module05_placeholder.qmd
     - module06.qmd
     - module07.qmd
-    - module08.qmd
+    - placeholders/module08_placeholder.qmd
     - summary.qmd
     - references.qmd
   sidebar:
