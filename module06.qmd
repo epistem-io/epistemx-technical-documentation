@@ -195,13 +195,12 @@ Generate_and_evaluate_LULC.ovr_classification
 #### Back-end
 
 1.  Displays model learning and accuracy results.
-2.  Suggests corrections or parameter checks if unsatisfied. 
+2.  Suggests corrections or parameter checks if unsatisfied.
 
 ::: callout-tip
-
 Related functions from epistemx.module_6_part3_and_7 import Generate_and_evaluate_LULC
 
 Generate_and_evaluate_LULC.thematic_assessment
 
-Generate_and_evaluate_LULC.print_metrics 
+Generate_and_evaluate_LULC.print_metrics
 :::
