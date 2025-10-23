@@ -122,12 +122,9 @@ User initiates accuracy test by pressing a button.
     -   User's Accuracy (UA)
 
 ::: callout-tip
-
 ## Related Function(s)
-`multiclass_classification()` to perform multiclass hard classification on the dataset to generate land cover land use map.
-`ovr_classification()` to perform one-vs-rest (OvR) classification strategy for multi-class problems, creating probability layers and optional final map.
-`thematic_assessment()` to evaluate the thematic accuracy of the land cover map with metrics like overall accuracy, F1-score, geometric mean, per-class accuracy, and balanced accuracy score.
-`inspect_fold()` to inspect and validate individual folds in cross-validation setups.
+
+`multiclass_classification()` to perform multiclass hard classification on the dataset to generate land cover land use map. `ovr_classification()` to perform one-vs-rest (OvR) classification strategy for multi-class problems, creating probability layers and optional final map. `thematic_assessment()` to evaluate the thematic accuracy of the land cover map with metrics like overall accuracy, F1-score, geometric mean, per-class accuracy, and balanced accuracy score. `inspect_fold()` to inspect and validate individual folds in cross-validation setups.
 :::
 
 ### Display and Review Accuracy Results {#sec-display-and-review-accuracy-results}
@@ -142,13 +139,7 @@ User reviews test results. If satisfied, process completes; if not, prompted to 
 2.  If unsatisfactory, notify user to check training data or classification parameters.
 
 ::: callout-tip
-
 ## Related Function(s)
-`Hyperparameter_tuning()` to optimize model hyperparameters for better performance.
-`Hard_classification_tuning()` to tune parameters specifically for hard (crisp) classification models.
-`Soft_classification_tuning()` to tune parameters for soft (probabilistic) classification models.
-`hard_tuning_kfold()` to perform k-fold cross-validation tuning for hard classification.
-`soft_tuning_kfold()` to perform k-fold cross-validation tuning for soft classification.
-`print_metrics()` to print the classification thematic evaluation results, including overall metrics, aggregate metrics, per-class metrics, and interpretations.
+
+`Hyperparameter_tuning()` to optimize model hyperparameters for better performance. `Hard_classification_tuning()` to tune parameters specifically for hard (crisp) classification models. `Soft_classification_tuning()` to tune parameters for soft (probabilistic) classification models. `hard_tuning_kfold()` to perform k-fold cross-validation tuning for hard classification. `soft_tuning_kfold()` to perform k-fold cross-validation tuning for soft classification. `print_metrics()` to print the classification thematic evaluation results, including overall metrics, aggregate metrics, per-class metrics, and interpretations.
 :::
-::: callout-tip
