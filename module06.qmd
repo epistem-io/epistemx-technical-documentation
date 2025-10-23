@@ -108,7 +108,9 @@ The user is notified if inputs are insufficient or test data is missing, and pro
 2.  Applies them as main parameters for Random Forest training.
 
 ::: callout-tip
-Related Functions Hard_classification_tuning() to perform manual testing to find optimal parameters for multiclass hard classification using training data from single or stratified random split. Soft_classification_tuning() to perform manual testing to find optimal parameters for one-vs-rest binary soft classification using training data from single or stratified random split. hard_tuning_kfold() to perform manual testing to find optimal parameters for multiclass hard classification with stratified k-fold input data. soft_tuning_kfold() to perform manual testing to find optimal parameters for one-vs-rest binary soft classification with k-fold cross-validation data.
+## Related Function(s)
+
+`Hard_classification_tuning()` to perform manual testing to find optimal parameters for multiclass hard classification using training data from single or stratified random split. `Soft_classification_tuning()` to perform manual testing to find optimal parameters for one-vs-rest binary soft classification using training data from single or stratified random split. `hard_tuning_kfold()` to perform manual testing to find optimal parameters for multiclass hard classification with stratified k-fold input data. `soft_tuning_kfold()` to perform manual testing to find optimal parameters for one-vs-rest binary soft classification with k-fold cross-validation data.
 :::
 
 ### Feature Extraction {#sec-feature-extraction}
@@ -122,7 +124,8 @@ Runs automatically after specifications are defined.
 Performs feature extraction by sampling pixel values from imagery based on training (and optional validation) samples.
 
 ::: callout-tip
-Related Functions random_split() to perform single random split and extract pixel values from the imagery. stratified_split() to perform stratified random split to partition the sample data into training and testing sets. stratified_kfold() to perform stratified k-fold cross-validation split on input reference data. inspect_fold() to inspect a specific fold's sizes from stratified k-fold results.
+## Related Function(s)
+`random_split()` to perform single random split and extract pixel values from the imagery. `stratified_split()` to perform stratified random split to partition the sample data into training and testing sets. `stratified_kfold()` to perform stratified k-fold cross-validation split on input reference data. `inspect_fold()` to inspect a specific fold's sizes from stratified k-fold results.
 :::
 
 ### Train Random Forest Model {#sec-train-random-forest-model}
@@ -163,7 +166,8 @@ Runs after training with progress shown.
 2.  Generates classification summary and result data.
 
 ::: callout-tip
-Related Functions multiclass_classification() to perform multiclass hard classification to generate land cover land use map using Random Forest with specified parameters. ovr_classification() to implement one-vs-rest binary classification for multi-class land cover, generating probability stacks and optional final map via argmax.
+## Related Function(s)
+`multiclass_classification()` to perform multiclass hard classification to generate land cover land use map using Random Forest with specified parameters. `ovr_classification()` to implement one-vs-rest binary classification for multi-class land cover, generating probability stacks and optional final map via argmax.
 :::
 
 Revie
@@ -182,7 +186,8 @@ Revie
 2.  Suggests corrections or parameter checks if unsatisfied.
 
 ::: callout-tip
-Related Functions thematic_assessment() to evaluate the thematic accuracy of the land cover map with metrics like overall accuracy, F1-score, geometric mean, per-class accuracy, and balanced accuracy score. print_metrics() to print the classification thematic evaluation results, including overall metrics, aggregate metrics, per-class metrics, and interpretations.
+## Related Function(s)
+`thematic_assessment()` to evaluate the thematic accuracy of the land cover map with metrics like overall accuracy, F1-score, geometric mean, per-class accuracy, and balanced accuracy score. `print_metrics()` to print the classification thematic evaluation results, including overall metrics, aggregate metrics, per-class metrics, and interpretations.
 :::
 
 ::: callout-tip
