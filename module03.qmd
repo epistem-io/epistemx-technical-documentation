@@ -1,4 +1,4 @@
-# Module 3: Training Data Generation {#sec-module-3}
+# Module 3: Training Data Generation and Data Splitting {#sec-module-3}
 
 # Module Overview {.unnumbered}
 
@@ -266,7 +266,40 @@ The user selects one of the following options for splitting the `TrainDataRecap`
 
 **Back-end**
 
-The system provides options for splitting the sample point data for training and validation:
+1.  The system provides options for splitting the sample point data for training and validation:
 
-1.  Use all sample points for training - the system consolidates all data into a single DataFrame or variable, stored as `TrainDataFinal` for use in [Module 4](@sec-module4) and [6](@sec-module-6).
-2.  Split the sample points between training and validation - the system partitions the data according to the user-specified percentage defined in the `TrainSplitPct` variable. The `TrainDataFinal` (for training) is stored in [Module 4](@sec-module-4) and [6](@sec-module-6), while `ValidDataFinal` (for validation) is stored in Module [6](@sec-module-6).
+    -   Use all sample points for training - the system consolidates all data into a single DataFrame or variable, stored as `TrainDataFinal` for use in [Module 4](@sec-module4) and [6](@sec-module-6).
+
+    -   Split the sample points between training and validation - the system partitions the data according to the user-specified percentage defined in the `TrainSplitPct` variable. The `TrainDataFinal` (for training) is stored in [Module 4](@sec-module-4) and [6](@sec-module-6), while `ValidDataFinal` (for validation) is stored in Module [6](@sec-module-6).
+
+2.  The system offers three types of data splitting:
+
+    -   Single Random Split: Randomly splits the input training data according to a specified ratio and is ideal when the training dataset is relatively balanced across classes. The system assigns a random number (`randomColumn()`) to each training point and separates the points into training and testing sets. It then extracts the corresponding image pixel values (`image.sampleRegions()`) for all points and returns the two sets, ready for the next step.
+
+        ::: callout-tip
+        ## Related Function(s)
+
+        `random_split()` to partition the training data randomly into training and validation sets.
+        :::
+
+    -   Stratified Random Split: Randomly splits the input data while preserving class proportions. Unique classes are identified (`aggregate_array().distinct()`), random numbers are assigned to points, and each class is split into training and testing subsets. The subsets are merged across classes, and image pixel values are extracted for all points.
+
+        ::: callout-tip
+        ## Related Function(s)
+
+        `stratified_split()` to partition the training data by strata into training and validation sets.
+
+        `split_class()` to partition the training data based on the class.
+        :::
+
+    -   Stratified K-Fold Split: Performs a stratified K-Fold cross-validation split on the input reference dataset. It is particularly useful for datasets with imbalanced classes, as it ensures that the class proportions are preserved in each fold. This method splits the dataset into k folds for cross-validation while preserving class proportions. It first calculates the fold size (`1.0 / k`) and generates evenly spaced thresholds to assign points to training or validation. Unique classes are identified, and each point is assigned a random number. Points within the threshold range are used for validation, and the rest for training. Class-specific splits are merged to form complete training and validation sets for each fold. The function returns a `FeatureCollection` of k folds, each containing its training and validation subsets. Finally, the system ensures that class proportions are maintained in every fold.
+
+        ::: callout-tip
+        ## Related Function(s)
+
+        `make_fold()` to create the folds using the given threshold.
+
+        `per_class()` to split the class to ensure stratification during split.
+
+        `inspect_fold()` to inspect the result of stratified k-fold size.
+        :::
