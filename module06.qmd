@@ -64,11 +64,11 @@ I -->|Unsatisfied| D
 
 ## Checking Prerequisites from Previous Modules
 
-### Front-end
+**Front-end**
 
 The user is notified if inputs are insufficient or test data is missing, and prompted to return to previous modules (e.g., [Module 3](@sec-module-3) for test data) as needed.
 
-### Back-end
+**Back-end**
 
 1.  The system performs a parameter and input suitability test to verify availability and compatibility of inputs from Modules 1-5 (such as imagery, scheme, training data, optional validation data).
 2.  Test data availability from [Module 3](@sec-module-3).
@@ -80,14 +80,14 @@ The user is notified if inputs are insufficient or test data is missing, and pro
 
 ### Review Inputs {#sec-review-inputs}
 
-#### Front-end
+**Front-end**
 
 1.  The user reviews the summary text report to decide if they agree to proceed.
     -   If yes, continue to define specifications.
     -   If no, return to relevant previous modules.
 2.  Users return to previous modules as needed.
 
-#### Back-end
+**Back-end**
 
 1.  The system generates and displays a summary report of variables for the classification process, including imagery details, classification scheme, and training data summary.
 2.  Displays a summary text and dataframe.
@@ -95,14 +95,14 @@ The user is notified if inputs are insufficient or test data is missing, and pro
 
 ### Define Classification Specifications {#sec-define-classification-specifications}
 
-#### Front-end
+**Front-end**
 
 1.  User enters RF hyperparameter values:
     -   Number of trees (n_tree)
     -   Variables per split (var_split)
     -   Minimum leaf population (min_leaf_pop)
 
-#### Back-end
+**Back-end**
 
 1.  Stores user-entered hyperparameters.
 2.  Applies them as main parameters for Random Forest training.
@@ -121,11 +121,11 @@ The user is notified if inputs are insufficient or test data is missing, and pro
 
 ### Feature Extraction {#sec-feature-extraction}
 
-#### Front-end
+**Front-end**
 
 Runs automatically after specifications are defined.
 
-#### Back-end
+**Back-end**
 
 Performs feature extraction by sampling pixel values from imagery based on training (and optional validation) samples.
 
@@ -142,11 +142,11 @@ Performs feature extraction by sampling pixel values from imagery based on train
 
 ### Train Random Forest Model {#sec-train-random-forest-model}
 
-#### Front-end
+**Front-end**
 
 Shows user progress during training.
 
-#### Back-end
+**Back-end**
 
 1.  Trains RF model using prepared data:
     -   Bootstrap sampling for subsets per tree.
@@ -156,11 +156,11 @@ Shows user progress during training.
 
 ### Model Accuracy Test {#sec-model-accuracy-test}
 
-#### Front-end
+**Front-end**
 
 Displays accuracy report if validation data is available.
 
-#### Back-end
+**Back-end**
 
 1.  Applies model to validation data if available.
 2.  Generates accuracy metrics: overall accuracy, precision, recall, F1-score, Kappa, error matrix.
@@ -168,11 +168,11 @@ Displays accuracy report if validation data is available.
 
 ### Classification (Apply Model to Entire Image) {#sec-classification-apply-model-to-entire-image}
 
-#### Front-end
+**Front-end**
 
 Runs after training with progress shown.
 
-#### Back-end
+**Back-end**
 
 1.  Applies trained model to entire imagery.
 2.  Generates classification summary and result data.
@@ -182,19 +182,18 @@ Runs after training with progress shown.
 `multiclass_classification()` to perform multiclass hard classification to generate land cover land use map using Random Forest with specified parameters.
 
 `ovr_classification()` to implement one-vs-rest binary classification for multi-class land cover, generating probability stacks and optional final map via argmax.
-:::
 
-Revie
+:::
 
 ### Review Classification Results {#sec-review-classification-results}
 
-#### Front-end
+**Front-end**
 
 1.  User reviews model results and map.
     -   If satisfied, proceed to [Module 7](@sec-module-7).
     -   If not, adjust parameters or return to prior modules.
 
-#### Back-end
+**Back-end**
 
 1.  Displays model learning and accuracy results.
 2.  Suggests corrections or parameter checks if unsatisfied.
@@ -204,7 +203,4 @@ Revie
 `thematic_assessment()` to evaluate the thematic accuracy of the land cover map with metrics like overall accuracy, F1-score, geometric mean, per-class accuracy, and balanced accuracy score.
 
 `print_metrics()` to print the classification thematic evaluation results, including overall metrics, aggregate metrics, per-class metrics, and interpretations.
-:::
-
-::: callout-tip
 :::
