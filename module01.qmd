@@ -67,10 +67,6 @@ style K stroke:#000000
 
 ## Selection of AOI {#sec-selection-of-aoi}
 
-::: callout-note
-@sec-aoi-from-administrative-boundaries, @sec-aoi-from-shapefile, @sec-aoi-from-on-screen-digitizing are options.
-:::
-
 ### AOI from Administrative Boundaries {#sec-aoi-from-administrative-boundaries}
 
 **Front-end**

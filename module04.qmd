@@ -15,7 +15,7 @@ The module extracts spectral pixel values from near-cloud-free satellite imagery
 
 **Input from Other Modules**
 
-1.  Near-cloud-free satellite imagery within the AOI (@sec-satellite-imagery-post-processing).
+1.  Near-cloud-free satellite imagery within the AOI (@sec-visualization-and-saving-data).
 2.  Training Data (@sec-module-3).
 
 # Output {.unnumbered}
