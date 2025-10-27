@@ -75,7 +75,13 @@ The user selects an administration boundary.
 
 **Back-end**
 
-The system queries the FAO Global Administrative Unit Layers (GAUL) 2015 datasets, which provide standardized information on country and sub-national boundaries, and saves the AOI as a variable
+The system queries the FAO Global Administrative Unit Layers (GAUL) 2015 datasets, which provide standardized information on country and sub-national boundaries, and saves the AOI as a variable.
+
+::: callout-tip
+## Related Function(s)
+
+`get_aoi_from_gaul():` to obtain the AOI from GAUL dataset.
+:::
 
 ### AOI from Shapefile {#sec-aoi-from-shapefile}
 
@@ -104,7 +110,7 @@ The user is presented with an interactive on-screen digitization process.
 
 **Front-end**
 
-1.  After the user uploads the shapefiles, they receive a feedback such as "AOI conversion completed!", "Failed to convert AOI to Google Earth Engine Format", "Geometry Validation Failed", "Error Reading Shapefile".
+After the user uploads the shapefiles, they receive a feedback such as "AOI conversion completed!", "Failed to convert AOI to Google Earth Engine Format", "Geometry Validation Failed", "Error Reading Shapefile".
 
 **Back-end**
 
@@ -121,7 +127,7 @@ The user is presented with an interactive on-screen digitization process.
 
 `_validate_polygons():` to checks point geometries, remove invalid coordinates, and simplify polygon geometries.
 
-`_is_valid_coordinates():` to ensure coordinates fall within a valid latitude and longitude ranges.
+`_is_valid_coordinate():` to ensure coordinates fall within a valid latitude and longitude ranges.
 
 `_count_vertices():` to count the number of vertices in a geometry.
 
@@ -148,7 +154,7 @@ The user is presented with an interactive on-screen digitization process.
         `convert_aoi_gdf():`to convert multi-geometry shapefiles.
         :::
 
-    -   Throughout the process, the system provides detailed logging feedback via Streamlit, ensuring users are informed about validation progress, detected issues, and successful conversions.
+    -   Throughout the process, the system provides detailed logging feedback via front-end, ensuring users are informed about validation progress, detected issues, and successful conversions.
 
     -   Finally, the system displays a small preview map centered on the AOI.
 
@@ -159,7 +165,7 @@ The user is presented with an interactive on-screen digitization process.
 **Back-end**
 
 1.  The system declares Landsat collections for optical and thermal processing.
-2.  The system currently supports Landsat 1-4 at sensor radiance and Landsat 5-9 collection 2 surface reflectance Analysis Ready Data (ARD). Landsat mission availability is as follows:
+2.  The system currently supports Landsat 1-3 raw collection (`landsat_raw`) and and Landsat 4-9 surface reflectance collection (`landsat_sr`). Landsat mission availability is as follows:
     -   Landsat 1 Multispectral Scanner/MSS (1972 - 1978)
     -   Landsat 2 Multispectral Scanner/MSS (1978 - 1982)
     -   Landsat 3 Multispectral Scanner/MSS (1978 - 1983)
@@ -168,7 +174,7 @@ The user is presented with an interactive on-screen digitization process.
     -   Landsat 7 Enhanced Thematic Mapper Plus/ETM+ (1999 - 2021)
     -   Landsat 8 Operational Land Imager/OLI (2013 - present)
     -   Landsat 9 Operational Land Imager-2/OLI-2 (2021 - present)
-3.  The system rename bands per sensor type to standarize band namings, so all sensors have common names.
+3.  The system rename bands per sensor type to standardize band namings, so all sensors have common names.
 
 ::: callout-tip
 ## Related Function(s)
@@ -183,8 +189,12 @@ The user is presented with an interactive on-screen digitization process.
 The user is prompted to fill in these parameters:
 
 1.  Spatial resolution (meters): Specify the desired spatial resolution.
+
 2.  Input year: Choose either single-date or multi-year imagery.
+
 3.  Maximum cloud cover: Set a preferred cloud cover threshold, or use the default value of 30%.
+
+During Phase 1, only Landsat data will be utilized; therefore, the spatial resolution will be restricted to 30 meters.
 
 **Back-end**
 
@@ -208,7 +218,7 @@ The user is prompted to fill in these parameters:
 
 4.  The system clips and mosaics the selected satellite imagery to match the user’s AOI and date range.
 
-5.  The system performs cloud masking in three steps: cloud detection, mask refinement, and image compositing. The QA_PIXEL band encodes pixel conditions using specific bit flags. `Bitwise AND` operations are applied to isolate these conditions, focusing on clouds (bit 4, value 16) and cloud shadows (bit 3, value 8). Pixels matching these flags are excluded to produce a cleaner, near cloud-free image.
+5.  The system performs cloud masking with QA_PIXEL band that encodes pixel conditions using specific bit flags. `Bitwise AND` operations are applied to isolate these conditions, focusing on clouds (bit 4, value 16) and cloud shadows (bit 3, value 8). Pixels matching these flags are excluded to produce a cleaner, near cloud-free image.
 
 ::: callout-tip
 ## Related Function(s)
@@ -216,9 +226,11 @@ The user is prompted to fill in these parameters:
 `mask_landsat_sr():` to mask cloud and cloud shadow.
 :::
 
-5.  The system evaluates whether the retrieved imagery meets the required spatial resolution, input year, and cloud cover thresholds.
+5.  The system then applies scaling to the optical reflectance bands to convert the raw digital numbers (DNs) into physically meaningful surface reflectance values. A scale factor `0.0000275` and offset `-0.2` are applied, as defined in the Landsat Collection 2 Surface Reflectance metadata. This conversion standardize the reflectance values to a range of approximately 0 to 1, enabling accurate comparison and analysis across different scenes and sensors.
 
-6.  If there is no satellite imagery available for the user's input parameters, proceed to @sec-satellite-imagery-cannot-be-found
+6.  The system evaluates whether the retrieved imagery meets the required spatial resolution, input year, and cloud cover thresholds.If suitable images are found, the system generates a composite and mosaic by calculating the median value across the selected imagery.
+
+7.  If there is no satellite imagery available for the user's input parameters, proceed to @sec-satellite-imagery-cannot-be-found
 
 ### Satellite Imagery Not Found Based on User’s Parameters {#sec-satellite-imagery-cannot-be-found}
 
@@ -231,13 +243,13 @@ The user is prompted to adjust parameters, such as increasing the cloud cover li
 1.  Before prompting the user to insert new parameters, the system searches imagery from year T to T-2 to replace cloudy areas via image compositing.
 2.  If requirements remain unmet, @sec-input-spatial-image-parameters will re-run based on new user parameters.
 
-## Visualization and Saving Data {#sec-visualization-and-saving-data}
+## Visualization and Saving of Data {#sec-visualization-and-saving-data}
 
 ### Visualization and Saving Data
 
 **Front-end**
 
-1.  The user can visualize the near cloud-free imagery within the web portal and download it as a GeoTIFF (`.TIF` )
+1.  The user can visualize the near cloud-free imagery within the web portal using a false-color composite and download the resulting image as a GeoTIFF (`.TIF` ) file.
 
 2.  Prior to initiating the image download, the user inputs technical parameters of the image that includes: file name, coordinate system, and spatial resolution.
 
