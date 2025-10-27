@@ -21,7 +21,7 @@ In supervised classification, the quality of training data directly determines t
 **Input from Other Modules**
 
 1.  User-selected AOI (@sec-selection-of-aoi).
-2.  Near-cloud-free satellite imagery (@sec-satellite-imagery-post-processing).
+2.  Near-cloud-free satellite imagery (@sec-selection-and-preparation-of-satellite-imagery).
 3.  LULC classification table (@sec-saving-the-lulc-classification-table).
 
 # Output {.unnumbered}

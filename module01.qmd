@@ -156,7 +156,7 @@ The user is presented with an interactive on-screen digitization process.
 
     -   Finally, the system displays a small preview map centered on the AOI.
 
-## Selection and Preparation of Satellite Imagery
+## Selection and Preparation of Satellite Imagery {#sec-selection-and-preparation-of-satellite-imagery}
 
 ### Initialization of Landsat Dataset {#sec-input-spatial-image-parameters}
 
