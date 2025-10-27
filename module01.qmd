@@ -22,35 +22,46 @@ The output of this module is high-quality, near-cloud-free satellite imagery, wh
 # Output {.unnumbered}
 
 1.  Selected AOI.
-2.  Near-cloud-free satellite imagery.
+2.  Near-cloud-free satellite imagery (.image).
 
 # Process {.unnumbered}
 
 ```{mermaid}
 
-flowchart TD
+flowchart TD 
+%% Nodes 
+A([<a href="#sec-selection-of-aoi">Selection of AOI</a>]) 
+B([<a href="#sec-aoi-from-administrative-boundaries">AOI from Administrative Boundaries</a>]) 
+C([<a href="#sec-aoi-from-a-shapefile">AOI from a Shapefile</a>]) 
+D([<a href="#sec-aoi-from-on-screen-digitizing">AOI from On-Screen Digitizing</a>]) E([<a href="#sec-input-spatial-image-parameters">Input Spatial Image Parameters</a>]) 
+F([<a href="#sec-satellite-imagery-cannot-be-found">Satellite Imagery Not Found</a>]) 
+G([<a href="#sec-selection-and-preparation-of-satellite-imagery">Selection and Preparation of Satellite Imagery</a>]) 
+H([<a href="#sec-validation-of-shapefile-geometries">Validation of Shapefile Geometries</a>]) 
+I{AOI} K{Near-Cloud-Free Satellite Imagery (.image)} 
+J([<a href="#sec-visualization-and-saving-data">Visualization & Saving of Data</a>])
 
-A([<a href="#sec-selection-of-aoi">Selection of AOI</a>])
-B([<a href="#sec-aoi-from-administrative-boundaries">AOI from Administrative Boundaries</a>])
-C([<a href="#sec-aoi-from-a-shapefile">AOI from a Shapefile</a>])
-D([<a href="#sec-aoi-from-on-screen-digitizing">AOI from On-Screen Digitizing</a>])
-E([<a href="#sec-input-spatial-image-parameters">Input Spatial Image Parameters</a>])
-F([<a href="#sec-satellite-imagery-cannot-be-found">Satellite Imagery Not Found</a>])
-G([<a href="#sec-satellite-imagery-post-processing">Satellite Imagery Post-Processing: Visualization & Saving Data</a>])
+%% Connections
+A --> B 
+A --> C 
+A --> D 
+B --> I 
+C --> H 
+D --> I 
+H --> |Valid geometries| I 
+H --> |Invalid geometries| C 
+I --> E 
+E --> |Imagery available| G 
+E --> |Imagery not available| F 
+F --> E 
+G --> K 
+G --> J 
 
-%% Flow connections
-A --> B
-A --> C
-A --> D
+%% Node styling 
+classDef Peach fill:#FFEFDB,stroke:#FBB35A,stroke-width:1px,color:#8F632D class I,K Peach 
 
-B --> E
-C --> E
-D --> E
-
-E -->|Imagery available| G
-E -->|Imagery not available| F
-
-F --> E
+%% Optional: individual stroke styling 
+style I stroke:#000000 
+style K stroke:#000000
 
 ```
 
@@ -76,15 +87,10 @@ The system queries the FAO Global Administrative Unit Layers (GAUL) 2015 dataset
 
 1.  The user can upload their `.SHP` file. in `.ZIP` format that includes all necessary files (`.SHP`, `.SHX`, `.DBF`, `.PRJ`).
 
-2.  The user will get a feedback such as "AOI conversion completed!", "Failed to convert AOI to Google Earth Engine Format", "Geometry Validation Failed", "Error Reading Shapefile".
-
 **Back-end**
 
-1.  The system currently supports only shapefile in `.ZIP` format.
-2.  An Upload button is provided, allowing user to uploaded the file. It is then extracted to a temporary directory.
-3.  Next, the system validates and repairs the shapefile geometries (if any errors are found) in a GeoDataFrame (`.GDF`), converts the cleaned geometries into an Earth Engine objects, and converts the coordinate system into WGS 1984.
-4.  If an error occurs still, the system displays an error message and suggests performing a shapefile simplification process using GIS software.
-5.  The system displays a small preview map centered on the AOI.
+1.  The system currently supports only shapefiles in .ZIP format.
+2.  An Upload button is provided, allowing the user to upload the file. It is then extracted to a temporary directory.
 
 ### AOI from On-Screen Digitizing {#sec-aoi-from-on-screen-digitizing}
 
@@ -96,9 +102,63 @@ The user is presented with an interactive on-screen digitization process.
 
 \[not developed yet\]
 
-## Selecting and Preparing Satellite Imagery
+## Validation of Shapefile Geometries {#sec-validation-of-shapefile-geometries}
 
-### Defining Optical and Thermal Datasets {#sec-input-spatial-image-parameters}
+### Validation of Shapefile Geometries
+
+**Front-end**
+
+1.  After the user uploads the shapefiles, they receive a feedback such as "AOI conversion completed!", "Failed to convert AOI to Google Earth Engine Format", "Geometry Validation Failed", "Error Reading Shapefile".
+
+**Back-end**
+
+1.  The `shapefile_validator` class validates shapefile geometries within a GeoDataFrame (.GDF). It corrects coordinate reference systems (CRS) to WGS 1984 (EPSG:4326), fixes invalid or empty geometries, validates point and polygon features, simplifies overly complex polygons, and removes features with invalid coordinates. A final geometry check is performed before converting the data into Earth Engine objects.
+
+::: callout-tip
+## Related Function(s)
+
+`validate_and_fix_geometry():`to validate and fix geometries issues.
+
+`_clean_geometries():` to repair invalid geometries.
+
+`_fix_crs ():` to resolve coordinate reference system issues.
+
+`_validate_polygons():` to checks point geometries, remove invalid coordinates, and simplify polygon geometries.
+
+`_is_valid_coordinates():` to ensure coordinates fall within a valid latitude and longitude ranges.
+
+`_count_vertices():` to count the number of vertices in a geometry.
+
+`_final_validation():` to perform final validation to ensure all geometries are valid.
+:::
+
+2.  If an error still occurs, the system displays an error message and suggests performing a shapefile simplification process using GIS software.
+
+3.  The EE_converter class handles the conversion of cleaned GeoDataFrames into Earth Engine-compatible objects. It includes:
+
+    -   Converts single-geometry AOI shapefiles into ee.Geometry objects, using fallback methods (GeoJSON or bounding box) if direct conversion fails.
+
+        ::: callout-tip
+        ## Related Function(s)
+
+        `convert_aoi_gdf():`to convert single-geometry shapefiles.
+        :::
+
+    -   Converts multi-geometry ROI shapefiles into ee.FeatureCollection objetcs while preserving feature attributes.
+
+        ::: callout-tip
+        ## Related Function(s)
+
+        `convert_aoi_gdf():`to convert multi-geometry shapefiles.
+        :::
+
+    -   Throughout the process, the system provides detailed logging feedback via Streamlit, ensuring users are informed about validation progress, detected issues, and successful conversions.
+
+    -   Finally, the system displays a small preview map centered on the AOI.
+
+## Selection and Preparation of Satellite Imagery
+
+### Initialization of Landsat Dataset {#sec-input-spatial-image-parameters}
 
 **Back-end**
 
@@ -117,7 +177,7 @@ The user is presented with an interactive on-screen digitization process.
 ::: callout-tip
 ## Related Function(s)
 
-`rename_landsat_bands()`to rename bands per sensor type.
+`rename_landsat_bands():`to rename bands per sensor type.
 :::
 
 ### Input Spatial Image Parameters
@@ -137,7 +197,7 @@ The user is prompted to fill in these parameters:
 ::: callout-tip
 ## Related Function(s)
 
-`get_optical_data()` to retrieve and the Landsat image collection based on the input parameters.
+`get_optical_data():` to retrieve and the Landsat image collection based on the input parameters.
 :::
 
 2.  For single-year imagery, the system selects Landsat images from December 31st of year T or the lowest cloud cover scene available that year. For multi-year imagery, the system retrieves the lowest cloud cover image for each year in the specified range.
@@ -147,7 +207,7 @@ The user is prompted to fill in these parameters:
 ::: callout-tip
 ## Related Function(s)
 
-`parse_year_or_date()` to standardize time inputs into `ee.Date` object.
+`parse_year_or_date():` to standardize time inputs into `ee.Date` object.
 :::
 
 4.  The system clips and mosaics the selected satellite imagery to match the user’s AOI and date range.
@@ -157,7 +217,7 @@ The user is prompted to fill in these parameters:
 ::: callout-tip
 ## Related Function(s)
 
-`mask_landsat_sr()` to mask cloud and cloud shadow.
+`mask_landsat_sr():` to mask cloud and cloud shadow.
 :::
 
 5.  The system evaluates whether the retrieved imagery meets the required spatial resolution, input year, and cloud cover thresholds.
@@ -208,29 +268,7 @@ The user is prompted to adjust parameters, such as increasing the cloud cover li
 ::: callout-tip
 ## Related Function(s)
 
-`get_collection_statistics()` to calculate statistics of the image collection.
+`get_collection_statistics():` to calculate statistics of the image collection.
 
-`print_collection_report()` to display the image collection statistics report.
-:::
-
-::: callout-tip
-## Main Related Function(s)
-
-List of functions in `Reflectance_Data` Class:
-
-1.  `\_\_init\_\_` to create a logger and logs initialization.
-2.  `mask_landsat_sr()` to mask cloud and cloud shadow.
-3.  `rename_landsat_bands()` to rename bands per sensor type, so all sensors have common names.
-4.  `get_optical_data()` to retrieve and filter the image collections based on the input parameters.
-
-Nested Helper Functions inside `get_optical_data()`:
-
-1.  `parse_year_or_date()` to convert year input (e.g., 2022) into full date strings.
-2.  `add_aoi_cloud()` to calculate the percentage of cloud coverage within AOI for each image.
-
-List of functions in `Reflectance_Stats` Class:
-
-1.  `\_\_init\_\_` to create a logger and logs initialization.
-2.  `get_collection_statistics()` to claculate the image collections' statistics.
-3.  `print_collection_report()` to display the image collection statistics report.
+`print_collection_report():` to display the image collection statistics report.
 :::
