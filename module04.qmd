@@ -2,7 +2,9 @@
 
 # Module Overview {.unnumbered}
 
-This module enables users to evaluate the spectral separability of sample classes using Jeffries–Matusita (JM) distance or Transformed Divergence (TD). It provides quantitative metrics for class distinction and visual tools for intuitive interpretation. By identifying well-separated classes and informative covariates, this analysis helps ensure data quality and supports more accurate classification or modeling workflows.
+This module performs a spectral separability analysis to assess the distinctiveness of land cover classes. Conducting separability analysis is essential to ensure that the spectral signatures of training samples are sufficiently differentiated; inadequate separability between classes can lead to model confusion, increased classification error, and reduced generalization performance.
+
+The module extracts spectral pixel values from near-cloud-free satellite imagery and computes key descriptive statistics for each class. To maintain computational efficiency and minimize class imbalance, sampling is constrained to a defined maximum number of pixels per class. Pairwise separability is then quantified using the Jeffries–Matusita (JM) and Transformed Divergence (TD) metrics, both of which evaluate the statistical distance between class distributions based on their means and covariance matrices. The resulting separability values are categorized to indicate good, marginal, or poor class distinction and visualized through histograms, box plots, and scatter plots. This diagnostic process enables the identification of spectrally overlapping classes that require refinement or redefinition before classification, thereby improving the reliability and accuracy of subsequent LULC mapping workflows.
 
 # Input {.unnumbered}
 
@@ -112,10 +114,7 @@ The system provides three parameters:
 
 **Back-end**
 
-1.  The system executes the separability analysis workflow that consist of two processes:
-    -   Sample Statistics Calculation.
-    -   Separability Analysis.
-2.  The system first generates all possible class pairs in the dataset, since separability metrics like JM or TD are defined for two classes at a time. It then creates a matrix to store the separability value for each class pair.
+1.  The system first generates all possible class pairs in the dataset, since separability metrics like JM or TD are defined for two classes at a time. It then creates a matrix to store the separability value for each class pair.
 
 ::: callout-tip
 ## Related Function(s)
@@ -123,7 +122,7 @@ The system provides three parameters:
 `check_class_separability()` to compute pairwise class separability.
 :::
 
-3.  The system runs the separability analysis. Both methods TM and TD take the spectral pixel data of two classes and calculate how distinct they are based on their means and covariance matrices. The resulting values range from 0 (no separability) to 2 (perfect separability).
+2.  The system runs the separability analysis. Both methods TM and TD take the spectral pixel data of two classes and calculate how distinct they are based on their means and covariance matrices. The resulting values range from 0 (no separability) to 2 (perfect separability).
 
 ::: callout-tip
 ## Related Function(s)
@@ -133,7 +132,7 @@ The system provides three parameters:
 `transform_divergence()` to compute separability value with TD method.
 :::
 
-4.  Finally, the result matrix is converted into a readable, cleaned, long-format pandas DataFrame.
+3.  Finally, the result matrix is converted into a readable, cleaned, long-format pandas DataFrame.
 
 ::: callout-tip
 ## Related Function(s)
@@ -141,7 +140,7 @@ The system provides three parameters:
 `get_separability_df()` to convert `check_class_separability()` into pandas DataFrame.
 :::
 
-5.  The system provides a function to filter and highlight the class pairs that are most difficult to distinguish, based on their separability values.
+4.  The system provides a function to filter and highlight the class pairs that are most difficult to distinguish, based on their separability values.
 
 ::: callout-tip
 ## Related Function(s)
@@ -149,7 +148,7 @@ The system provides three parameters:
 `lowest_separability()` to identify the N class with the lowest values.
 :::
 
-6.  The separability values are assigned to a categorical level indicating how well two classes can be separated. The system groups the numeric values into these categories.
+5.  The separability values are assigned to a categorical level indicating how well two classes can be separated. The system groups the numeric values into these categories.
 
     -   Good separability (\>1.8): Classes are well separated.
     -   Weak/Marginal separability (1.0-1.8): Classes overlap partially.
@@ -161,7 +160,7 @@ The system provides three parameters:
 `separability_level()` to interpret separability metric values to three categories.
 :::
 
-7.  The system summarizes the number of class pairs in each category to provide an overall view of class separability.
+6.  The system summarizes the number of class pairs in each category to provide an overall view of class separability.
 
 ::: callout-tip
 ## Related Function(s)
@@ -169,8 +168,8 @@ The system provides three parameters:
 `sum_separability()` to count the number pf class pairs in each category.
 :::
 
-8.  Results, along with the basic statistics table, are exported as a `.TXT` report.
-9.  Detailed error messages are provided if any errors occur.
+7.  Results, along with the basic statistics table, are exported as a `.TXT` report.
+8.  Detailed error messages are provided if any errors occur.
 
 ## Reviewing Separability Results {#sec-reviewing-separability-results}
 
