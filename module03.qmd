@@ -2,7 +2,7 @@
 
 # Module Overview {.unnumbered}
 
-In supervised classification, the quality of training data directly determines the accuracy of the resulting model. The output of Module 3 is to produce georeferenced point vector datasets for each LULC class defined by the user in the preceding step, [Module 2](@sec-module-2), accompanied by quantitative and visual summaries that facilitate rigorous evaluation, quality control, and optimization for subsequent classification. The module supports two workflows for data preparation: (1) importing user-defined datasets, or (2) interactively generating samples using system-guided tools. Upon completion, the user obtains a structured datasets for each LULC class, together with statistical diagnostics to assess the quality and representativeness of the data prior to classification.
+In supervised classification, the quality of training data directly determines the accuracy of the resulting model. The output of Module 3 is to produce georeferenced point vector datasets for each LULC class defined by the user in the preceding step, [Module 2](@sec-module-2), accompanied by quantitative and visual summaries that facilitate rigorous evaluation, quality control, and optimization for subsequent classification. The module supports two workflows for data preparation: (1) importing user-defined datasets, or/and (2) interactively generating samples using system-guided tools. Upon completion, the user obtains a structured datasets for each LULC class, together with statistical diagnostics to assess the quality and representativeness of the data prior to classification.
 
 # Input {.unnumbered}
 
@@ -255,7 +255,7 @@ The system presents a recap table with columns for ID, class, number of points, 
 
 ## Data Splitting and Feature Extraction {#sec-data-splitting}
 
-### Data Splitting
+### Data Splitting and Feature Extraction
 
 **Front-end**
 
