@@ -9,7 +9,7 @@ This module provides functionality for users to generate the final LULC map as t
 **User’s Input**
 
 1.  Agreement to proceed after input review (yes/no).
-2.  RF hyperparameters: number of trees (`n_tree`), variables per split (`var_split`), minimum leaf population (`min_leaf_pop`).
+2.  RF hyperparameters: number of trees, variables per split (`var_split`), minimum leaf population (`min_leaf_pop`).
 
 **Automatic System Input**
 
