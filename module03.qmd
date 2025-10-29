@@ -253,9 +253,9 @@ The system presents a recap table with columns for ID, class, number of points, 
 `get_sample_stats_df():` to convert the result from `sample_stats():` into a formatted DataFrame.
 :::
 
-## Data Splitting and Feature Extraction {#sec-data-splitting}
+## Data Splitting {#sec-data-splitting}
 
-### Data Splitting and Feature Extraction
+### Data Splitting
 
 **Front-end**
 
