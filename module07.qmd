@@ -56,90 +56,88 @@ G -->|Satisfied| H([Process Complete])
 G -->|Unsatisfied| B
 ```
 
-## Checking Prerequisites from Previous Modules
+### Checking Prerequisites from Previous Modules
 
 **Front-end**
 
-The user is notified if the map is missing and prompted to complete [Module 6](@sec-module-6).
+The system verifies that Module 6 has been completed and that validation data is available for accuracy assessment.
 
 **Back-end**
 
-1.  Check for the final land cover map from [Module 6](@sec-module-6).
-2.  If not available, provide notification to run [Module 6](@sec-module-6).
-3.  Land cover map availability test.
+-   Checks for final land cover map from Module 6
 
-## Thematic Accuracy Assessment
+-   Validates availability of independent validation data
 
-### Verify Land Cover Map Availability {#sec-verify-land-cover-map-availability}
+-   If prerequisites missing, guides user to complete necessary steps
+
+#### Verify Land Cover Map Availability
+
+**Back-end**
+
+-   Confirms LULC map exists from Module 6
+
+-   If missing, notifies user to complete Module 6 first
+
+#### Verify Validation Data Availability
+
+**Back-end**
+
+-   Checks for validation data from Module 3 partitions
+
+-   If unavailable, provides upload interface for independent validation data
+
+#### Upload and Verify Validation Data
+
+**Back-end**
+
+-   Accepts validation data upload in supported formats
+
+-   Validates data structure and compatibility with classification scheme
+
+-   Provides feedback on upload success or required corrections
+
+### Thematic Accuracy Assessment
+
+#### Perform Accuracy Test
+
+**Back-end**
+
+-   **Spatial Sampling**: Extracts classified values at validation sample locations using `sampleRegions()`
+
+-   **Confusion Matrix**: Generates error matrix using Earth Engine's `errorMatrix()` function
+
+-   **Metric Calculation**: Computes comprehensive accuracy metrics:
+
+    -   **Overall Accuracy (OA)**: Percentage of correctly classified validation samples
+
+    -   **Kappa Coefficient**: Agreement beyond chance, accounting for class distribution
+
+    -   **Producer's Accuracy**: Measure of classification completeness (1 - omission error)
+
+    -   **User's Accuracy**: Measure of classification reliability (1 - commission error)
+
+**Related Functions:**
+
+-   `thematic_assessment()` - performs complete accuracy assessment workflow
+
+#### Display and Review Accuracy Results
 
 **Front-end**
 
-User is notified if map is missing and prompted to complete [Module 6](@sec-module-6).
+-   Presents confusion matrix and accuracy metrics in clear, interpretable format
+
+-   Provides visualizations of classification performance
+
+-   Offers options to refine results by returning to Module 3 (reference data) or Module 6 (classification parameters)
 
 **Back-end**
 
-1.  Check for final land cover map from [Module 6](@sec-module-6).
-2.  If missing, notify user to run Module 6.
+-   Formats and displays comprehensive accuracy report
 
-### Verify Test Data Availability {#sec-verify-test-data-availability}
+-   Identifies potential issues based on error patterns
 
-**Front-end**
+-   Provides specific recommendations for improvement
 
-1.  If test data available, allow user to proceed with accuracy test.
-2.  Else, prompt upload.
+**Related Functions:**
 
-**Back-end**
-
-1.  Check for test data from [Module 3](@sec-module-3).
-2.  If available, proceed to accuracy test.
-3.  If not, prompt user for upload.
-
-### Upload and Verify Test Data {#sec-upload-and-verify-test-data}
-
-**Front-end**
-
-1.  User uploads test data and receives verification feedback.
-
-**Back-end**
-
-1.  Provide upload form.
-2.  Verify uploaded data per criteria (format, content).
-3.  If verification fails, display errors and request re-upload.
-
-### Perform Accuracy Test {#sec-perform-accuracy-test}
-
-**Front-end**
-
-User initiates accuracy test by pressing a button.
-
-**Back-end**
-
-1.  Compare classification map with reference data to generate confusion matrix.
-2.  Compute accuracy metrics:
-    -   Overall Accuracy (OA)
-    -   Kappa Coefficient
-    -   Producer's Accuracy (PA)
-    -   User's Accuracy (UA)
-
-::: callout-tip
-## Related Function(s)
-
-`multiclass_classification()` to perform multiclass hard classification on the dataset to generate land cover land use map. `ovr_classification()` to perform one-vs-rest (OvR) classification strategy for multi-class problems, creating probability layers and optional final map. `thematic_assessment()` to evaluate the thematic accuracy of the land cover map with metrics like overall accuracy, F1-score, geometric mean, per-class accuracy, and balanced accuracy score. `inspect_fold()` to inspect and validate individual folds in cross-validation setups.
-:::
-
-### Display and Review Accuracy Results {#sec-display-and-review-accuracy-results}
-
-**Front-end**
-
-User reviews test results. If satisfied, process completes; if not, prompted to revisit Modules 3 and/or 6.
-
-**Back-end**
-
-1.  Display confusion matrix and accuracy metrics.
-2.  If unsatisfactory, notify user to check training data or classification parameters.
-
-::: callout-tip
-## Related Function(s)
-
-`Hyperparameter_tuning()` to optimize model hyperparameters for better performance. `Hard_classification_tuning()` to tune parameters specifically for hard (crisp) classification models. `Soft_classification_tuning()` to tune parameters for soft (probabilistic) classification models. `hard_tuning_kfold()` to perform k-fold cross-validation tuning for hard classification. `soft_tuning_kfold()` to perform k-fold cross-validation tuning for soft classification. `print_metrics()` to print the classification thematic evaluation results, including overall metrics, aggregate metrics, per-class metrics, and interpretations.
-:::
+-   `print_metrics()` - displays formatted accuracy results with interpretations

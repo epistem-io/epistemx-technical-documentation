@@ -8,8 +8,8 @@ This module provides functionality for users to generate the final LULC map as t
 
 **User’s Input**
 
-1.  Agreement to proceed after input review (yes/no).
-2.  RF hyperparameters: number of trees, variables per split (`var_split`), minimum leaf population (`min_leaf_pop`).
+1.  RF hyperparameters: number of trees (`n_tree`), variables per split (`var_split`), minimum leaf population (`min_leaf_pop`).
+2.  Choice of hyperparameter tuning option (e.g., Hard Classification Tuning, K-Fold Soft Classification Tuning, etc.).
 
 **Automatic System Input**
 
@@ -19,14 +19,14 @@ This module provides functionality for users to generate the final LULC map as t
 
 1.  Near-cloud-free satellite imagery within the AOI ([Module 1](@sec-module-1)).
 2.  LULC classification scheme table ([Module 2](@sec-module-2)).
-3.  Georeferenced training dataset ([Module 3](@sec-module-3)).
-4.  Validation dataset ([Module 3](@sec-module-3)).
-5.  Validated sample data and separability results ([Module 4](@sec-module-4)).
+3.  Georeferenced reference data (training + validation samples)([Module 3](@sec-module-3)).
+4.  Validated sample data and separability results ([Module 4](@sec-module-4)).
 
 ## Output {.unnumbered}
 
 -   Trained RF classification model.
 -   Classified LULC raster map.
+-   Optimal hyperparameters from tuning process
 -   Model accuracy report if validation data available (including overall accuracy, precision, recall, F1-score, Kappa, model error matrix).
 
 ## Process {.unnumbered}
@@ -62,131 +62,148 @@ I -->|Unsatisfied| D
 
 ```
 
-## Checking Prerequisites from Previous Modules
+## Checking Prerequisites from Previous Modules {#sec-checking-prerequisites}
 
 **Front-end**
 
-The user is notified if inputs are insufficient or test data is missing, and prompted to return to previous modules (e.g., [Module 3](@sec-module-3) for test data) as needed.
+The system verifies all required inputs are available and prompts users to complete previous modules if reference data or other essential inputs are missing.
 
 **Back-end**
 
-1.  The system performs a parameter and input suitability test to verify availability and compatibility of inputs from Modules 1-5 (such as imagery, scheme, training data, optional validation data).
-2.  Test data availability from [Module 3](@sec-module-3).
-3.  If any inputs are missing or incompatible, the system directs the user to return to the incomplete module.
-4.  If no test data, suggest the user return to [Module 3](@sec-module-3) and correct the sample.
-5.  The system directs the user to return to the module that has not been completed.
+1.  Validates availability of satellite imagery, classification scheme, and reference data
 
-## Model Training and Classification
+2.  Checks reference data partitioning from Module 3
 
-### Review Inputs {#sec-review-inputs}
+3.  Ensures compatibility between all input datasets
+
+4.  If validation data is unavailable, guides user to Module 3 for completion
+
+## Define Classification Specifications {#sec-define-classification-specifications}
 
 **Front-end**
 
-1.  The user reviews the summary text report to decide if they agree to proceed.
-    -   If yes, continue to define specifications.
-    -   If no, return to relevant previous modules.
-2.  Users return to previous modules as needed.
+User configures Random Forest parameters:
+
+-   **Number of trees (n_tree)**: Controls ensemble size (default: 100). More trees increase stability but require more computation.
+
+-   **Variables per split (var_split)**: Features considered at each decision point. Default: square root of total features.
+
+-   **Minimum leaf population (min_leaf_pop)**: Minimum samples in terminal nodes (default: 1). Higher values prevent overfitting.
 
 **Back-end**
 
-1.  The system generates and displays a summary report of variables for the classification process, including imagery details, classification scheme, and training data summary.
-2.  Displays a summary text and dataframe.
-3.  Lists variables used in classification.
+1.  Stores user-specified hyperparameters
 
-### Define Classification Specifications {#sec-define-classification-specifications}
+2.  Prepares for hyperparameter tuning process
+
+3.  Integrates data splitting strategies from FeatureExtraction class
+
+## Hyperparameter Tuning {#sec-hyperparameter-tuning-options}
 
 **Front-end**
 
-1.  User enters RF hyperparameter values:
-    -   Number of trees (n_tree)
-    -   Variables per split (var_split)
-    -   Minimum leaf population (min_leaf_pop)
+User selects a tuning strategy. System evaluates multiple parameter combinations using **training/validation split** from Module 3. Results display optimal parameters and accuracy.
 
 **Back-end**
 
-1.  Stores user-entered hyperparameters.
-2.  Applies them as main parameters for Random Forest training.
+-   Uses **held-out validation data** to assess performance.
+
+-   If **100% of reference data allocated to training** in Module 3 → **no validation data available** → tuning **disabled**.
+
+-   User must upload **independent validation data in Module 7**.
+
+### Hard Classification Tuning {#sec-hard-classification-tuning}
+
+Uses multiclass classification approach and evaluates performance using overall accuracy metric.
 
 ::: callout-tip
 ## Related Function(s)
 
-`Hard_classification_tuning()` to perform manual testing to find optimal parameters for multiclass hard classification using training data from single or stratified random split. `Soft_classification_tuning()` to perform manual testing to find optimal parameters for one-vs-rest binary soft classification using training data from single or stratified random split. `hard_tuning_kfold()` to perform manual testing to find optimal parameters for multiclass hard classification with stratified k-fold input data. `soft_tuning_kfold()` to perform manual testing to find optimal parameters for one-vs-rest binary soft classification with k-fold cross-validation data.
+`Hard_classification_tuning()` performs grid search for direct multiclass classification, testing all parameter combinations and selecting those with highest accuracy.\
 :::
 
-### Feature Extraction {#sec-feature-extraction}
+### Soft Classification Tuning {#sec-soft-classification-tuning}
 
-**Front-end**
-
-Runs automatically after specifications are defined.
-
-**Back-end**
-
-Performs feature extraction by sampling pixel values from imagery based on training (and optional validation) samples.
+Uses one-vs-rest binary classification approach and evaluates performance using cross-entropy loss.
 
 ::: callout-tip
 ## Related Function(s)
 
-`random_split()` to perform single random split and extract pixel values from the imagery. `stratified_split()` to perform stratified random split to partition the sample data into training and testing sets. `stratified_kfold()` to perform stratified k-fold cross-validation split on input reference data. `inspect_fold()` to inspect a specific fold's sizes from stratified k-fold results.
+`Soft_classification_tuning()` optimizes parameters for probabilistic classification, selecting combinations with lowest cross-entropy loss.\
 :::
 
-### Train Random Forest Model {#sec-train-random-forest-model}
-
-**Front-end**
-
-Shows user progress during training.
+### K-Fold Cross Validation {#sec-k-fold-tuning}
 
 **Back-end**
 
-1.  Trains RF model using prepared data:
-    -   Bootstrap sampling for subsets per tree.
-    -   Builds multiple decision trees.
-    -   Uses majority voting for predictions.
-2.  Produces trained model asset.
+Performs robust parameter optimization using stratified k-fold cross-validation:
 
-### Model Accuracy Test {#sec-model-accuracy-test}
+-   **Hard K-Fold**: `hard_tuning_kfold()` for multiclass classification with k-fold validation
 
-**Front-end**
+-   **Soft K-Fold**: `soft_tuning_kfold()` for one-vs-rest classification with k-fold validation
 
-Displays accuracy report if validation data is available.
+This approach provides more reliable parameter estimates, especially for imbalanced datasets.
 
-**Back-end**
-
-1.  Applies model to validation data if available.
-2.  Generates accuracy metrics: overall accuracy, precision, recall, F1-score, Kappa, error matrix.
-3.  Skips if no validation data.
-
-### Classification (Apply Model to Entire Image) {#sec-classification-apply-model-to-entire-image}
+## Final Classification {#sec-final-classification}
 
 **Front-end**
 
-Runs after training with progress shown.
+User can:
+
+-   Accept **optimal parameters from tuning**
+
+-   Or retain **manual inputs** Progress bars shown during training and map generation.
 
 **Back-end**
 
-1.  Applies trained model to entire imagery.
-2.  Generates classification summary and result data.
+Trains the final Random Forest model using optimal parameters identified during tuning:
+
+-   **Bootstrap sampling**: Creates diverse training subsets for each tree
+
+-   **Ensemble construction**: Builds multiple decision trees with variation
+
+-   **Majority voting**: Aggregates predictions across all trees
+
+Users can apply the recommended optimal parameters or use custom values.
+
+### Multiclass Classification {#sec-multiclass-classification}
+
+**Back-end**
+
+Performs direct multiclass classification where each pixel is assigned to a single LULC class.
 
 ::: callout-tip
 ## Related Function(s)
 
-`multiclass_classification()` to perform multiclass hard classification to generate land cover land use map using Random Forest with specified parameters. `ovr_classification()` to implement one-vs-rest binary classification for multi-class land cover, generating probability stacks and optional final map via argmax.
+`multiclass_classification()` implements hard classification using the trained Random Forest model to generate the final LULC map.\
 :::
 
-### Review Classification Results {#sec-review-classification-results}
-
-**Front-end**
-
-1.  User reviews model results and map.
-    -   If satisfied, proceed to [Module 7](@sec-module-7).
-    -   If not, adjust parameters or return to prior modules.
+### OVR Classification {#sec-ovr-classification}
 
 **Back-end**
 
-1.  Displays model learning and accuracy results.
-2.  Suggests corrections or parameter checks if unsatisfied.
+Implements One-vs-Rest strategy, generating probability layers for each class and creating final classification via maximum probability.
 
 ::: callout-tip
 ## Related Function(s)
 
-`thematic_assessment()` to evaluate the thematic accuracy of the land cover map with metrics like overall accuracy, F1-score, geometric mean, per-class accuracy, and balanced accuracy score. `print_metrics()` to print the classification thematic evaluation results, including overall metrics, aggregate metrics, per-class metrics, and interpretations.
+`ovr_classification()` creates probability surfaces for all LULC classes and produces final classification using argmax, providing confidence layers for each class.\
 :::
+
+## Review Classification Results {#sec-review-classification-results}
+
+**Front-end**
+
+1.  User examines the generated LULC map and model performance
+
+2.  If satisfied, proceeds to Module 7 for thematic accuracy assessment
+
+3.  If unsatisfied, returns to parameter tuning or previous modules
+
+**Back-end**
+
+1.  Displays optimal parameters and model performance metrics
+
+2.  Provides recommendations for improvement if results are unsatisfactory
+
+3.  Stores trained model and classification results for Module 7
