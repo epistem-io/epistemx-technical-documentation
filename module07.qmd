@@ -60,7 +60,7 @@ G -->|Unsatisfied| B
 
 **Front-end**
 
-The system verifies that Module 6 has been completed and that validation data is available for accuracy assessment.
+1.  **Verify Land Cover Map Availability**: The user is notified if the map is missing and prompted to complete [Module 6](https://www.google.com/search?q=%40sec-module-6). 2.  **Verify Validation Data Availability**: If **Validation Data** is available from [Module 3](https://www.google.com/search?q=%40sec-module-3), the user is allowed to proceed. 3.  **Upload and Verify Validation Data**: If missing, the user is prompted to upload a separate **Validation Dataset** and receives verification feedback.
 
 **Back-end**
 
@@ -124,11 +124,7 @@ The system verifies that Module 6 has been completed and that validation data is
 
 **Front-end**
 
--   Presents confusion matrix and accuracy metrics in clear, interpretable format
-
--   Provides visualizations of classification performance
-
--   Offers options to refine results by returning to Module 3 (reference data) or Module 6 (classification parameters)
+1.  User reviews the test results, including the Confusion Matrix and all accuracy metrics displayed by `print_metrics()`. 2.  If satisfied, the process completes. 3.  If **unsatisfied**, the user is prompted to: \* Go back to @sec-module-3 to check and clarify the **Reference Data**. \* Go back to @sec-module-6 to refine the hyperparameters or try a different classification approach.
 
 **Back-end**
 
